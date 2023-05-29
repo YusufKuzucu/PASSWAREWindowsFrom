@@ -61,12 +61,18 @@ namespace PASSWARE
                     {
                         // Admin yetkilerine sahip işlemler
                         MessageBox.Show("Admin olarak giriş yapıldı!");
+                        HomePage homePage = new HomePage();
+                        homePage.Show();
+                        this.Hide();
 
                     }
                     else
                     {
                         // Diğer kullanıcı rollerine sahip işlemler
                         MessageBox.Show("Kullanıcı olarak giriş yapıldı!");
+                        HomePage homePage = new HomePage();
+                        homePage.Show();
+                        this.Hide();
 
                         //toolStripStatusLabel1.Text = accessToken;
                     }
@@ -95,6 +101,20 @@ namespace PASSWARE
             ForgotMyPassword forgotMyPassword = new ForgotMyPassword();
             forgotMyPassword.Show();
             this.Hide();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.CheckState==CheckState.Checked)
+            {
+                    txtPassword.UseSystemPasswordChar = true;
+                checkBox2.Text = "Hide";
+            }
+            else if(checkBox2.CheckState==CheckState.Unchecked)
+            {
+                txtPassword.UseSystemPasswordChar=false;
+                checkBox2.Text = "Show";
+            }
         }
     }
 }

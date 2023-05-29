@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace PASSWARE
 {
@@ -27,7 +28,7 @@ namespace PASSWARE
             var resetPassword = new
             {
                 email = txtBoxEmail.Text,
-                verificationNumber = txtBoxPassword.Text,
+                verificationNumber = txtBoxVerificationCode.Text,
                 password = txtBoxNewPassword.Text,
             };
             var json = JsonConvert.SerializeObject(resetPassword);
@@ -50,7 +51,7 @@ namespace PASSWARE
         {
 
             txtBoxEmail.Visible = false;
-            txtBoxPassword.Visible = false;
+            txtBoxVerificationCode.Visible = false;
             txtBoxNewPassword.Visible = false;
             label2.Visible = false;
             label3.Visible = false;
@@ -73,7 +74,7 @@ namespace PASSWARE
                 btnVerificationCode.Visible = false;
                 label1.Visible = false;
                 txtBoxEmail.Visible = true;
-                txtBoxPassword.Visible = true;
+                txtBoxVerificationCode.Visible = true;
                 txtBoxNewPassword.Visible = true;
                 label2.Visible = true;
                 label3.Visible = true;

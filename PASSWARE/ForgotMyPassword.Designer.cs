@@ -34,7 +34,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtEmailD = new System.Windows.Forms.TextBox();
             this.txtBoxEmail = new System.Windows.Forms.TextBox();
-            this.txtBoxPassword = new System.Windows.Forms.TextBox();
+            this.txtBoxVerificationCode = new System.Windows.Forms.TextBox();
             this.txtBoxNewPassword = new System.Windows.Forms.TextBox();
             this.btnVerificationCode = new System.Windows.Forms.Button();
             this.btnNewPassword = new System.Windows.Forms.Button();
@@ -100,14 +100,14 @@
             this.txtBoxEmail.Size = new System.Drawing.Size(354, 27);
             this.txtBoxEmail.TabIndex = 5;
             // 
-            // txtBoxPassword
+            // txtBoxVerificationCode
             // 
-            this.txtBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.txtBoxPassword.Location = new System.Drawing.Point(27, 360);
-            this.txtBoxPassword.Multiline = true;
-            this.txtBoxPassword.Name = "txtBoxPassword";
-            this.txtBoxPassword.Size = new System.Drawing.Size(354, 27);
-            this.txtBoxPassword.TabIndex = 6;
+            this.txtBoxVerificationCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.txtBoxVerificationCode.Location = new System.Drawing.Point(27, 360);
+            this.txtBoxVerificationCode.Multiline = true;
+            this.txtBoxVerificationCode.Name = "txtBoxVerificationCode";
+            this.txtBoxVerificationCode.Size = new System.Drawing.Size(354, 27);
+            this.txtBoxVerificationCode.TabIndex = 6;
             // 
             // txtBoxNewPassword
             // 
@@ -165,7 +165,7 @@
             this.Controls.Add(this.btnNewPassword);
             this.Controls.Add(this.btnVerificationCode);
             this.Controls.Add(this.txtBoxNewPassword);
-            this.Controls.Add(this.txtBoxPassword);
+            this.Controls.Add(this.txtBoxVerificationCode);
             this.Controls.Add(this.txtBoxEmail);
             this.Controls.Add(this.txtEmailD);
             this.Controls.Add(this.label4);
@@ -191,7 +191,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtEmailD;
         private System.Windows.Forms.TextBox txtBoxEmail;
-        private System.Windows.Forms.TextBox txtBoxPassword;
+        private System.Windows.Forms.TextBox txtBoxVerificationCode;
         private System.Windows.Forms.TextBox txtBoxNewPassword;
         private System.Windows.Forms.Button btnVerificationCode;
         private System.Windows.Forms.Button btnNewPassword;

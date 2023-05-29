@@ -38,6 +38,7 @@
             this.btnForgotMyPassword = new System.Windows.Forms.Button();
             this.btnRegister = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,7 +85,7 @@
             this.btnLogin.Location = new System.Drawing.Point(53, 420);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(330, 37);
-            this.btnLogin.TabIndex = 4;
+            this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
@@ -106,7 +107,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(330, 27);
-            this.txtPassword.TabIndex = 1;
+            this.txtPassword.TabIndex = 2;
             // 
             // label2
             // 
@@ -159,12 +160,24 @@
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
-            // Form1
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(321, 306);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(62, 20);
+            this.checkBox2.TabIndex = 11;
+            this.checkBox2.Text = "Show";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(428, 518);
+            this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnForgotMyPassword);
@@ -176,7 +189,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
+            this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -197,6 +210,7 @@
         private System.Windows.Forms.Button btnForgotMyPassword;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 
