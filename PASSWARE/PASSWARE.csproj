@@ -55,6 +55,9 @@
     <Compile Include="ForgotMyPassword.Designer.cs">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="HomePageControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>

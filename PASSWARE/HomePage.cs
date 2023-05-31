@@ -16,5 +16,18 @@ namespace PASSWARE
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            TabControl tabControl = HomePageControl.CreateTabControlWithTabPage();
+            this.tabControl1.TabPages.AddRange(tabControl.TabPages.Cast<TabPage>().ToArray());
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
