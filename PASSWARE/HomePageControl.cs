@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PASSWARE
 {
-    public class HomePageControl:TabPage
+    public class HomePageControl
     {
         //private static Label label1;
         public static TabControl CreateTabControlWithTabPage()

@@ -55,9 +55,7 @@
     <Compile Include="ForgotMyPassword.Designer.cs">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </Compile>
-    <Compile Include="HomePageControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="HomePageControl.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\indir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\indir1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
