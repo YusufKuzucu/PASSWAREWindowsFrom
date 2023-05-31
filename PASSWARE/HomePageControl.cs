@@ -52,10 +52,10 @@ namespace PASSWARE
 
 
 
-            TextBox textBox1 = CreateTextBox("textbox 1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 58), 5);
+            TextBox textBox1 = CreateTextBox("textbox1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 58), 5);
             tabPage.Controls.Add(textBox1);
 
-            TextBox textBox2 = CreateTextBox("textbox 2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 6);
+            TextBox textBox2 = CreateTextBox("textbox2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 6);
             tabPage.Controls.Add(textBox2);
 
             TextBox textBox3 = CreateTextBox("textbox 3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 195), 7);
@@ -120,7 +120,7 @@ namespace PASSWARE
         private static TextBox CreateTextBox(string text, Size size, Point location, int tabındex)
         {
             TextBox textBox = new TextBox();
-            textBox.Text = text;
+            textBox.Name = text;
             textBox.ForeColor = Color.Black;
             textBox.Size = size;
             textBox.Location = location;
@@ -147,9 +147,24 @@ namespace PASSWARE
 
         private static void Button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("buton 1");
+            Button button = (Button)sender;
+            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
 
+            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox1");
+            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
+
+            if (textBox1 != null && textBox2 != null)
+            {
+                string value1 = textBox1.Text;
+                string value2 = textBox2.Text;
+
+                // Güncelleme işlemini yapmak için API çağrısı yapabilir veya veritabanında güncelleme işlemi gerçekleştirebilirsiniz
+
+                // Örneğin, bir mesaj kutusuyla güncelleme işleminin başarılı olduğunu bildirelim
+                MessageBox.Show("Güncelleme işlemi başarıyla gerçekleştirildi.");
+            }
         }
+    
         private static void Button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 2");
@@ -158,5 +173,7 @@ namespace PASSWARE
         {
             MessageBox.Show("buton 3");
         }
+
+
     }
 }

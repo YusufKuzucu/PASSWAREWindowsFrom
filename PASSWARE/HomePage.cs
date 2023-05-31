@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PASSWARE.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +27,8 @@ namespace PASSWARE
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            var deneme = ActiveUser.Email;
+            MessageBox.Show(deneme);
         }
 
     }
