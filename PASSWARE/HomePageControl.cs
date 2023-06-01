@@ -76,7 +76,6 @@ namespace PASSWARE
             panel.TabIndex = 0;
             return panel;
         }
-
         private Button CreateButton(string text, Size size, Point location, int tabındex)
         {
             Button button = new Button();
@@ -133,7 +132,6 @@ namespace PASSWARE
             TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
             TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
             TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
-
 
             string sqlServerIP = textBox1.Text;
             string sqlServerUserName = textBox2.Text;

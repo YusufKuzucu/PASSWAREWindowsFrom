@@ -70,7 +70,14 @@
     </Compile>
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\ActiveUser.cs" />
+    <Compile Include="Models\Entities\Communication.cs" />
+    <Compile Include="Models\Entities\Company.cs" />
+    <Compile Include="Models\Entities\Jump.cs" />
+    <Compile Include="Models\Entities\Link.cs" />
+    <Compile Include="Models\Entities\Project.cs" />
     <Compile Include="Models\Entities\Sql.cs" />
+    <Compile Include="Models\Entities\UI.cs" />
+    <Compile Include="Models\Entities\Vpn.cs" />
     <Compile Include="Models\OperationClaim.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
@@ -81,7 +88,14 @@
     <Compile Include="RegisterPage.Designer.cs">
       <DependentUpon>RegisterPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Request\CommunicationController.cs" />
+    <Compile Include="Request\CompanyController.cs" />
+    <Compile Include="Request\JumpController.cs" />
+    <Compile Include="Request\LinkController.cs" />
+    <Compile Include="Request\ProjectController.cs" />
     <Compile Include="Request\SqlController.cs" />
+    <Compile Include="Request\UIController.cs" />
+    <Compile Include="Request\VpnController.cs" />
     <EmbeddedResource Include="ForgotMyPassword.resx">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </EmbeddedResource>

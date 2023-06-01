@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PASSWARE.Models;
 using PASSWARE.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,20 +9,19 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PASSWARE.Models;
 
 namespace PASSWARE.Request
 {
-    public class SqlsResponse
+    public class CommunicationsResponse
     {
-        public Sql[] Data { get; set; }
+        public Communication[] Data { get; set; }
     }
-    public class SqlController
+    public class CommunicationController
     {
         HttpClient client = new HttpClient();
-        public async Task<Sql[]> GetSqlData(string url)
+        public async Task<Communication[]> GetCommunicationData(string url)
         {
-            Sql[] data = null;
+            Communication[] data = null;
             try
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
@@ -32,8 +32,8 @@ namespace PASSWARE.Request
                     string responseContent = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        SqlsResponse jumpsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
-                        data = jumpsResponse.Data;
+                        CommunicationsResponse communicationsResponse = JsonConvert.DeserializeObject<CommunicationsResponse>(responseContent);
+                        data = communicationsResponse.Data;
                     }
                     catch (Exception ex)
                     {
@@ -55,24 +55,26 @@ namespace PASSWARE.Request
 
 
         }
-        public async Task<bool> AddSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword)
+
+
+        public async Task<bool> AddCommunicationData(string internalNumber, string internalEmail, string externalNumber,string externalEmail)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
-            var sql = new
+            var communication = new
             {
-                sqlServerIP = sqlServerIP,
-                sqlServerUserName = sqlServerUserName,
-                sqlServerPassword = sqlServerPassword,
-                projectId=1,
+                internalNumber = internalNumber,
+                internalEmail = internalEmail,
+                externalNumber = externalNumber,
+                externalEmail= externalEmail,
+                projectId = 1,
                 createdBy = ActiveUser.FirstName,
                 createdDate = DateTime.Now,
             };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(sql);
+            var json = JsonConvert.SerializeObject(communication);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Sqls/Post", content);
-
+            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Communications/Post", content);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return true;
@@ -80,45 +82,42 @@ namespace PASSWARE.Request
             return false;
         }
 
-        public async Task<bool> UpdateSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword)
+        public async Task<bool> UpdateCommunicationData(string internalNumber, string internalEmail, string externalNumber, string externalEmail)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
-            var sql = new
+            var communication = new
             {
-                sqlServerIP = sqlServerIP,
-                sqlServerUserName = sqlServerUserName,
-                sqlServerPassword = sqlServerPassword,
+                internalNumber = internalNumber,
+                internalEmail = internalEmail,
+                externalNumber = externalNumber,
+                externalEmail = externalEmail,
                 projectId = 1,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
+                createdBy = ActiveUser.FirstName,
+                createdDate = DateTime.Now,
             };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(sql);
+            var json = JsonConvert.SerializeObject(communication);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Sqls/Update", content);
-
+            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Communicaitons/Update", content);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return true;
             }
             return false;
         }
-        public async Task<bool> DeleteSqlData(int id)
+        public async Task<bool> DeleteCommunicaitonData(int id)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
-            
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Sqls/Delete?id={id}");
-            
 
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Communications/Delete?id={id}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 return true;
             }
             return false;
         }
-
     }
 }
