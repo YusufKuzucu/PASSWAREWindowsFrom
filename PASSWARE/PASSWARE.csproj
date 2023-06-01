@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Models\AccessToken.cs" />
     <Compile Include="Models\ActiveUser.cs" />
+    <Compile Include="Models\Entities\Sql.cs" />
     <Compile Include="Models\OperationClaim.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="RegisterPage.Designer.cs">
       <DependentUpon>RegisterPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Request\SqlController.cs" />
     <EmbeddedResource Include="ForgotMyPassword.resx">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </EmbeddedResource>

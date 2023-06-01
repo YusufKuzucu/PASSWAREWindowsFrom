@@ -51,6 +51,7 @@ namespace PASSWARE
             {
                 var tokenResult = response.Content.ReadAsStringAsync().Result;
                 accessToken = JsonConvert.DeserializeObject<AccessToken>(tokenResult).Token;
+                ActiveUser.Token = accessToken;
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 HttpResponseMessage userGetResponse;

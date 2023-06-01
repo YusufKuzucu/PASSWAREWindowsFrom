@@ -9,7 +9,7 @@ namespace PASSWARE.Models
     public class ActiveUser
     {
         static int _id;
-        static string _password, _firstName, _lastName, _email;
+        static string _password, _firstName, _lastName, _email,_token;
         static bool _status;
         public static int Id
         {
@@ -32,14 +32,16 @@ namespace PASSWARE.Models
             get { return ActiveUser._email; }
             set { ActiveUser._email = value; }
         }
-        //public byte[] PasswordSalt { get; set; }
-        //public byte[] PasswordHash { get; set; }
         public static bool Status
         {
             get { return ActiveUser._status; }
             set { ActiveUser._status = value; }
         }
-
+        public static string Token
+        {
+            get { return ActiveUser._token; }
+            set { ActiveUser._token = value; }
+        }
         public static void SetActiveUser(User user)
         {
             ActiveUser.Id = _id;

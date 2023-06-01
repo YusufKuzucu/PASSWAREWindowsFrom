@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using PASSWARE.Models;
+using PASSWARE.Request;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,20 +14,8 @@ namespace PASSWARE
 {
     public class HomePageControl
     {
-        //private static Label label1;
-        public static TabControl CreateTabControlWithTabPage()
-        {
-            TabControl tabControl = new TabControl();
-            tabControl.Dock = DockStyle.None;
-
-            TabPage tabPage = CreateTabPage();
-
-            tabControl.TabPages.Add(tabPage);
-
-            return tabControl;
-        }
-
-        private static TabPage CreateTabPage()
+        
+        public TabPage CreateTabPage()
         {
             TabPage tabPage = new TabPage("TabPage");
 
@@ -50,26 +42,21 @@ namespace PASSWARE
 
 
 
-
-
             TextBox textBox1 = CreateTextBox("textbox1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 58), 5);
             tabPage.Controls.Add(textBox1);
 
             TextBox textBox2 = CreateTextBox("textbox2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 6);
             tabPage.Controls.Add(textBox2);
 
-            TextBox textBox3 = CreateTextBox("textbox 3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 195), 7);
+            TextBox textBox3 = CreateTextBox("textbox3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 195), 7);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("textbox 4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9);
+            TextBox textBox4 = CreateTextBox("textbox4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9);
             tabPage.Controls.Add(textBox4);
 
 
-
-
-
-
             Button button1 = CreateButton("Button 1", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+
             button1.Click += Button1_Click;
             panel.Controls.Add(button1);
 
@@ -79,11 +66,9 @@ namespace PASSWARE
             return tabPage;
         }
 
-        private static Panel CreatePanel()
+        private  Panel CreatePanel()
         {
             Panel panel = new Panel();
-            //panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            // | System.Windows.Forms.AnchorStyles.Right)));
             panel.Dock = DockStyle.Right;
             panel.BackColor = System.Drawing.Color.Gray;
             panel.Location = new System.Drawing.Point(1331, 3);
@@ -92,7 +77,7 @@ namespace PASSWARE
             return panel;
         }
 
-        private static Button CreateButton(string text, Size size, Point location, int tabındex)
+        private Button CreateButton(string text, Size size, Point location, int tabındex)
         {
             Button button = new Button();
             button.Text = text;
@@ -106,7 +91,7 @@ namespace PASSWARE
             button.FlatStyle = FlatStyle.Flat;
             return button;
         }
-        private static Label CreateLabel(string text, Size size, Point location, int tabındex)
+        private Label CreateLabel(string text, Size size, Point location, int tabındex)
         {
             Label label = new Label();
             label.Text = text;
@@ -117,7 +102,7 @@ namespace PASSWARE
             label.TabIndex = tabındex;
             return label;
         }
-        private static TextBox CreateTextBox(string text, Size size, Point location, int tabındex)
+        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex)
         {
             TextBox textBox = new TextBox();
             textBox.Name = text;
@@ -127,12 +112,9 @@ namespace PASSWARE
             textBox.TabIndex = tabındex;
             return textBox;
         }
-        private static DataGridView CreateDataGridView()
+        private DataGridView CreateDataGridView()
         {
             DataGridView dataGridView = new DataGridView();
-            //dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            //| System.Windows.Forms.AnchorStyles.Left)
-            //| System.Windows.Forms.AnchorStyles.Right)));
             dataGridView.Anchor = AnchorStyles.Bottom|AnchorStyles.Top|AnchorStyles.Left;
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Location = new System.Drawing.Point(3, 292);
@@ -142,29 +124,33 @@ namespace PASSWARE
             dataGridView.TabIndex = 1;
             return dataGridView;
         }
-
-
-
-        private static void Button1_Click(object sender, EventArgs e)
+        private async void Button1_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
 
             TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox1");
             TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
+            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
+            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
 
-            if (textBox1 != null && textBox2 != null)
+
+            string sqlServerIP = textBox1.Text;
+            string sqlServerUserName = textBox2.Text;
+            string sqlServerPassword = textBox3.Text;
+
+            SqlController sqlController = new SqlController();
+            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword);
+            if (result)
             {
-                string value1 = textBox1.Text;
-                string value2 = textBox2.Text;
-
-                // Güncelleme işlemini yapmak için API çağrısı yapabilir veya veritabanında güncelleme işlemi gerçekleştirebilirsiniz
-
-                // Örneğin, bir mesaj kutusuyla güncelleme işleminin başarılı olduğunu bildirelim
-                MessageBox.Show("Güncelleme işlemi başarıyla gerçekleştirildi.");
+                MessageBox.Show("sql eklendi");
+            }
+            else
+            {
+                MessageBox.Show("sql eklenmedi");
             }
         }
-    
+
         private static void Button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 2");
