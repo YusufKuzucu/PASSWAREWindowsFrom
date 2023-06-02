@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace PASSWARE.Models
     public class ActiveUser
     {
         static int _id;
-        static string _password, _firstName, _lastName, _email,_token;
+        static string _password, _firstName, _lastName, _email,_token,_role;
         static bool _status;
         public static int Id
         {
@@ -41,6 +42,11 @@ namespace PASSWARE.Models
         {
             get { return ActiveUser._token; }
             set { ActiveUser._token = value; }
+        }
+        public static string Role
+        {
+            get { return ActiveUser._role; }
+            set { ActiveUser._role = value; }
         }
         public static void SetActiveUser(User user)
         {

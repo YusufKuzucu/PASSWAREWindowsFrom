@@ -19,7 +19,7 @@ namespace PASSWARE.Request
     public class ProjectController
     {
         HttpClient client = new HttpClient();
-        public async Task<Project[]> GetJumpData(string url)
+        public async Task<Project[]> GetProjectData(string url)
         {
             Project[] data = null;
             try

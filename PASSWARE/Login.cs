@@ -81,6 +81,7 @@ namespace PASSWARE
                 {
                     var userContent = await userResponse.Content.ReadAsStringAsync();
                     var user = JsonConvert.DeserializeObject<IEnumerable<OperationClaim>>(userContent);
+                    ActiveUser.Role = userContent;
 
                     // Kullanıcının rollerini kontrol et
                     if (user.Any(x => x.Name.ToLower() == "Admin".ToLower()))

@@ -11,7 +11,7 @@ namespace PASSWARE.Models.Entities
         public int Id { get; set; }
         public string SqlServerIp { get; set; }
         public string SqlServerUserName { get; set; }
-        public string SqlsServerPassword { get; set; }
+        public string SqlServerPassword { get; set; }
         public int ProjectId { get; set; }
     }
 }

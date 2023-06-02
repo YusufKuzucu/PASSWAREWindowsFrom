@@ -96,6 +96,7 @@
     <Compile Include="Request\SqlController.cs" />
     <Compile Include="Request\UIController.cs" />
     <Compile Include="Request\VpnController.cs" />
+    <Compile Include="TabpageBase\SqlTabpageList.cs" />
     <EmbeddedResource Include="ForgotMyPassword.resx">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </EmbeddedResource>

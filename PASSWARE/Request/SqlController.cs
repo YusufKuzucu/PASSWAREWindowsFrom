@@ -49,7 +49,7 @@ namespace PASSWARE.Request
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
                 // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-                throw; // Hatanın takipçisine iletilmesi.
+                
             }
             return data;
 
