@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PASSWARE.Models;
+using System.Security.Policy;
 
 namespace PASSWARE.Request
 {
@@ -52,7 +53,42 @@ namespace PASSWARE.Request
                 
             }
             return data;
+        }
 
+        public async Task<Sql[]> GetSql(int id)
+        {
+            string apiUrl = "https://localhost:44343/api/";
+            Sql[] data = null;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+
+                HttpResponseMessage response = await client.GetAsync($"{apiUrl}Sqls/GetBySql?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        SqlsResponse jumpsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
+                        data = jumpsResponse.Data;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hata kodu: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
+                // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
+
+            }
+            return data;
 
         }
         public async Task<bool> AddSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword,string projectId)
@@ -104,6 +140,7 @@ namespace PASSWARE.Request
             }
             return false;
         }
+   
         public async Task<bool> DeleteSqlData(int id)
         {
             string apiUrl = "https://localhost:44343/api/";

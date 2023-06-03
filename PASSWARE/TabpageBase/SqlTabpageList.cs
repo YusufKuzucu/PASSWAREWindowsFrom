@@ -4,6 +4,7 @@ using PASSWARE.Models.Entities;
 using PASSWARE.Request;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -26,7 +27,6 @@ namespace PASSWARE.TabpageBase
         private DataTable filterData;
         private string projectId;
         private Dictionary<int, string> projectNames;
-
         public SqlTabpageList(TabControl tabControl)
         {
             comboBoxDataGridViewPairs = new Dictionary<ComboBox, DataGridView>();
@@ -110,12 +110,15 @@ namespace PASSWARE.TabpageBase
                 var projectData = await projectController.GetProjectData(apiUrl);
                 // API'den verileri al
                 Project[] projects = projectData;
-
+                foreach (var item in projects)
+                {
+                    comboBox.Items.Add(item);
+                }
                 // ComboBox'a projeleri ekle
-                comboBox.DataSource = projects;
+                //comboBox.DataSource = projects;
                 comboBox.DisplayMember = "ProjectName";
                 comboBox.ValueMember = "ID";
-                comboBox.SelectedIndex = -1;
+                //comboBox.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -157,7 +160,7 @@ namespace PASSWARE.TabpageBase
                 MessageBox.Show("API'den veri alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private async Task<Dictionary<int, string>> GetProjectNames()
+        public async Task<Dictionary<int, string>> GetProjectNames()
         {
             Dictionary<int, string> projectNames = new Dictionary<int, string>();
             try
@@ -182,12 +185,14 @@ namespace PASSWARE.TabpageBase
         {
             ComboBox comboBox = (ComboBox)sender;
             DataGridView dataGridView = comboBoxDataGridViewPairs[comboBox];
-            // Seçili projenin ID'sini al
-            string selectedValue = comboBox.SelectedValue?.ToString();
-            projectId = selectedValue;
-            // Seçili projenin Name'sini al
 
-            string selectedText = comboBox.Text; 
+            if (comboBox.SelectedItem is Project selectedProject)
+            {
+                int selectedValue = selectedProject.Id;
+                projectId = selectedValue.ToString() ;
+            }
+
+            string selectedText = comboBox.Text;
             // DataGridView'i filtrele
             FilterDataGridView(dataGridView, selectedText);
         }
@@ -198,11 +203,10 @@ namespace PASSWARE.TabpageBase
             if (!string.IsNullOrEmpty(selectedText))
             {
                 DataRow[] filteredRows = originalData.Select("ProjectName  = '" + selectedText + "'");
-               
+
                 foreach (DataRow row in filteredRows)
                 {
                     dataTable.ImportRow(row);
-
                 }
             }
             else
@@ -210,7 +214,7 @@ namespace PASSWARE.TabpageBase
                 dataTable = originalData.Copy(); // Tüm verileri göster
             }
             dataGridView.DataSource = dataTable;
-            
+
             filterData = dataTable;
         }
         private void DataGridView_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -238,7 +242,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     HomePageControl homePageControl = new HomePageControl();
-                    TabPage tabPage = homePageControl.CreateTabPage(projectID,selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    TabPage tabPage = homePageControl.CreateTabPage(projectID, selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
                     tabPage.Text = "Sql";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
@@ -268,7 +272,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     HomePageControl homePageControl = new HomePageControl();
-                    TabPage tabPage = homePageControl.CreateTabPage(projectID,selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    TabPage tabPage = homePageControl.CreateTabPage(projectID, selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
                     tabPage.Text = "Sql";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;

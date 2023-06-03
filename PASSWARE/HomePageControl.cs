@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PASSWARE.Models;
+using PASSWARE.Models.Entities;
 using PASSWARE.Request;
 using PASSWARE.TabpageBase;
 using System;
@@ -16,18 +17,20 @@ namespace PASSWARE
 {
     public class HomePageControl
     {
+        private int Id;
+        private DataGridView dataGridView;
         public TabPage CreateTabPage(string projectId, string selectedId,string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
-
+            Id=Convert.ToInt32(projectId);
             Panel panel = CreatePanel();
             tabPage.Controls.Add(panel);
 
-            DataGridView dataGridView = CreateDataGridView(filterData);
+            DataGridView dataGridView = CreateDataGridView();
+            dataGridView.DataSource = filterData;
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
           
-
             Label label1 = CreateLabel(colum2name,"label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 65), 2);
             tabPage.Controls.Add(label1);
 
@@ -44,7 +47,7 @@ namespace PASSWARE
             label5.Enabled = false;
             tabPage.Controls.Add(label5);
 
-            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 35), 8);
+            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 35), 8); ;
             label6.Enabled = false;
             tabPage.Controls.Add(label6);
 
@@ -125,10 +128,10 @@ namespace PASSWARE
             textBox.TabIndex = tabındex;
             return textBox;
         }
-        private DataGridView CreateDataGridView(DataTable dataTable)
+        private DataGridView CreateDataGridView()
         {
             DataGridView dataGridView = new DataGridView();
-            dataGridView.Anchor = /*AnchorStyles.Bottom |*/ AnchorStyles.Top | AnchorStyles.Left;
+            dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -140,7 +143,7 @@ namespace PASSWARE
             dataGridView.Dock = DockStyle.None;
             dataGridView.Size = new System.Drawing.Size(1325, 390);
             dataGridView.TabIndex = 1;
-            dataGridView.DataSource = dataTable;
+            LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
             return dataGridView;
@@ -195,46 +198,105 @@ namespace PASSWARE
         {
             Button button = (Button)sender;
             TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-
             TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox1");
             TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
             TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
             TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
             Label label1=tabPage.Controls.OfType<Label>().FirstOrDefault(x=>x.Name=="label6");
-
+            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
             string sqlServerIP = textBox1.Text;
             string sqlServerUserName = textBox2.Text;
             string sqlServerPassword = textBox3.Text;
             string projectId = label1.Text;
-
+         
             SqlController sqlController = new SqlController();
             bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword,projectId);
             if (result)
             {
                 MessageBox.Show("sql eklendi");
+              
+                LoadDataIntoDataGridView( dataGridView,Convert.ToInt32(projectId));
             }
             else
             {
                 MessageBox.Show("sql eklenmedi");
             }
         }
-        private static void Button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 2");
-            
-           
         }
-        private static void Button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 3");
         }
-        private static void Button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 4");
         }
-        private static void Button5_Click(object sender, EventArgs e)
+        private void Button5_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 5");
+        }
+
+
+        private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
+        {
+            try
+            {
+                SqlController sqlController = new SqlController();
+                var sqls = await sqlController.GetSql(id);
+                Sql[] sqlArray = sqls;
+
+                DataTable dataTable = new DataTable();
+                dataTable.Columns.Add("ID");
+                dataTable.Columns.Add("ProjectName");
+                //dataTable.Columns.Add("ProjectId");
+                dataTable.Columns.Add("SqlServerIp");
+                dataTable.Columns.Add("SqlServerUserName");
+                dataTable.Columns.Add("SqlServerPassword");
+
+                Dictionary<int, string> projectNames = await GetProjectNames();
+
+                foreach (Sql sql in sqlArray)
+                {
+                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                }
+
+                // Orijinal verileri sakla
+
+            
+                // DataTable'ı DataGridView'e yükle
+                dataGridView.DataSource = dataTable;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("API'den veri alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+         
+
+        }
+        private async Task<Dictionary<int, string>> GetProjectNames()
+        {
+            Dictionary<int, string> projectNames = new Dictionary<int, string>();
+            try
+            {
+                string apiUrl = "https://localhost:44343/api/Projects/GetAll";
+                ProjectController projectController = new ProjectController();
+                var projects = await projectController.GetProjectData(apiUrl);
+
+                foreach (Project project in projects)
+                {
+                    projectNames.Add(project.Id, project.ProjectName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Projelerin adları alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return projectNames;
         }
     }
 }
