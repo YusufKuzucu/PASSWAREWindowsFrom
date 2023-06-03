@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using PASSWARE.Models;
 using PASSWARE.Request;
+using PASSWARE.TabpageBase;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
@@ -14,58 +16,68 @@ namespace PASSWARE
 {
     public class HomePageControl
     {
-        
-        public TabPage CreateTabPage()
+        public TabPage CreateTabPage(string projectId, string selectedId,string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
 
             Panel panel = CreatePanel();
             tabPage.Controls.Add(panel);
 
-
-            DataGridView dataGridView = CreateDataGridView();
+            DataGridView dataGridView = CreateDataGridView(filterData);
+            dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
+          
 
-
-            Label label1 = CreateLabel("label 1", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 65), 2);
+            Label label1 = CreateLabel(colum2name,"label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 65), 2);
             tabPage.Controls.Add(label1);
 
-            Label label2 = CreateLabel("label 2", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 130), 3);
+            Label label2 = CreateLabel(colum3name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 130), 3);
             tabPage.Controls.Add(label2);
 
-            Label label3 = CreateLabel("label 3", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 201), 4);
+            Label label3 = CreateLabel(colum4name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 201), 4);
             tabPage.Controls.Add(label3);
 
-
-            Label label4 = CreateLabel("label 4", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 250), 8);
+            Label label4 = CreateLabel(colum5name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 250), 8);
             tabPage.Controls.Add(label4);
 
+            Label label5 = CreateLabel(selectedId, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 50), 8);
+            label5.Enabled = false;
+            tabPage.Controls.Add(label5);
+
+            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(57, 35), 8);
+            label6.Enabled = false;
+            tabPage.Controls.Add(label6);
 
 
-            TextBox textBox1 = CreateTextBox("textbox1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 58), 5);
+            TextBox textBox1 = CreateTextBox("textbox1" ,new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 58), 5, selectedId);
             tabPage.Controls.Add(textBox1);
 
-            TextBox textBox2 = CreateTextBox("textbox2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 6);
+            TextBox textBox2 = CreateTextBox("textbox2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 6, selectSqlServerIp);
             tabPage.Controls.Add(textBox2);
 
-            TextBox textBox3 = CreateTextBox("textbox3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 195), 7);
+            TextBox textBox3 = CreateTextBox("textbox3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 195), 7, selectSqlServerUserName);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("textbox4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9);
+            TextBox textBox4 = CreateTextBox("textbox4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9, selectSqlServerPassword);
             tabPage.Controls.Add(textBox4);
 
-
-            Button button1 = CreateButton("Button 1", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
-
+            Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
             button1.Click += Button1_Click;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Button 2", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
             button2.Click += Button2_Click;
             panel.Controls.Add(button2);
+
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            button3.Click += Button3_Click;
+            panel.Controls.Add(button3);
+
+            Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
+            button4.Click += Button4_Click;
+            panel.Controls.Add(button4);
             return tabPage;
         }
-
         private  Panel CreatePanel()
         {
             Panel panel = new Panel();
@@ -90,10 +102,11 @@ namespace PASSWARE
             button.FlatStyle = FlatStyle.Flat;
             return button;
         }
-        private Label CreateLabel(string text, Size size, Point location, int tabındex)
+        private Label CreateLabel(string text,string name, Size size, Point location, int tabındex)
         {
             Label label = new Label();
             label.Text = text;
+            label.Name = name;
             label.Size = size;
             label.ForeColor = Color.Black;
             label.Location = location;
@@ -101,27 +114,82 @@ namespace PASSWARE
             label.TabIndex = tabındex;
             return label;
         }
-        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex)
+        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex,string text2)
         {
             TextBox textBox = new TextBox();
             textBox.Name = text;
+            textBox.Text = text2;
             textBox.ForeColor = Color.Black;
             textBox.Size = size;
             textBox.Location = location;
             textBox.TabIndex = tabındex;
             return textBox;
         }
-        private DataGridView CreateDataGridView()
+        private DataGridView CreateDataGridView(DataTable dataTable)
         {
             DataGridView dataGridView = new DataGridView();
-            dataGridView.Anchor = AnchorStyles.Bottom|AnchorStyles.Top|AnchorStyles.Left;
+            dataGridView.Anchor = /*AnchorStyles.Bottom |*/ AnchorStyles.Top | AnchorStyles.Left;
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Location = new System.Drawing.Point(3, 292);
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.Location = new System.Drawing.Point(0, 275);
             dataGridView.RowHeadersWidth = 51;
+            dataGridView.ScrollBars = ScrollBars.Both;
+            dataGridView.ScrollBars=ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
-            dataGridView.Size = new System.Drawing.Size(1321, 175);
+            dataGridView.Dock = DockStyle.None;
+            dataGridView.Size = new System.Drawing.Size(1325, 390);
             dataGridView.TabIndex = 1;
+            dataGridView.DataSource = dataTable;
+            dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
+            dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
             return dataGridView;
+        }
+        private void DataGridView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            DataGridView dataGridView = (DataGridView)sender;
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                // Seçili satırı al
+                DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
+
+                string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                //string selectProjectId = selectedRow.Cells["ProjectId"].Value.ToString();
+                string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
+                string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
+                string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
+                TabPage tabPage = (TabPage)dataGridView.Parent;
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
+                textBox1.Text = selectedId;
+                textBox2.Text = selectSqlServerIp;  
+                textBox3.Text = selectSqlServerUserName;
+                textBox4.Text = selectSqlServerPassword;
+            }
+        }
+        private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridView dataGridView = (DataGridView)sender;
+            if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
+            {
+                // Seçili hücrenin değerini al
+                DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                string selectedId = selectedCell.Value.ToString();
+                string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
+                string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
+                string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
+                TabPage tabPage = (TabPage)dataGridView.Parent;
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
+                textBox1.Text = selectedId;
+                textBox2.Text = selectSqlServerIp;
+                textBox3.Text = selectSqlServerUserName;
+                textBox4.Text = selectSqlServerPassword;
+            }
         }
         private async void Button1_Click(object sender, EventArgs e)
         {
@@ -132,13 +200,15 @@ namespace PASSWARE
             TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox2");
             TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox3");
             TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "textbox4");
+            Label label1=tabPage.Controls.OfType<Label>().FirstOrDefault(x=>x.Name=="label6");
 
             string sqlServerIP = textBox1.Text;
             string sqlServerUserName = textBox2.Text;
             string sqlServerPassword = textBox3.Text;
+            string projectId = label1.Text;
 
             SqlController sqlController = new SqlController();
-            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword);
+            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword,projectId);
             if (result)
             {
                 MessageBox.Show("sql eklendi");
@@ -148,16 +218,23 @@ namespace PASSWARE
                 MessageBox.Show("sql eklenmedi");
             }
         }
-
         private static void Button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 2");
+            
+           
         }
         private static void Button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 3");
         }
-
-
+        private static void Button4_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("buton 4");
+        }
+        private static void Button5_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("buton 5");
+        }
     }
 }

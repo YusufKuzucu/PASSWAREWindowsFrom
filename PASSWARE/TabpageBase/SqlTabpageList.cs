@@ -9,6 +9,8 @@ using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,28 +19,34 @@ namespace PASSWARE.TabpageBase
 {
     public class SqlTabpageList
     {
-        private Dictionary<ComboBox, DataGridView> comboBoxDataGridViewPairs;
-        private HttpClient client;
-        private DataTable originalData; // Tüm verileri içeren orijinal DataTable
+        private readonly Dictionary<ComboBox, DataGridView> comboBoxDataGridViewPairs;
+        private readonly HttpClient client;
+        private DataTable originalData;
+        private TabControl tabControl;
+        private DataTable filterData;
+        private string projectId;
+        private Dictionary<int, string> projectNames;
 
-        public SqlTabpageList()
+        public SqlTabpageList(TabControl tabControl)
         {
             comboBoxDataGridViewPairs = new Dictionary<ComboBox, DataGridView>();
             client = new HttpClient();
+            this.tabControl = tabControl;
         }
-
-        public async Task<TabPage> CreateTabPage()
+        public async Task<TabPage> CreateTabPage(TabControl tabControl)
         {
             TabPage tabPage = new TabPage("TabPage");
             DataGridView dataGridView = CreateDataGridView();
             tabPage.Controls.Add(dataGridView);
 
-            GroupBox groupBox = CreateGroupBox(new Size(348, 136), new Point(31, 43));
+            GroupBox groupBox = CreateGroupBox(new Size(1527, 190), new Point(0, 0));
             tabPage.Controls.Add(groupBox);
 
-            ComboBox comboBox = CreateComboBox(new Size(266, 24), new Point(35, 59));
+            ComboBox comboBox = CreateComboBox(new Size(300, 24), new Point(35, 80));
             groupBox.Controls.Add(comboBox);
 
+            Label label1 = CreateLabel("Select Project", new System.Drawing.Size(44, 16), new System.Drawing.Point(33, 60));
+            groupBox.Controls.Add(label1);
 
             // ComboBox ve DataGridView çiftini eşleştir
             comboBoxDataGridViewPairs.Add(comboBox, dataGridView);
@@ -47,30 +55,30 @@ namespace PASSWARE.TabpageBase
             await LoadDataIntoDataGridView(dataGridView);
             return tabPage;
         }
-
         private DataGridView CreateDataGridView()
         {
             DataGridView dataGridView = new DataGridView();
-            dataGridView.Anchor = AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left;
+            dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
-            dataGridView.Location = new Point(3, 192);
+            dataGridView.Location = new Point(0, 192);
             dataGridView.RowHeadersWidth = 51;
-            dataGridView.Dock= DockStyle.None;
+            dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);
+            dataGridView.Dock = DockStyle.None;
             dataGridView.RowTemplate.Height = 24;
-            dataGridView.Size = new Size(1500, 175);
+            dataGridView.Size = new Size(1527, 460);
             dataGridView.TabIndex = 1;
-
+            dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
             return dataGridView;
         }
-
         private ComboBox CreateComboBox(Size size, Point location)
         {
             ComboBox comboBox = new ComboBox();
             comboBox.Size = size;
+            comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             comboBox.Location = location;
             comboBox.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
             return comboBox;
@@ -80,8 +88,18 @@ namespace PASSWARE.TabpageBase
             GroupBox groupBox = new GroupBox();
             groupBox.Size = size;
             groupBox.Location = location;
-            groupBox.Text = "Select Project";
+            groupBox.Text = "Filter Panel";
             return groupBox;
+        }
+        private Label CreateLabel(string text, Size size, Point location)
+        {
+            Label label = new Label();
+            label.Text = text;
+            label.Size = size;
+            label.ForeColor = Color.Black;
+            label.Location = location;
+            label.AutoSize = true;
+            return label;
         }
         private async Task LoadDataIntoComboBox(ComboBox comboBox)
         {
@@ -97,39 +115,40 @@ namespace PASSWARE.TabpageBase
                 comboBox.DataSource = projects;
                 comboBox.DisplayMember = "ProjectName";
                 comboBox.ValueMember = "ID";
+                comboBox.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("API'den veri alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private async Task LoadDataIntoDataGridView(DataGridView dataGridView)
         {
             try
             {
                 string apiUrl = "https://localhost:44343/api/Sqls/GetAll";
-               SqlController sqlController = new SqlController();
-               var sqls= await sqlController.GetSqlData(apiUrl);
-                // API'den verileri al
+                SqlController sqlController = new SqlController();
+                var sqls = await sqlController.GetSqlData(apiUrl);
                 Sql[] sqlArray = sqls;
 
-                // Sql[] dizisini DataTable'a dönüştür
                 DataTable dataTable = new DataTable();
                 dataTable.Columns.Add("ID");
-                dataTable.Columns.Add("ProjectId");
+                dataTable.Columns.Add("ProjectName");
+                //dataTable.Columns.Add("ProjectId");
                 dataTable.Columns.Add("SqlServerIp");
                 dataTable.Columns.Add("SqlServerUserName");
                 dataTable.Columns.Add("SqlServerPassword");
 
+                Dictionary<int, string> projectNames = await GetProjectNames();
+
                 foreach (Sql sql in sqlArray)
                 {
-                    dataTable.Rows.Add(sql.Id, sql.ProjectId, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
                 }
 
                 // Orijinal verileri sakla
                 originalData = dataTable;
-
                 // DataTable'ı DataGridView'e yükle
                 dataGridView.DataSource = dataTable;
             }
@@ -138,59 +157,121 @@ namespace PASSWARE.TabpageBase
                 MessageBox.Show("API'den veri alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private async Task<Dictionary<int, string>> GetProjectNames()
+        {
+            Dictionary<int, string> projectNames = new Dictionary<int, string>();
+            try
+            {
+                string apiUrl = "https://localhost:44343/api/Projects/GetAll";
+                ProjectController projectController = new ProjectController();
+                var projects = await projectController.GetProjectData(apiUrl);
+
+                foreach (Project project in projects)
+                {
+                    projectNames.Add(project.Id, project.ProjectName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Projelerin adları alınamadı. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return projectNames;
+        }
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
             DataGridView dataGridView = comboBoxDataGridViewPairs[comboBox];
-
-
             // Seçili projenin ID'sini al
             string selectedValue = comboBox.SelectedValue?.ToString();
+            projectId = selectedValue;
+            // Seçili projenin Name'sini al
 
+            string selectedText = comboBox.Text; 
             // DataGridView'i filtrele
-            FilterDataGridView(dataGridView, selectedValue);
+            FilterDataGridView(dataGridView, selectedText);
         }
-
-        private void FilterDataGridView(DataGridView dataGridView, string selectedValue)
+        private void FilterDataGridView(DataGridView dataGridView, string selectedText)
         {
             DataTable dataTable = originalData.Clone(); // Yeni bir DataTable oluştur
 
-            if (!string.IsNullOrEmpty(selectedValue))
+            if (!string.IsNullOrEmpty(selectedText))
             {
-                DataRow[] filteredRows = originalData.Select("ProjectId = '" + selectedValue + "'");
+                DataRow[] filteredRows = originalData.Select("ProjectName  = '" + selectedText + "'");
+               
                 foreach (DataRow row in filteredRows)
                 {
                     dataTable.ImportRow(row);
+
                 }
             }
             else
             {
                 dataTable = originalData.Copy(); // Tüm verileri göster
             }
-
             dataGridView.DataSource = dataTable;
+            
+            filterData = dataTable;
         }
         private void DataGridView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (isAdminUser()) // isAdminUser() metodunu, admin kullanıcısının doğrulamasını yapacak şekilde güncelleyin.
+            if (isAdminUser())
             {
-                // Çift tıklama işlemlerini buraya ekleyin
-                // Örneğin, seçilen veriyi almak için aşağıdaki kodu kullanabilirsiniz:
                 DataGridView dataGridView = (DataGridView)sender;
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     // Seçili satırı al
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    // Seçili satırın verilerini kullanarak istediğiniz işlemleri gerçekleştirin
+
                     string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                    //string selectProjectId = selectedRow.Cells["ProjectId"].Value.ToString();
+                    string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
+                    string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
+                    string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
+                    var filterdata = filterData;
+                    var projectID = projectId;
+                    string colum1name = dataGridView.Columns[0].HeaderText; //column name
+                    string colum2name = dataGridView.Columns[1].HeaderText;
+                    string colum3name = dataGridView.Columns[2].HeaderText;
+                    string colum4name = dataGridView.Columns[3].HeaderText;
+                    string colum5name = dataGridView.Columns[4].HeaderText;
 
+                    TabPage newTabPage = new TabPage();
                     HomePageControl homePageControl = new HomePageControl();
-                    TabPage tabpage=homePageControl.CreateTabPage();
+                    TabPage tabPage = homePageControl.CreateTabPage(projectID,selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    tabPage.Text = "Sql";
+                    tabControl.TabPages.Add(tabPage);
+                    tabControl.SelectedTab = tabPage;
+                }
+            }
+        }
+        private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (isAdminUser())
+            {
+                DataGridView dataGridView = (DataGridView)sender;
+                if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
+                {
+                    // Seçili hücrenin değerini al
+                    DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    string selectedId = selectedCell.Value.ToString();
+                    string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
+                    string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
+                    string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
+                    var filterdata = filterData;
+                    var projectID = projectId;
+                    string colum1name = dataGridView.Columns[0].HeaderText; //column name
+                    string colum2name = dataGridView.Columns[1].HeaderText;
+                    string colum3name = dataGridView.Columns[2].HeaderText;
+                    string colum4name = dataGridView.Columns[3].HeaderText;
+                    string colum5name = dataGridView.Columns[4].HeaderText;
 
-                    //TabControl.TabPages.Add(tabpage);
-                    //TabControl.SelectedTab = tabpage;
-
-                    // ... diğer işlemler
+                    TabPage newTabPage = new TabPage();
+                    HomePageControl homePageControl = new HomePageControl();
+                    TabPage tabPage = homePageControl.CreateTabPage(projectID,selectedId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    tabPage.Text = "Sql";
+                    tabControl.TabPages.Add(tabPage);
+                    tabControl.SelectedTab = tabPage;
                 }
             }
         }
@@ -201,13 +282,11 @@ namespace PASSWARE.TabpageBase
             {
                 return true;
             }
-            else if (control.Contains("Admin"))
+            else if (control.Contains("admin"))
             {
                 return true;
             }
-            return false; 
+            return false;
         }
-
-
     }
 }

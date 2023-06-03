@@ -55,7 +55,7 @@ namespace PASSWARE.Request
 
 
         }
-        public async Task<bool> AddSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword)
+        public async Task<bool> AddSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
@@ -64,7 +64,7 @@ namespace PASSWARE.Request
                 sqlServerIP = sqlServerIP,
                 sqlServerUserName = sqlServerUserName,
                 sqlServerPassword = sqlServerPassword,
-                projectId=1,
+                projectId=projectId,
                 createdBy = ActiveUser.FirstName,
                 createdDate = DateTime.Now,
             };
