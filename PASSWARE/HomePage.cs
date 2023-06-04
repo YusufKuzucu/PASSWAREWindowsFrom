@@ -24,15 +24,12 @@ namespace PASSWARE
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            //TabControl tabControl = HomePageControl.CreateTabControlWithTabPage();
-            //this.tabControl1.TabPages.AddRange(tabControl.TabPages.Cast<TabPage>().ToArray());
-          
-            //HomePageControl homePageControl=new HomePageControl();
-            //TabPage tabPage = homePageControl.CreateTabPage();
-            //tabControl1.TabPages.Add(tabPage);
-            //tabControl1.SelectedTab = tabPage;
+            ProjectTabpageList projectTabpageList = new ProjectTabpageList(tabControl1);
+            TabPage tabPage = await projectTabpageList.CreateTabPage(tabControl1);
+            tabControl1.TabPages.Add(tabPage);
+            tabControl1.SelectedTab = tabPage;
 
         }
 

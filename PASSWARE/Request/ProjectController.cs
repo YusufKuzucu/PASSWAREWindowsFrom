@@ -55,7 +55,41 @@ namespace PASSWARE.Request
 
 
         }
-        public async Task<bool> AddProjectData(string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword)
+        public async Task<Project[]> GetProject(int id)
+        {
+            string apiUrl = "https://localhost:44343/api/";
+            Project[] data = null;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+
+                HttpResponseMessage response = await client.GetAsync($"{apiUrl}Projects/GetByProject?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        ProjectsResponse projectsResponse = JsonConvert.DeserializeObject<ProjectsResponse>(responseContent);
+                        data = projectsResponse.Data;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hata kodu: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
+            }
+            return data;
+
+        }
+        public async Task<bool> AddProjectData(string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword,string companyId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
@@ -65,7 +99,7 @@ namespace PASSWARE.Request
                 projectServerIP = projectServerIP,
                 projectServerUserName = projectServerUserName,
                 projectServerPassword= projectServerPassword,
-                companyId = 1,
+                companyId = companyId,
                 createdBy = ActiveUser.FirstName,
                 createdDate = DateTime.Now,
             };
@@ -80,17 +114,18 @@ namespace PASSWARE.Request
             return false;
         }
 
-        public async Task<bool> UpdateProjectData(string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword)
+        public async Task<bool> UpdateProjectData(int projectId,string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword,string companyId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
             var project = new
             {
+                id= projectId,
                 projectName = projectName,
                 projectServerIP = projectServerIP,
                 projectServerUserName = projectServerUserName,
                 projectServerPassword = projectServerPassword,
-                companyId = 1,
+                companyId = companyId,
                 updatedBy = ActiveUser.FirstName,
                 updatedDate = DateTime.Now,
             };
