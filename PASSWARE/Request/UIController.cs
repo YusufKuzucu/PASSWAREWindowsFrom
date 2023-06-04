@@ -55,7 +55,41 @@ namespace PASSWARE.Request
 
 
         }
-        public async Task<bool> AddUIData(string uiServerIP, string uiServerUserName, string uiServerPassword)
+        public async Task<UI[]> GetUI(int id)
+        {
+            string apiUrl = "https://localhost:44343/api/";
+            UI[] data = null;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+
+                HttpResponseMessage response = await client.GetAsync($"{apiUrl}UIs/GetByUI?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        UIsResponse uısResponse = JsonConvert.DeserializeObject<UIsResponse>(responseContent);
+                        data = uısResponse.Data;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hata kodu: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
+            }
+            return data;
+
+        }
+        public async Task<bool> AddUIData(string uiServerIP, string uiServerUserName, string uiServerPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
@@ -64,7 +98,7 @@ namespace PASSWARE.Request
                 uiServerIP = uiServerIP,
                 uiServerUserName = uiServerUserName,
                 uiServerPassword = uiServerPassword,
-                projectId = 1,
+                projectId = projectId,
                 createdBy = ActiveUser.FirstName,
                 createdDate = DateTime.Now,
             };
@@ -80,16 +114,17 @@ namespace PASSWARE.Request
             return false;
         }
 
-        public async Task<bool> UpdateUIData(string uiServerIP, string uiServerUserName, string uiServerPassword)
+        public async Task<bool> UpdateUIData(int Uıid,string uiServerIP, string uiServerUserName, string uiServerPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
             var ui = new
             {
+                id= Uıid,
                 uiServerIP = uiServerIP,
                 uiServerUserName = uiServerUserName,
                 uiServerPassword = uiServerPassword,
-                projectId = 1,
+                projectId = projectId,
                 updatedBy = ActiveUser.FirstName,
                 updatedDate = DateTime.Now,
             };

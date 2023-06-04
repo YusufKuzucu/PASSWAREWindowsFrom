@@ -19,7 +19,7 @@ namespace PASSWARE.Request
     public class VpnController
     {
         HttpClient client = new HttpClient();
-        public async Task<Vpn[]> GetSqlData(string url)
+        public async Task<Vpn[]> GetVpnData(string url)
         {
             Vpn[] data = null;
             try
@@ -55,7 +55,41 @@ namespace PASSWARE.Request
 
 
         }
-        public async Task<bool> AddVpnData(string vpnProgramName, string vpnConnectionAddress, string vpnPassword)
+        public async Task<Vpn[]> GetVpn(int id)
+        {
+            string apiUrl = "https://localhost:44343/api/";
+            Vpn[] data = null;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+
+                HttpResponseMessage response = await client.GetAsync($"{apiUrl}Vpns/GetByVpn?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        VpnsResponse vpnsResponse = JsonConvert.DeserializeObject<VpnsResponse>(responseContent);
+                        data = vpnsResponse.Data;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hata kodu: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
+            }
+            return data;
+
+        }
+        public async Task<bool> AddVpnData(string vpnProgramName, string vpnConnectionAddress, string vpnPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
@@ -64,7 +98,7 @@ namespace PASSWARE.Request
                 vpnProgramName = vpnProgramName,
                 vpnConnectionAddress = vpnConnectionAddress,
                 vpnPassword = vpnPassword,
-                projectId = 1,
+                projectId = projectId,
                 createdBy = ActiveUser.FirstName,
                 createdDate = DateTime.Now,
             };
@@ -79,16 +113,17 @@ namespace PASSWARE.Request
             return false;
         }
 
-        public async Task<bool> UpdateVpnData(string vpnProgramName, string vpnConnectionAddress, string vpnPassword)
+        public async Task<bool> UpdateVpnData(int vpnId,string vpnProgramName, string vpnConnectionAddress, string vpnPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
             var vpn = new
             {
+                id=vpnId,
                 vpnProgramName = vpnProgramName,
                 vpnConnectionAddress = vpnConnectionAddress,
                 vpnPassword = vpnPassword,
-                projectId = 1,
+                projectId = projectId,
                 updatedBy = ActiveUser.FirstName,
                 updatedDate = DateTime.Now,
             };

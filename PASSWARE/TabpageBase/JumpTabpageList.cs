@@ -1,26 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using PASSWARE.Models.Entities;
 using PASSWARE.Models;
-using PASSWARE.Models.Entities;
 using PASSWARE.Request;
 using PASSWARE.TabpageBase.EntitiesTabPage;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PASSWARE.TabpageBase
 {
-    public class SqlTabpageList
+    public class JumpTabpageList
     {
+
         private readonly Dictionary<ComboBox, DataGridView> comboBoxDataGridViewPairs;
         private readonly HttpClient client;
         private DataTable originalData;
@@ -31,7 +27,7 @@ namespace PASSWARE.TabpageBase
 
 
         private Dictionary<int, string> projectNames;
-        public SqlTabpageList(TabControl tabControl)
+        public JumpTabpageList(TabControl tabControl)
         {
             comboBoxDataGridViewPairs = new Dictionary<ComboBox, DataGridView>();
             client = new HttpClient();
@@ -112,7 +108,7 @@ namespace PASSWARE.TabpageBase
                 string apiUrl = "https://localhost:44343/api/Projects/GetAll";
                 ProjectController projectController = new ProjectController();
                 var projectData = await projectController.GetProjectData(apiUrl);
-    
+
                 Project[] projects = projectData;
                 foreach (var item in projects)
                 {
@@ -131,20 +127,20 @@ namespace PASSWARE.TabpageBase
         {
             try
             {
-                string apiUrl = "https://localhost:44343/api/Sqls/GetAll";
-                SqlController sqlController = new SqlController();
-                var sqls = await sqlController.GetSqlData(apiUrl);
-                Sql[] sqlArray = sqls;
+                string apiUrl = "https://localhost:44343/api/Jumps/GetAll";
+                JumpController jumpController = new JumpController();
+                var jumps = await jumpController.GetJumpData(apiUrl);
+                Jump[] jumpArray = jumps;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID");dataTable.Columns.Add("ProjectName");dataTable.Columns.Add("SqlServerIp");dataTable.Columns.Add("SqlServerUserName");dataTable.Columns.Add("SqlServerPassword");
+                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("JumpServerIP"); dataTable.Columns.Add("JumpServerUserName"); dataTable.Columns.Add("JumpServerPassword");
 
                 Dictionary<int, string> projectNames = await GetProjectNames();
 
-                foreach (Sql sql in sqlArray)
+                foreach (Jump jump in jumpArray)
                 {
-                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
-                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                    string projectName = projectNames.ContainsKey(jump.ProjectId) ? projectNames[jump.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(jump.Id, projectName, jump.JumpServerIP, jump.JumpServerUserName, jump.JumpServerPassword);
                 }
                 originalData = dataTable;
                 dataGridView.DataSource = dataTable;
@@ -183,7 +179,7 @@ namespace PASSWARE.TabpageBase
             if (comboBox.SelectedItem is Project selectedProject)
             {
                 int selectedValue = selectedProject.Id;
-                projectId = selectedValue.ToString() ;
+                projectId = selectedValue.ToString();
             }
 
             string selectedText = comboBox.Text;
@@ -219,12 +215,11 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedSqlId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
-                    string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
-                    string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
-                    string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
-                    
+                    string jumpServerIP = selectedRow.Cells["JumpServerIP"].Value.ToString();
+                    string jumpServerUserName = selectedRow.Cells["JumpServerUserName"].Value.ToString();
+                    string jumpServerPassword = selectedRow.Cells["JumpServerPassword"].Value.ToString();
                     var filterdata = filterData;
                     string projectID = projectId;
                     string colum1name = dataGridView.Columns[0].HeaderText; //column name
@@ -234,15 +229,15 @@ namespace PASSWARE.TabpageBase
                     string colum5name = dataGridView.Columns[4].HeaderText;
 
                     TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID,projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
+                    JumpTabpageControl jumpTabpageControl = new JumpTabpageControl();
+                    TabPage tabPage = jumpTabpageControl.CreateTabPage(projectID, projectName, selectedVpnId, jumpServerIP, jumpServerUserName, jumpServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    tabPage.Text = "Jump";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
                 }
             }
         }
-    
+
         private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (isAdminUser())
@@ -252,23 +247,23 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedSqlId = selectedCell.Value.ToString();
+                    string selectedVpnId = selectedCell.Value.ToString();
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
-                    string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
-                    string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
-                    string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
+                    string jumpServerIP = dataGridView.Rows[e.RowIndex].Cells["JumpServerIP"].Value.ToString();
+                    string jumpServerUserName = dataGridView.Rows[e.RowIndex].Cells["JumpServerUserName"].Value.ToString();
+                    string jumpServerPassword = dataGridView.Rows[e.RowIndex].Cells["JumpServerPassword"].Value.ToString();
                     var filterdata = filterData;
-                    string  projectID = projectId;
-                    string colum1name = dataGridView.Columns[0].HeaderText; 
+                    string projectID = projectId;
+                    string colum1name = dataGridView.Columns[0].HeaderText;
                     string colum2name = dataGridView.Columns[1].HeaderText;
                     string colum3name = dataGridView.Columns[2].HeaderText;
                     string colum4name = dataGridView.Columns[3].HeaderText;
                     string colum5name = dataGridView.Columns[4].HeaderText;
 
                     TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl= new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID,projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
+                    JumpTabpageControl jumpTabpageControl = new JumpTabpageControl();
+                    TabPage tabPage = jumpTabpageControl.CreateTabPage(projectID, projectName, selectedVpnId, jumpServerIP, jumpServerUserName, jumpServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    tabPage.Text = "Jump";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
                 }
@@ -288,4 +283,5 @@ namespace PASSWARE.TabpageBase
             return false;
         }
     }
+
 }

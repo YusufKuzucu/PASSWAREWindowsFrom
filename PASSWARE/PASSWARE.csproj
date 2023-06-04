@@ -96,7 +96,16 @@
     <Compile Include="Request\SqlController.cs" />
     <Compile Include="Request\UIController.cs" />
     <Compile Include="Request\VpnController.cs" />
+    <Compile Include="TabpageBase\CommunicationTabpageList.cs" />
+    <Compile Include="TabpageBase\EntitiesTabPage\CommunicationTabpageControl.cs" />
+    <Compile Include="TabpageBase\EntitiesTabPage\JumpTabpageControl.cs" />
+    <Compile Include="TabpageBase\EntitiesTabPage\SqlTabpageControl.cs" />
+    <Compile Include="TabpageBase\EntitiesTabPage\UITabpageControl.cs" />
+    <Compile Include="TabpageBase\EntitiesTabPage\VpnTabPageControl.cs" />
+    <Compile Include="TabpageBase\JumpTabpageList.cs" />
     <Compile Include="TabpageBase\SqlTabpageList.cs" />
+    <Compile Include="TabpageBase\UITabpageList.cs" />
+    <Compile Include="TabpageBase\VpnTabpageList.cs" />
     <EmbeddedResource Include="ForgotMyPassword.resx">
       <DependentUpon>ForgotMyPassword.cs</DependentUpon>
     </EmbeddedResource>

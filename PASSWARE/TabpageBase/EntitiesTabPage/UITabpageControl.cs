@@ -1,28 +1,24 @@
-﻿using Newtonsoft.Json;
-using PASSWARE.Models;
-using PASSWARE.Models.Entities;
+﻿using PASSWARE.Models.Entities;
 using PASSWARE.Request;
-using PASSWARE.TabpageBase;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PASSWARE
+namespace PASSWARE.TabpageBase.EntitiesTabPage
 {
-    public class HomePageControl
+    public class UITabpageControl
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectId,string projectName, string selectedId,string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
+        public TabPage CreateTabPage(string projectID, string projectName, string selectedVpnId, string vpnProgramName, string vpnPassword, string vpnConnectionAddress, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
-            Id=Convert.ToInt32(projectId);
+            Id = Convert.ToInt32(projectID);
             Panel panel = CreatePanel();
             tabPage.Controls.Add(panel);
 
@@ -30,8 +26,8 @@ namespace PASSWARE
             dataGridView.DataSource = filterData;
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
-          
-            Label label1 = CreateLabel(colum1name,"label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
+
+            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
@@ -47,46 +43,46 @@ namespace PASSWARE
             Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 240), 8);
             tabPage.Controls.Add(label5);
 
-            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
+            Label label6 = CreateLabel(projectID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
             label6.Enabled = false;
             tabPage.Controls.Add(label6);
 
 
-            TextBox textBox1 = CreateTextBox("txtSql1" ,new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedId);
+            TextBox textBox1 = CreateTextBox("txtUı1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedVpnId);
             textBox1.Enabled = false;
             tabPage.Controls.Add(textBox1);
 
-            TextBox textBox2 = CreateTextBox("txtSql2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 80), 6, projectName);
+            TextBox textBox2 = CreateTextBox("txtUı2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 80), 6, projectName);
             tabPage.Controls.Add(textBox2);
 
-            TextBox textBox3 = CreateTextBox("txtSql3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, selectSqlServerIp);
+            TextBox textBox3 = CreateTextBox("txtUı3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, vpnProgramName);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("txtSql4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 190), 9, selectSqlServerUserName);
+            TextBox textBox4 = CreateTextBox("txtUı4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 190), 9, vpnConnectionAddress);
             tabPage.Controls.Add(textBox4);
 
-            TextBox textBox5 = CreateTextBox("txtSql5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 240), 9, selectSqlServerPassword);
+            TextBox textBox5 = CreateTextBox("txtUı5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 240), 9, vpnPassword);
             tabPage.Controls.Add(textBox5);
 
 
             Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
-            button1.Click += AddSql_Click;
+            button1.Click += AddUI_Click;
             panel.Controls.Add(button1);
 
             Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
-            button2.Click += UpdateSql_Click;
+            button2.Click += UpdateUI_Click;
             panel.Controls.Add(button2);
 
             Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
-            button3.Click += DeleteSql_Click;
+            button3.Click += DeleteUI_Click;
             panel.Controls.Add(button3);
 
             Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
-            button4.Click += PdfSql_Click;
+            button4.Click += PdfUI_Click;
             panel.Controls.Add(button4);
             return tabPage;
         }
-        private  Panel CreatePanel()
+        private Panel CreatePanel()
         {
             Panel panel = new Panel();
             panel.Dock = DockStyle.Right;
@@ -110,7 +106,7 @@ namespace PASSWARE
             button.FlatStyle = FlatStyle.Flat;
             return button;
         }
-        private Label CreateLabel(string text,string name, Size size, Point location, int tabındex)
+        private Label CreateLabel(string text, string name, Size size, Point location, int tabındex)
         {
             Label label = new Label();
             label.Text = text;
@@ -122,7 +118,7 @@ namespace PASSWARE
             label.TabIndex = tabındex;
             return label;
         }
-        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex,string text2)
+        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex, string text2)
         {
             TextBox textBox = new TextBox();
             textBox.Name = text;
@@ -143,7 +139,7 @@ namespace PASSWARE
             dataGridView.Location = new System.Drawing.Point(0, 300);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
-            dataGridView.ScrollBars=ScrollBars.Vertical;
+            dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
             dataGridView.Size = new System.Drawing.Size(1325, 370);
@@ -161,18 +157,18 @@ namespace PASSWARE
                 // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
-                string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
                 string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
-                string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
-                string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
-                string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
+                string uIServerIP = selectedRow.Cells["UIServerIP"].Value.ToString();
+                string uIServerUserName = selectedRow.Cells["UIServerUserName"].Value.ToString();
+                string uIServerPassword = selectedRow.Cells["UIServerPassword"].Value.ToString();
                 TabPage tabPage = (TabPage)dataGridView.Parent;
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId;textBox2.Text = projectName;  textBox3.Text = selectSqlServerIp;textBox4.Text = selectSqlServerUserName;textBox5.Text = selectSqlServerPassword;
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
+                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
             }
         }
 
@@ -184,113 +180,114 @@ namespace PASSWARE
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 //string selectedId = selectedCell.Value.ToString();,
-                 string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
-                string projectName=dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
-                string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
-                string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
-                string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
+                string selectedVpnId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
+                string uIServerIP = dataGridView.Rows[e.RowIndex].Cells["UIServerIP"].Value.ToString();
+                string uIServerUserName = dataGridView.Rows[e.RowIndex].Cells["UIServerUserName"].Value.ToString();
+                string uIServerPassword = dataGridView.Rows[e.RowIndex].Cells["UIServerPassword"].Value.ToString();
                 TabPage tabPage = (TabPage)dataGridView.Parent;
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId;textBox2.Text = projectName;textBox3.Text = selectSqlServerIp;textBox4.Text = selectSqlServerUserName;textBox5.Text = selectSqlServerPassword;
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
+                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
             }
         }
-     
-        private async void AddSql_Click(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-            Label label1 =tabPage.Controls.OfType<Label>().FirstOrDefault(x=>x.Name=="label6");
-         
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            string sqlServerIP = textBox3.Text;
-            string sqlServerUserName = textBox4.Text;
-            string sqlServerPassword = textBox5.Text;
-            string projectId = label1.Text;
-          
-         
-            SqlController sqlController = new SqlController();
-            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword,projectId);
-            if (result)
-            {
-                MessageBox.Show("sql eklendi");
-              
-                LoadDataIntoDataGridView( dataGridView,Convert.ToInt32(projectId));
-            }
-            else
-            {
-                MessageBox.Show("sql eklenmedi");
-            }
-        }
-        private async void UpdateSql_Click(object sender, EventArgs e)
+        private async void AddUI_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
 
             Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
             DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            int sqlId = Convert.ToInt32(textBox1.Text);
-            string sqlServerIP = textBox3.Text;
-            string sqlServerUserName = textBox4.Text;
-            string sqlServerPassword = textBox5.Text;
+            string uIServerIP = textBox3.Text;
+            string uIServerUserName = textBox4.Text;
+            string uIServerPassword = textBox5.Text;
             string projectId = label1.Text;
-            SqlController sqlController = new SqlController();
-            bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+
+
+            UIController uıController = new UIController();
+            bool result = await uıController.AddUIData(uIServerIP, uIServerUserName, uIServerPassword, projectId);
             if (result)
             {
-                MessageBox.Show("sql updated");
+                MessageBox.Show("UI Added Succesfully");
 
                 LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
             }
             else
             {
-                MessageBox.Show("sql failed update");
+                MessageBox.Show("UI failed to Added");
             }
         }
-        private async void DeleteSql_Click(object sender, EventArgs e)
+        private async void UpdateUI_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
+
+            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+            int UIId = Convert.ToInt32(textBox1.Text);
+            string uIServerIP = textBox3.Text;
+            string uIServerUserName = textBox4.Text;
+            string uIServerPassword = textBox5.Text;
+            string projectId = label1.Text;
+
+            UIController uıController = new UIController();
+            bool result = await uıController.UpdateUIData(UIId, uIServerIP, uIServerUserName, uIServerPassword, projectId);
+            if (result)
+            {
+                MessageBox.Show("UI Updated Succesfully");
+
+                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+            }
+            else
+            {
+                MessageBox.Show("UI failed to Update");
+            }
+        }
+        private async void DeleteUI_Click(object sender, EventArgs e)
         {
             try
             {
                 Button button = (Button)sender;
                 TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
 
                 Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
                 DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int sqlId = Convert.ToInt32(textBox1.Text);
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
+                int vpnId = Convert.ToInt32(textBox1.Text);
+                string uIServerIP = textBox3.Text;
+                string uIServerUserName = textBox4.Text;
+                string uIServerPassword = textBox5.Text;
                 string projectId = label1.Text;
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.DeleteSqlData(sqlId);
+                UIController uıController = new UIController();
+                bool result = await uıController.DeleteUIData(vpnId);
                 if (result)
                 {
-                    MessageBox.Show("SQL updated");
+                    MessageBox.Show("VPN Deleted Succesfully");
                     LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
                 }
                 else
                 {
-                    MessageBox.Show("SQL failed to update");
+                    MessageBox.Show("UI failed to Delete");
                 }
             }
             catch (Exception ex)
@@ -298,30 +295,28 @@ namespace PASSWARE
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-        private void PdfSql_Click(object sender, EventArgs e)
+        private void PdfUI_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 4");
         }
-
-        
 
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
         {
             try
             {
-                SqlController sqlController = new SqlController();
-                var sqls = await sqlController.GetSql(id);
-                Sql[] sqlArray = sqls;
+                UIController uıController = new UIController();
+                var uıs = await uıController.GetUI(id);
+                UI[] uıArray = uıs;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID");dataTable.Columns.Add("ProjectName");dataTable.Columns.Add("SqlServerIp");dataTable.Columns.Add("SqlServerUserName");dataTable.Columns.Add("SqlServerPassword");
+                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("UIServerIP"); dataTable.Columns.Add("UIServerUserName"); dataTable.Columns.Add("UIServerPassword");
 
                 Dictionary<int, string> projectNames = await GetProjectNames();
 
-                foreach (Sql sql in sqlArray)
+                foreach (UI uı in uıArray)
                 {
-                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
-                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                    string projectName = projectNames.ContainsKey(uı.ProjectId) ? projectNames[uı.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(uı.Id, projectName, uı.UIServerIP, uı.UIServerUserName, uı.UIServerPassword);
                 }
                 dataGridView.DataSource = dataTable;
             }
@@ -352,4 +347,6 @@ namespace PASSWARE
             return projectNames;
         }
     }
+
+
 }

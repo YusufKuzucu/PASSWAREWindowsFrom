@@ -1,28 +1,24 @@
-﻿using Newtonsoft.Json;
-using PASSWARE.Models;
-using PASSWARE.Models.Entities;
+﻿using PASSWARE.Models.Entities;
 using PASSWARE.Request;
-using PASSWARE.TabpageBase;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PASSWARE
+namespace PASSWARE.TabpageBase.EntitiesTabPage
 {
-    public class HomePageControl
+    public class SqlTabpageControl
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectId,string projectName, string selectedId,string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
+        public TabPage CreateTabPage(string projectId, string projectName, string selectedId, string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
-            Id=Convert.ToInt32(projectId);
+            Id = Convert.ToInt32(projectId);
             Panel panel = CreatePanel();
             tabPage.Controls.Add(panel);
 
@@ -30,8 +26,8 @@ namespace PASSWARE
             dataGridView.DataSource = filterData;
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
-          
-            Label label1 = CreateLabel(colum1name,"label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
+
+            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
@@ -52,7 +48,7 @@ namespace PASSWARE
             tabPage.Controls.Add(label6);
 
 
-            TextBox textBox1 = CreateTextBox("txtSql1" ,new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedId);
+            TextBox textBox1 = CreateTextBox("txtSql1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedId);
             textBox1.Enabled = false;
             tabPage.Controls.Add(textBox1);
 
@@ -86,7 +82,7 @@ namespace PASSWARE
             panel.Controls.Add(button4);
             return tabPage;
         }
-        private  Panel CreatePanel()
+        private Panel CreatePanel()
         {
             Panel panel = new Panel();
             panel.Dock = DockStyle.Right;
@@ -110,7 +106,7 @@ namespace PASSWARE
             button.FlatStyle = FlatStyle.Flat;
             return button;
         }
-        private Label CreateLabel(string text,string name, Size size, Point location, int tabındex)
+        private Label CreateLabel(string text, string name, Size size, Point location, int tabındex)
         {
             Label label = new Label();
             label.Text = text;
@@ -122,7 +118,7 @@ namespace PASSWARE
             label.TabIndex = tabındex;
             return label;
         }
-        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex,string text2)
+        private TextBox CreateTextBox(string text, Size size, Point location, int tabındex, string text2)
         {
             TextBox textBox = new TextBox();
             textBox.Name = text;
@@ -143,7 +139,7 @@ namespace PASSWARE
             dataGridView.Location = new System.Drawing.Point(0, 300);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
-            dataGridView.ScrollBars=ScrollBars.Vertical;
+            dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
             dataGridView.Size = new System.Drawing.Size(1325, 370);
@@ -172,7 +168,7 @@ namespace PASSWARE
                 TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId;textBox2.Text = projectName;  textBox3.Text = selectSqlServerIp;textBox4.Text = selectSqlServerUserName;textBox5.Text = selectSqlServerPassword;
+                textBox1.Text = selectedId; textBox2.Text = projectName; textBox3.Text = selectSqlServerIp; textBox4.Text = selectSqlServerUserName; textBox5.Text = selectSqlServerPassword;
             }
         }
 
@@ -184,8 +180,8 @@ namespace PASSWARE
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 //string selectedId = selectedCell.Value.ToString();,
-                 string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
-                string projectName=dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
+                string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                 string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
                 string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
                 string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
@@ -195,10 +191,10 @@ namespace PASSWARE
                 TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId;textBox2.Text = projectName;textBox3.Text = selectSqlServerIp;textBox4.Text = selectSqlServerUserName;textBox5.Text = selectSqlServerPassword;
+                textBox1.Text = selectedId; textBox2.Text = projectName; textBox3.Text = selectSqlServerIp; textBox4.Text = selectSqlServerUserName; textBox5.Text = selectSqlServerPassword;
             }
         }
-     
+
         private async void AddSql_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
@@ -209,26 +205,26 @@ namespace PASSWARE
             TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
             TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-            Label label1 =tabPage.Controls.OfType<Label>().FirstOrDefault(x=>x.Name=="label6");
-         
+            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
             DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
             string sqlServerIP = textBox3.Text;
             string sqlServerUserName = textBox4.Text;
             string sqlServerPassword = textBox5.Text;
             string projectId = label1.Text;
-          
-         
+
+
             SqlController sqlController = new SqlController();
-            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword,projectId);
+            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
             if (result)
             {
-                MessageBox.Show("sql eklendi");
-              
-                LoadDataIntoDataGridView( dataGridView,Convert.ToInt32(projectId));
+                MessageBox.Show("sql added successfully");
+
+                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
             }
             else
             {
-                MessageBox.Show("sql eklenmedi");
+                MessageBox.Show("sql failed added");
             }
         }
         private async void UpdateSql_Click(object sender, EventArgs e)
@@ -252,13 +248,13 @@ namespace PASSWARE
             bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
             if (result)
             {
-                MessageBox.Show("sql updated");
+                MessageBox.Show("sql updated successfully");
 
                 LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
             }
             else
             {
-                MessageBox.Show("sql failed update");
+                MessageBox.Show("sql failed  update");
             }
         }
         private async void DeleteSql_Click(object sender, EventArgs e)
@@ -284,7 +280,7 @@ namespace PASSWARE
                 bool result = await sqlController.DeleteSqlData(sqlId);
                 if (result)
                 {
-                    MessageBox.Show("SQL updated");
+                    MessageBox.Show("Sql deleted successfully");
                     LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
                 }
@@ -303,7 +299,7 @@ namespace PASSWARE
             MessageBox.Show("buton 4");
         }
 
-        
+
 
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
         {
@@ -314,7 +310,7 @@ namespace PASSWARE
                 Sql[] sqlArray = sqls;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID");dataTable.Columns.Add("ProjectName");dataTable.Columns.Add("SqlServerIp");dataTable.Columns.Add("SqlServerUserName");dataTable.Columns.Add("SqlServerPassword");
+                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("SqlServerIp"); dataTable.Columns.Add("SqlServerUserName"); dataTable.Columns.Add("SqlServerPassword");
 
                 Dictionary<int, string> projectNames = await GetProjectNames();
 
@@ -352,4 +348,5 @@ namespace PASSWARE
             return projectNames;
         }
     }
+
 }

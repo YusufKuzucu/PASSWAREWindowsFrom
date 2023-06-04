@@ -33,24 +33,20 @@ namespace PASSWARE.Request
                     string responseContent = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        SqlsResponse jumpsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
-                        data = jumpsResponse.Data;
+                        SqlsResponse sqlsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
+                        data = sqlsResponse.Data;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Hata kodu: " + response.StatusCode);
-                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
                 // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-                
+
             }
             return data;
         }
@@ -69,8 +65,8 @@ namespace PASSWARE.Request
                     string responseContent = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        SqlsResponse jumpsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
-                        data = jumpsResponse.Data;
+                        SqlsResponse sqlsResponse = JsonConvert.DeserializeObject<SqlsResponse>(responseContent);
+                        data = sqlsResponse.Data;
                     }
                     catch (Exception ex)
                     {
@@ -85,47 +81,57 @@ namespace PASSWARE.Request
             catch (Exception ex)
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
-                // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-
             }
             return data;
 
         }
         public async Task<bool> AddSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var sql = new
+            try
             {
-                sqlServerIP = sqlServerIP,
-                sqlServerUserName = sqlServerUserName,
-                sqlServerPassword = sqlServerPassword,
-                projectId=projectId,
-                createdBy = ActiveUser.FirstName,
-                createdDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(sql);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Sqls/Post", content);
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var sql = new
+                {
+                    sqlServerIP = sqlServerIP,
+                    sqlServerUserName = sqlServerUserName,
+                    sqlServerPassword = sqlServerPassword,
+                    projectId = projectId,
+                    createdBy = ActiveUser.FirstName,
+                    createdDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(sql);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Sqls/Post", content);
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                // Hatanın ele alınması veya hata mesajının kaydedilmesi gibi istisna işleme mantığını burada özelleştirebilirsiniz.
+                MessageBox.Show($"Bir hata oluştu: {ex.Message}");
+                return false;
+            }
+
+
         }
 
-        public async Task<bool> UpdateSqlData(string sqlServerIP, string sqlServerUserName, string sqlServerPassword)
+        public async Task<bool> UpdateSqlData(int sqlID,string sqlServerIP, string sqlServerUserName, string sqlServerPassword,string projectId)
         {
             string apiUrl = "https://localhost:44343/api/";
             HttpClient client = new HttpClient();
             var sql = new
             {
+                id = sqlID,
                 sqlServerIP = sqlServerIP,
                 sqlServerUserName = sqlServerUserName,
                 sqlServerPassword = sqlServerPassword,
-                projectId = 1,
+                projectId = projectId,
                 updatedBy = ActiveUser.FirstName,
                 updatedDate = DateTime.Now,
             };
