@@ -43,7 +43,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
             Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 226), 8);
             tabPage.Controls.Add(label5);
-            Label label7 = CreateLabel(colum6name, "label7", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 250), 8); ;
+            Label label7 = CreateLabel(colum6name, "label7", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 260), 8); ;
             tabPage.Controls.Add(label7);
 
 
@@ -68,23 +68,31 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             TextBox textBox5 = CreateTextBox("txtProjct5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 226), 9, ProjectServerUserName);
             tabPage.Controls.Add(textBox5);
 
-            TextBox textBox6 = CreateTextBox("txtProjct6", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9, ProjectServerPassword);
+            TextBox textBox6 = CreateTextBox("txtProjct6", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 260), 9, ProjectServerPassword);
             tabPage.Controls.Add(textBox6);
 
 
             Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            button1.Image = Properties.Resources.save;
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Click += AddProject_Click;
             panel.Controls.Add(button1);
 
             Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            button2.Image = Properties.Resources.update;
+            button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateProject_Click;
             panel.Controls.Add(button2);
 
             Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            button3.Image = Properties.Resources.trash;
+            button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteProject_Click;
             panel.Controls.Add(button3);
 
             Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
+            button4.Image = Properties.Resources.pdf;
+            button4.ImageAlign = ContentAlignment.MiddleLeft;
             button4.Click += PdfProject_Click;
             panel.Controls.Add(button4);
             return tabPage;
@@ -349,7 +357,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         }
         private async Task<Dictionary<int, string>> GetCompanyNames()
         {
-            Dictionary<int, string> projectNames = new Dictionary<int, string>();
+            Dictionary<int, string> companyNames = new Dictionary<int, string>();
             try
             {
                 string apiUrl = "https://localhost:44343/api/Companies/GetAll";
@@ -358,7 +366,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
                 foreach (Company compy in company)
                 {
-                    projectNames.Add(compy.Id, compy.CompanyName);
+                    companyNames.Add(compy.Id, compy.CompanyName);
                 }
             }
             catch (Exception ex)
@@ -366,7 +374,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 MessageBox.Show("The names of the projects could not be retrieved. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            return projectNames;
+            return companyNames;
         }
     }
 

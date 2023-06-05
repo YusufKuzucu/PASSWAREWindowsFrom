@@ -27,8 +27,6 @@ namespace PASSWARE.TabpageBase
         private TabControl tabControl;
         private DataTable filterData;
         private string projectId;
-        private string SqlprojeName;
-
 
         private Dictionary<int, string> projectNames;
         public SqlTabpageList(TabControl tabControl)
@@ -52,9 +50,7 @@ namespace PASSWARE.TabpageBase
             Label label1 = CreateLabel("Select Project", new System.Drawing.Size(44, 16), new System.Drawing.Point(33, 60));
             groupBox.Controls.Add(label1);
 
-            // ComboBox ve DataGridView çiftini eşleştir
             comboBoxDataGridViewPairs.Add(comboBox, dataGridView);
-            // API'den verileri ComboBox ve DataGridView'e yükle
             await LoadDataIntoComboBox(comboBox);
             await LoadDataIntoDataGridView(dataGridView);
             return tabPage;
@@ -120,7 +116,6 @@ namespace PASSWARE.TabpageBase
                 }
                 comboBox.DisplayMember = "ProjectName";
                 comboBox.ValueMember = "ID";
-
             }
             catch (Exception ex)
             {

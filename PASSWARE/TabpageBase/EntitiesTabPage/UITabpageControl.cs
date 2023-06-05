@@ -66,18 +66,26 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
 
             Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            button1.Image = Properties.Resources.save;
+            button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Click += AddUI_Click;
             panel.Controls.Add(button1);
 
             Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            button2.Image = Properties.Resources.update;
+            button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateUI_Click;
             panel.Controls.Add(button2);
 
             Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            button3.Image = Properties.Resources.trash;
+            button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteUI_Click;
             panel.Controls.Add(button3);
 
             Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
+            button4.Image = Properties.Resources.pdf;
+            button4.ImageAlign = ContentAlignment.MiddleLeft;
             button4.Click += PdfUI_Click;
             panel.Controls.Add(button4);
             return tabPage;

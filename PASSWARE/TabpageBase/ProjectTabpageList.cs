@@ -133,14 +133,28 @@ namespace PASSWARE.TabpageBase
                 Project[] projectArray = projects;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID"); dataTable.Columns.Add("CompanyName"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("ProjectServerIP"); dataTable.Columns.Add("ProjectServerUserName"); dataTable.Columns.Add("ProjectServerPassword");
+                dataTable.Columns.Add("ID"); 
+                dataTable.Columns.Add("CompanyName"); 
+                dataTable.Columns.Add("ProjectName"); 
+                dataTable.Columns.Add("ProjectServerIP");
+                dataTable.Columns.Add("ProjectServerUserName"); 
+                dataTable.Columns.Add("ProjectServerPassword");
 
                 Dictionary<int, string> companyNames = await GetCompanyNames();
 
+
                 foreach (Project project in projectArray)
                 {
-                    string companyName = companyNames.ContainsKey(project.CompanyId) ? companyNames[project.CompanyId] : string.Empty;
-                    dataTable.Rows.Add(project.Id, companyName, project.ProjectName,project.ProjectServerIP, project.ProjectServerUserName, project.ProjectServerPassword);
+                    try
+                    {
+                        string companyName = companyNames.ContainsKey(project.CompanyId) ? companyNames[project.CompanyId] : string.Empty;
+
+                        dataTable.Rows.Add(project.Id, companyName, project.ProjectName, project.ProjectServerIP, project.ProjectServerUserName, project.ProjectServerPassword);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error adding project to table. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 originalData = dataTable;
                 dataGridView.DataSource = dataTable;
@@ -152,7 +166,7 @@ namespace PASSWARE.TabpageBase
         }
         public async Task<Dictionary<int, string>> GetCompanyNames()
         {
-            Dictionary<int, string> projectNames = new Dictionary<int, string>();
+            Dictionary<int, string> companyNames = new Dictionary<int, string>();
             try
             {
                 string apiUrl = "https://localhost:44343/api/Companies/GetAll";
@@ -161,7 +175,7 @@ namespace PASSWARE.TabpageBase
 
                 foreach (Company companies in company)
                 {
-                    projectNames.Add(companies.Id, companies.CompanyName);
+                    companyNames.Add(companies.Id, companies.CompanyName);
                 }
             }
             catch (Exception ex)
@@ -169,7 +183,7 @@ namespace PASSWARE.TabpageBase
                 MessageBox.Show("The names of the projects could not be retrieved. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            return projectNames;
+            return companyNames;
         }
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
