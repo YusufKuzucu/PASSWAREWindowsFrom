@@ -205,66 +205,82 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
         private async void AddUI_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            string uIServerIP = textBox3.Text;
-            string uIServerUserName = textBox4.Text;
-            string uIServerPassword = textBox5.Text;
-            string projectId = label1.Text;
-
-
-            UIController uıController = new UIController();
-            bool result = await uıController.AddUIData(uIServerIP, uIServerUserName, uIServerPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("UI Added Succesfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                string uIServerIP = textBox3.Text;
+                string uIServerUserName = textBox4.Text;
+                string uIServerPassword = textBox5.Text;
+                string projectId = label1.Text;
+
+
+                UIController uıController = new UIController();
+                bool result = await uıController.AddUIData(uIServerIP, uIServerUserName, uIServerPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("UI Added Succesfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("UI Failed to Added");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("UI failed to Added");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void UpdateUI_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            int UIId = Convert.ToInt32(textBox1.Text);
-            string uIServerIP = textBox3.Text;
-            string uIServerUserName = textBox4.Text;
-            string uIServerPassword = textBox5.Text;
-            string projectId = label1.Text;
-
-            UIController uıController = new UIController();
-            bool result = await uıController.UpdateUIData(UIId, uIServerIP, uIServerUserName, uIServerPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("UI Updated Succesfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                int UIId = Convert.ToInt32(textBox1.Text);
+                string uIServerIP = textBox3.Text;
+                string uIServerUserName = textBox4.Text;
+                string uIServerPassword = textBox5.Text;
+                string projectId = label1.Text;
+
+                UIController uıController = new UIController();
+                bool result = await uıController.UpdateUIData(UIId, uIServerIP, uIServerUserName, uIServerPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("UI Updated Succesfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("UI Failed to Update");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("UI failed to Update");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void DeleteUI_Click(object sender, EventArgs e)
         {

@@ -205,65 +205,81 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
         private async void AddSql_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            string sqlServerIP = textBox3.Text;
-            string sqlServerUserName = textBox4.Text;
-            string sqlServerPassword = textBox5.Text;
-            string projectId = label1.Text;
-
-
-            SqlController sqlController = new SqlController();
-            bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("sql added successfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                string sqlServerIP = textBox3.Text;
+                string sqlServerUserName = textBox4.Text;
+                string sqlServerPassword = textBox5.Text;
+                string projectId = label1.Text;
+
+
+                SqlController sqlController = new SqlController();
+                bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("SQl Added successfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("SQL Failed to Added");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("sql failed added");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void UpdateSql_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            int sqlId = Convert.ToInt32(textBox1.Text);
-            string sqlServerIP = textBox3.Text;
-            string sqlServerUserName = textBox4.Text;
-            string sqlServerPassword = textBox5.Text;
-            string projectId = label1.Text;
-            SqlController sqlController = new SqlController();
-            bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("sql updated successfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                int sqlId = Convert.ToInt32(textBox1.Text);
+                string sqlServerIP = textBox3.Text;
+                string sqlServerUserName = textBox4.Text;
+                string sqlServerPassword = textBox5.Text;
+                string projectId = label1.Text;
+                SqlController sqlController = new SqlController();
+                bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("SQL Updated Successfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("SQl Failed to Update");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("sql failed  update");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void DeleteSql_Click(object sender, EventArgs e)
         {
@@ -288,13 +304,13 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 bool result = await sqlController.DeleteSqlData(sqlId);
                 if (result)
                 {
-                    MessageBox.Show("Sql deleted successfully");
+                    MessageBox.Show("Sql Deleted Successfully");
                     LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
                 }
                 else
                 {
-                    MessageBox.Show("SQL failed to update");
+                    MessageBox.Show("SQL Failed to Update");
                 }
             }
             catch (Exception ex)

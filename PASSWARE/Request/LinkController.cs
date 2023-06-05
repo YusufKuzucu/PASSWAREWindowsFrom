@@ -58,61 +58,88 @@ namespace PASSWARE.Request
 
         public async Task<bool> AddLinkData(string connectExplanation, string connectionInfo)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var link = new
+            try
             {
-                connectExplanation = connectExplanation,
-                connectionInfo = connectionInfo,
-                projectId = 1,
-                createdBy = ActiveUser.FirstName,
-                createdDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(link);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Links/Post", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var link = new
+                {
+                    connectExplanation = connectExplanation,
+                    connectionInfo = connectionInfo,
+                    projectId = 1,
+                    createdBy = ActiveUser.FirstName,
+                    createdDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(link);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Links/Post", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
 
         public async Task<bool> UpdateLinkData(string connectExplanation, string connectionInfo)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var link = new
+            try
             {
-                connectExplanation = connectExplanation,
-                connectionInfo = connectionInfo,
-                projectId = 1,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(link);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Links/Update", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var link = new
+                {
+                    connectExplanation = connectExplanation,
+                    connectionInfo = connectionInfo,
+                    projectId = 1,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(link);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Links/Update", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
         public async Task<bool> DeleteLinkData(int id)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Links/Delete?id={id}");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Links/Delete?id={id}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
     }
 }

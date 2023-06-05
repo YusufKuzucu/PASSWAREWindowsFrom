@@ -91,65 +91,92 @@ namespace PASSWARE.Request
         }
         public async Task<bool> AddUIData(string uiServerIP, string uiServerUserName, string uiServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var ui = new
+            try
             {
-                uiServerIP = uiServerIP,
-                uiServerUserName = uiServerUserName,
-                uiServerPassword = uiServerPassword,
-                projectId = projectId,
-                createdBy = ActiveUser.FirstName,
-                createdDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(ui);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}UIs/Post", content);
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var ui = new
+                {
+                    uiServerIP = uiServerIP,
+                    uiServerUserName = uiServerUserName,
+                    uiServerPassword = uiServerPassword,
+                    projectId = projectId,
+                    createdBy = ActiveUser.FirstName,
+                    createdDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(ui);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}UIs/Post", content);
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
 
         public async Task<bool> UpdateUIData(int Uıid,string uiServerIP, string uiServerUserName, string uiServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var ui = new
+            try
             {
-                id= Uıid,
-                uiServerIP = uiServerIP,
-                uiServerUserName = uiServerUserName,
-                uiServerPassword = uiServerPassword,
-                projectId = projectId,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(ui);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}UIs/Update", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var ui = new
+                {
+                    id = Uıid,
+                    uiServerIP = uiServerIP,
+                    uiServerUserName = uiServerUserName,
+                    uiServerPassword = uiServerPassword,
+                    projectId = projectId,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(ui);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}UIs/Update", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
         public async Task<bool> DeleteUIData(int id)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}UIs/Delete?id={id}");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}UIs/Delete?id={id}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
     }
 }

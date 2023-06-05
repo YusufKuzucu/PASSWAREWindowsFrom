@@ -91,66 +91,93 @@ namespace PASSWARE.Request
         }
         public async Task<bool> AddProjectData(string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword,string companyId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var project = new
+            try
             {
-                projectName = projectName,
-                projectServerIP = projectServerIP,
-                projectServerUserName = projectServerUserName,
-                projectServerPassword= projectServerPassword,
-                companyId = companyId,
-                createdBy = ActiveUser.FirstName,
-                createdDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(project);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Projects/Post", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var project = new
+                {
+                    projectName = projectName,
+                    projectServerIP = projectServerIP,
+                    projectServerUserName = projectServerUserName,
+                    projectServerPassword = projectServerPassword,
+                    companyId = companyId,
+                    createdBy = ActiveUser.FirstName,
+                    createdDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(project);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Projects/Post", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
 
         public async Task<bool> UpdateProjectData(int projectId,string projectName, string projectServerIP,string projectServerUserName,string projectServerPassword,string companyId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var project = new
+            try
             {
-                id= projectId,
-                projectName = projectName,
-                projectServerIP = projectServerIP,
-                projectServerUserName = projectServerUserName,
-                projectServerPassword = projectServerPassword,
-                companyId = companyId,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(project);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Projects/Update", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var project = new
+                {
+                    id = projectId,
+                    projectName = projectName,
+                    projectServerIP = projectServerIP,
+                    projectServerUserName = projectServerUserName,
+                    projectServerPassword = projectServerPassword,
+                    companyId = companyId,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(project);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Projects/Update", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
         public async Task<bool> DeleteProjectData(int id)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Projects/Delete?id={id}");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Projects/Delete?id={id}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
     }
 }

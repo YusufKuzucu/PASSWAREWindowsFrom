@@ -205,66 +205,82 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
         private async void AddVpn_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            string vpnProgramName = textBox3.Text;
-            string vpnConnectionAddress = textBox4.Text;
-            string vpnPassword = textBox5.Text;
-            string projectId = label1.Text;
-
-
-            VpnController vpnController = new VpnController();
-            bool result = await vpnController.AddVpnData(vpnProgramName, vpnConnectionAddress, vpnPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("VPN Added Succesfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                string vpnProgramName = textBox3.Text;
+                string vpnConnectionAddress = textBox4.Text;
+                string vpnPassword = textBox5.Text;
+                string projectId = label1.Text;
+
+
+                VpnController vpnController = new VpnController();
+                bool result = await vpnController.AddVpnData(vpnProgramName, vpnConnectionAddress, vpnPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("VPN Added Succesfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("VPN Failed to Added");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("VPN failed to Added");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void UpdateVpn_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn5");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            int VpnId = Convert.ToInt32(textBox1.Text);
-            string vpnProgramName = textBox3.Text;
-            string vpnConnectionAddress = textBox4.Text;
-            string vpnPassword = textBox5.Text;
-            string projectId = label1.Text;
-
-            VpnController vpnController = new VpnController();
-            bool result = await vpnController.UpdateVpnData(VpnId, vpnProgramName, vpnConnectionAddress, vpnPassword, projectId);
-            if (result)
+            try
             {
-                MessageBox.Show("VPN Updated Succesfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtVpn5");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                int VpnId = Convert.ToInt32(textBox1.Text);
+                string vpnProgramName = textBox3.Text;
+                string vpnConnectionAddress = textBox4.Text;
+                string vpnPassword = textBox5.Text;
+                string projectId = label1.Text;
+
+                VpnController vpnController = new VpnController();
+                bool result = await vpnController.UpdateVpnData(VpnId, vpnProgramName, vpnConnectionAddress, vpnPassword, projectId);
+                if (result)
+                {
+                    MessageBox.Show("VPN Updated Succesfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                }
+                else
+                {
+                    MessageBox.Show("VPN Failed to Update");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("VPN failed to Update");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void DeleteVpn_Click(object sender, EventArgs e)
         {
@@ -295,7 +311,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 }
                 else
                 {
-                    MessageBox.Show("Vpn failed to Delete");
+                    MessageBox.Show("Vpn Failed to Delete");
                 }
             }
             catch (Exception ex)

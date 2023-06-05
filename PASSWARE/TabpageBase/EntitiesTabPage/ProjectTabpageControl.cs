@@ -217,72 +217,89 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
         private async void AddProject_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
-            TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            string projectName = textBox3.Text;
-            string projectServerIP = textBox4.Text;
-            string projectServerUserName = textBox5.Text;
-            string projectServerPassword = textBox6.Text;
-
-            string companyId = label1.Text;
-
-
-            ProjectController projectController = new ProjectController();
-            bool result = await projectController.AddProjectData(projectName, projectServerIP, projectServerUserName, projectServerPassword, companyId);
-            if (result)
+            try
             {
-                MessageBox.Show("Project added successfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
+                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                string projectName = textBox3.Text;
+                string projectServerIP = textBox4.Text;
+                string projectServerUserName = textBox5.Text;
+                string projectServerPassword = textBox6.Text;
+
+                string companyId = label1.Text;
+
+
+                ProjectController projectController = new ProjectController();
+                bool result = await projectController.AddProjectData(projectName, projectServerIP, projectServerUserName, projectServerPassword, companyId);
+                if (result)
+                {
+                    MessageBox.Show("Project Added Successfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
+                }
+                else
+                {
+                    MessageBox.Show("Project Failed to Added");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Project failed added");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void UpdateProject_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
-            TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
-            TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
-            TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
-            TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
-            TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
-
-            Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            int projectId = Convert.ToInt32(textBox1.Text);
-            string projectName = textBox3.Text;
-            string projectServerIP = textBox4.Text;
-            string projectServerUserName = textBox5.Text;
-            string projectServerPassword = textBox6.Text;
-
-
-            string companyId = label1.Text;
-            ProjectController projectController = new ProjectController();
-            bool result = await projectController.UpdateProjectData(projectId, projectName, projectServerIP,projectServerUserName, projectServerPassword, companyId);
-            if (result)
+            try
             {
-                MessageBox.Show("Project updated successfully");
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
+                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
+                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
+                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
+                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
 
-                LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                int projectId = Convert.ToInt32(textBox1.Text);
+                string projectName = textBox3.Text;
+                string projectServerIP = textBox4.Text;
+                string projectServerUserName = textBox5.Text;
+                string projectServerPassword = textBox6.Text;
+
+
+                string companyId = label1.Text;
+                ProjectController projectController = new ProjectController();
+                bool result = await projectController.UpdateProjectData(projectId, projectName, projectServerIP, projectServerUserName, projectServerPassword, companyId);
+                if (result)
+                {
+                    MessageBox.Show("Project Updated Successfully");
+
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
+                }
+                else
+                {
+                    MessageBox.Show("Project failed to Update");
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Project failed  update");
+                MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
         private async void DeleteProject_Click(object sender, EventArgs e)
         {
@@ -309,13 +326,13 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 bool result = await sqlController.DeleteSqlData(projectId);
                 if (result)
                 {
-                    MessageBox.Show("Project deleted successfully");
+                    MessageBox.Show("Project Deleted Successfully");
                     LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
                     textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();textBox6.Clear();
                 }
                 else
                 {
-                    MessageBox.Show("Project failed to update");
+                    MessageBox.Show("Project Failed to Update");
                 }
             }
             catch (Exception ex)

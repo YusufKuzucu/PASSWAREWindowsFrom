@@ -113,8 +113,7 @@ namespace PASSWARE.Request
             }
             catch (Exception ex)
             {
-                // Hatanın ele alınması veya hata mesajının kaydedilmesi gibi istisna işleme mantığını burada özelleştirebilirsiniz.
-                MessageBox.Show($"Bir hata oluştu: {ex.Message}");
+                MessageBox.Show("An error occurred: " + ex.Message);
                 return false;
             }
 
@@ -123,44 +122,62 @@ namespace PASSWARE.Request
 
         public async Task<bool> UpdateSqlData(int sqlID,string sqlServerIP, string sqlServerUserName, string sqlServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var sql = new
+            try
             {
-                id = sqlID,
-                sqlServerIP = sqlServerIP,
-                sqlServerUserName = sqlServerUserName,
-                sqlServerPassword = sqlServerPassword,
-                projectId = projectId,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(sql);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Sqls/Update", content);
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var sql = new
+                {
+                    id = sqlID,
+                    sqlServerIP = sqlServerIP,
+                    sqlServerUserName = sqlServerUserName,
+                    sqlServerPassword = sqlServerPassword,
+                    projectId = projectId,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(sql);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Sqls/Update", content);
 
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
    
         public async Task<bool> DeleteSqlData(int id)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Sqls/Delete?id={id}");
-            
-
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Sqls/Delete?id={id}");
+
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
 
     }

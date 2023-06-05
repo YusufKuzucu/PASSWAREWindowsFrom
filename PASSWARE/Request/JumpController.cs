@@ -92,64 +92,91 @@ namespace PASSWARE.Request
 
         public async Task<bool> AddJumpData(string jumpServerIP, string jumpServerUserName, string jumpServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var jump = new
+            try
             {
-                jumpServerIP = jumpServerIP,
-                jumpServerUserName = jumpServerUserName,
-                jumpServerPassword = jumpServerPassword,
-                projectId = projectId,
-                createdBy = ActiveUser.FirstName,
-                createdDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(jump);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Jumps/Post", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var jump = new
+                {
+                    jumpServerIP = jumpServerIP,
+                    jumpServerUserName = jumpServerUserName,
+                    jumpServerPassword = jumpServerPassword,
+                    projectId = projectId,
+                    createdBy = ActiveUser.FirstName,
+                    createdDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(jump);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Jumps/Post", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
 
         public async Task<bool> UpdateJumpData(int jumpdId , string jumpServerIP, string jumpServerUserName, string jumpServerPassword,string projectId)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-            var jump = new
+            try
             {
-                id=jumpdId,
-                jumpServerIP = jumpServerIP,
-                jumpServerUserName = jumpServerUserName,
-                jumpServerPassword = jumpServerPassword,
-                projectId = projectId,
-                updatedBy = ActiveUser.FirstName,
-                updatedDate = DateTime.Now,
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            var json = JsonConvert.SerializeObject(jump);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Jumps/Update", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+                var jump = new
+                {
+                    id = jumpdId,
+                    jumpServerIP = jumpServerIP,
+                    jumpServerUserName = jumpServerUserName,
+                    jumpServerPassword = jumpServerPassword,
+                    projectId = projectId,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
+                };
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                var json = JsonConvert.SerializeObject(jump);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Jumps/Update", content);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
         public async Task<bool> DeleteJumpData(int id)
         {
-            string apiUrl = "https://localhost:44343/api/";
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-            HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Jumps/Delete?id={id}");
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return true;
+                string apiUrl = "https://localhost:44343/api/";
+                HttpClient client = new HttpClient();
+
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Jumps/Delete?id={id}");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+                return false;
+            }
+
         }
     }
 }
