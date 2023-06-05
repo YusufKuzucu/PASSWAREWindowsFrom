@@ -25,26 +25,45 @@ namespace PASSWARE
 
         private async void btnNewPassword_Click(object sender, EventArgs e)
         {
-            var resetPassword = new
+            try
             {
-                email = txtBoxEmail.Text,
-                verificationNumber = txtBoxVerificationCode.Text,
-                password = txtBoxNewPassword.Text,
-            };
-            var json = JsonConvert.SerializeObject(resetPassword);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Auth/ResetPassword", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                MessageBox.Show("Parolanız Yeniden Oluşturuldu ", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Login login = new Login();
-                login.Show();
-                this.Hide();
+                string email = txtBoxEmail.Text;
+                string verificationNumber = txtBoxVerificationCode.Text;
+                string password = txtBoxNewPassword.Text;
+
+                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(verificationNumber) || string.IsNullOrWhiteSpace(password))
+                {
+                    MessageBox.Show("Please fill in all fields.");
+                    return;
+                }
+
+                var resetPassword = new
+                {
+                    email = email,
+                    verificationNumber = verificationNumber,
+                    password = password,
+                };
+                var json = JsonConvert.SerializeObject(resetPassword);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Auth/ResetPassword", content);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Your Password Has Been Regenerated", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Login login = new Login();
+                    login.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Your Password Could Not Be Created. Please check the fields.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("parolanız Oluşturulamadı Lütfen Alanları Kontrol Ediniz");
+                MessageBox.Show("Something went wrong: " + ex.Message);
             }
+
         }
 
         private void ForgotMyPassword_Load(object sender, EventArgs e)
@@ -61,30 +80,43 @@ namespace PASSWARE
 
         private async void btnVerificationCode_Click(object sender, EventArgs e)
         {
-            HttpResponseMessage userResponse;
-            using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, apiUrl + "Auth/forgotmypassword?email=" + txtEmailD.Text))
+            try
             {
-                userResponse = await client.SendAsync(requestMessage);
-            }
+                string email = txtEmailD.Text;
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    MessageBox.Show("Please enter your e-mail address.");
+                    return;
+                }
 
-            if (userResponse.IsSuccessStatusCode)
-            {
-                MessageBox.Show("Doğrulama Kodu Gönderildi", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtEmailD.Visible = false;
-                btnVerificationCode.Visible = false;
-                label1.Visible = false;
-                txtBoxEmail.Visible = true;
-                txtBoxVerificationCode.Visible = true;
-                txtBoxNewPassword.Visible = true;
-                label2.Visible = true;
-                label3.Visible = true;
-                label4.Visible = true;
-                btnNewPassword.Visible = true;
-            }
-            else
-            {
-                MessageBox.Show("kod gönderilemedi");
+                HttpResponseMessage userResponse;
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Post, apiUrl + "Auth/forgotmypassword?email=" + email))
+                {
+                    userResponse = await client.SendAsync(requestMessage);
+                }
 
+                if (userResponse.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Verification Code Sent", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txtEmailD.Visible = false;
+                    btnVerificationCode.Visible = false;
+                    label1.Visible = false;
+                    txtBoxEmail.Visible = true;
+                    txtBoxVerificationCode.Visible = true;
+                    txtBoxNewPassword.Visible = true;
+                    label2.Visible = true;
+                    label3.Visible = true;
+                    label4.Visible = true;
+                    btnNewPassword.Visible = true;
+                }
+                else
+                {
+                    MessageBox.Show("Failed to Send Verification Code");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong: " + ex.Message);
             }
         }
 

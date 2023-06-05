@@ -30,88 +30,99 @@ namespace PASSWARE
         private async void btnLogin_Click(object sender, EventArgs e)
         {
 
-            string username = txtEmail.Text;
-            string password = txtPassword.Text;
-
-            // Remember Me seçeneği işaretliyse verileri kaydedin
-            if (checkBox1.Checked)
+            try
             {
-                SaveRememberMeData(username, password, true);
-            }
-            var loginCredentials = new
-            {
-                email = txtEmail.Text,
-                password = txtPassword.Text,
-            };
-            var serializedBody = JsonConvert.SerializeObject(loginCredentials);
-            var content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"{apiUrl}Auth/login", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var tokenResult = response.Content.ReadAsStringAsync().Result;
-                accessToken = JsonConvert.DeserializeObject<AccessToken>(tokenResult).Token;
-                ActiveUser.Token = accessToken;
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-                HttpResponseMessage userGetResponse;
-                using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, apiUrl + "Users/getbyidemail?email=" + txtEmail.Text))
+                string username = txtEmail.Text;
+                string password = txtPassword.Text;
+                if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 {
-                    userGetResponse = await client.SendAsync(requestMessage);
-
+                    MessageBox.Show("Lütfen kullanıcı adı ve şifre girin.");
+                    return;
                 }
-                var usercontnet = await userGetResponse.Content.ReadAsStringAsync();
-                var userJson = JsonConvert.DeserializeObject<User>(usercontnet);
 
-                ActiveUser.SetActiveUser(userJson);
-
-
-                HttpResponseMessage userResponse;
-                using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, apiUrl + "Users/claims?email=" + txtEmail.Text))
+                // Remember Me seçeneği işaretliyse verileri kaydedin
+                if (checkBox1.Checked)
                 {
-                    requestMessage.Headers.Add("email", txtEmail.Text);
-
-                    userResponse = await client.SendAsync(requestMessage);
+                    SaveRememberMeData(username, password, true);
                 }
 
 
-                // Kullanıcı rollerini ve diğer bilgileri al
-
-                if (userResponse.IsSuccessStatusCode)
+                // Remember Me seçeneği işaretliyse verileri kaydedin
+                if (checkBox1.Checked)
                 {
-                    var userContent = await userResponse.Content.ReadAsStringAsync();
-                    var user = JsonConvert.DeserializeObject<IEnumerable<OperationClaim>>(userContent);
-                    ActiveUser.Role = userContent;
+                    SaveRememberMeData(username, password, true);
+                }
+                var loginCredentials = new
+                {
+                    email = txtEmail.Text,
+                    password = txtPassword.Text,
+                };
+                var serializedBody = JsonConvert.SerializeObject(loginCredentials);
+                var content = new StringContent(serializedBody, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"{apiUrl}Auth/login", content);
 
-                    // Kullanıcının rollerini kontrol et
-                    if (user.Any(x => x.Name.ToLower() == "Admin".ToLower()))
+                if (response.IsSuccessStatusCode)
+                {
+                    var tokenResult = response.Content.ReadAsStringAsync().Result;
+                    accessToken = JsonConvert.DeserializeObject<AccessToken>(tokenResult).Token;
+                    ActiveUser.Token = accessToken;
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                    HttpResponseMessage userGetResponse;
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, apiUrl + "Users/getbyidemail?email=" + txtEmail.Text))
                     {
-                        // Admin yetkilerine sahip işlemler
-                        MessageBox.Show("Admin olarak giriş yapıldı!");
-                        HomePage homePage = new HomePage();
-                        homePage.btnCompany.Visible = true;
-                        homePage.Show();
-                        this.Hide();
+                        userGetResponse = await client.SendAsync(requestMessage);
+                    }
+                    var usercontnet = await userGetResponse.Content.ReadAsStringAsync();
+                    var userJson = JsonConvert.DeserializeObject<User>(usercontnet);
 
+                    ActiveUser.SetActiveUser(userJson);
+
+                    HttpResponseMessage userResponse;
+                    using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, apiUrl + "Users/claims?email=" + txtEmail.Text))
+                    {
+                        requestMessage.Headers.Add("email", txtEmail.Text);
+                        userResponse = await client.SendAsync(requestMessage);
+                    }
+
+                    // Get user roles and other information
+                    if (userResponse.IsSuccessStatusCode)
+                    {
+                        var userContent = await userResponse.Content.ReadAsStringAsync();
+                        var user = JsonConvert.DeserializeObject<IEnumerable<OperationClaim>>(userContent);
+                        ActiveUser.Role = userContent;
+
+                        // Check user's roles
+                        if (user.Any(x => x.Name.ToLower() == "Admin".ToLower()))
+                        {
+                            // Admin yetkilerine sahip işlemler
+                            HomePage homePage = new HomePage();
+                            homePage.btnCompany.Visible = true;
+                            homePage.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            // Processes with other user roles
+                            HomePage homePage = new HomePage();
+                            homePage.btnCompany.Visible = false;
+                            homePage.Show();
+                            this.Hide();
+                        }
                     }
                     else
                     {
-                        // Diğer kullanıcı rollerine sahip işlemler
-                        MessageBox.Show("Kullanıcı olarak giriş yapıldı!");
-                        HomePage homePage = new HomePage();
-                        homePage.btnCompany.Visible = false;
-                        homePage.Show();
-                        this.Hide();
+                        MessageBox.Show("Failed to retrieve user information!");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Kullanıcı bilgileri alınamadı!");
+                    MessageBox.Show("Login failed!");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Giriş başarısız!");
+                MessageBox.Show("Something went wrong: " + ex.Message);
             }
 
         }

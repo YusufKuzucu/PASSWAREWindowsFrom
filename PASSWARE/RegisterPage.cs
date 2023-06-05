@@ -24,28 +24,62 @@ namespace PASSWARE
 
         private async void buttonRegister_Click(object sender, EventArgs e)
         {
-            var registerCredentials = new
+            try
             {
-                email = txtEmail.Text,
-                password = txtPassword.Text,
-                firstName = txtFirstName.Text,
-                LastName = txtLastName.Text,
-            };
-            var json = JsonConvert.SerializeObject(registerCredentials);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Auth/register", content);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                MessageBox.Show("Kullanıcı Kaydınız Başarılı Bir Şekilde Oluşturldu");
-                Login logIn = new Login();
-                logIn.Show();
-                this.Hide();
-            }
-            else
-            {
-                MessageBox.Show("Kullanıcı kaydınız oluşturulamadı lütfen alanları kontrol ediniz!");
+                if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                {
+                    MessageBox.Show("Please enter an email address.");
+                    return;
+                }
 
+                if (string.IsNullOrWhiteSpace(txtPassword.Text))
+                {
+                    MessageBox.Show("Please enter a password.");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtFirstName.Text))
+                {
+                    MessageBox.Show("Please enter a name.");
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(txtLastName.Text))
+                {
+                    MessageBox.Show("Please enter a surname.");
+                    return;
+                }
+
+                var registerCredentials = new
+                {
+                    email = txtEmail.Text,
+                    password = txtPassword.Text,
+                    firstName = txtFirstName.Text,
+                    lastName = txtLastName.Text,
+                };
+
+                var json = JsonConvert.SerializeObject(registerCredentials);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Auth/register", content);
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Kullanıcı Kaydınız Başarılı Bir Şekilde Oluşturuldu");
+                    Login logIn = new Login();
+                    logIn.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Kullanıcı kaydınız oluşturulamadı. Lütfen alanları kontrol ediniz!");
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Bir hata oluştu: " + ex.Message);
+            }
+
+
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
