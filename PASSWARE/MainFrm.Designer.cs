@@ -48,7 +48,15 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ribbonTab7 = new System.Windows.Forms.RibbonTab();
             this.rPCompanys = new System.Windows.Forms.RibbonPanel();
+            this.sqlsList = new System.Windows.Forms.RibbonButton();
+            this.vpnList = new System.Windows.Forms.RibbonButton();
+            this.jumpList = new System.Windows.Forms.RibbonButton();
+            this.uıList = new System.Windows.Forms.RibbonButton();
+            this.communicationList = new System.Windows.Forms.RibbonButton();
+            this.companyList = new System.Windows.Forms.RibbonButton();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ribbon1
@@ -96,6 +104,7 @@
             this.projectList.Name = "projectList";
             this.projectList.SmallImage = ((System.Drawing.Image)(resources.GetObject("projectList.SmallImage")));
             this.projectList.Text = "ProjectList";
+            this.projectList.Click += new System.EventHandler(this.projectList_Click);
             // 
             // ribbonTab2
             // 
@@ -105,6 +114,7 @@
             // 
             // rPSqls
             // 
+            this.rPSqls.Items.Add(this.sqlsList);
             this.rPSqls.Name = "rPSqls";
             this.rPSqls.Text = "Sql Details";
             // 
@@ -116,6 +126,7 @@
             // 
             // rPVpns
             // 
+            this.rPVpns.Items.Add(this.vpnList);
             this.rPVpns.Name = "rPVpns";
             this.rPVpns.Text = "Vpn Details";
             // 
@@ -127,6 +138,7 @@
             // 
             // rPJumps
             // 
+            this.rPJumps.Items.Add(this.jumpList);
             this.rPJumps.Name = "rPJumps";
             this.rPJumps.Text = "Jump Details";
             // 
@@ -138,6 +150,7 @@
             // 
             // rPUIs
             // 
+            this.rPUIs.Items.Add(this.uıList);
             this.rPUIs.Name = "rPUIs";
             this.rPUIs.Text = "Uıs Details";
             // 
@@ -149,11 +162,15 @@
             // 
             // rPCommunications
             // 
+            this.rPCommunications.Items.Add(this.communicationList);
             this.rPCommunications.Name = "rPCommunications";
             this.rPCommunications.Text = "Communication Details";
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(0, 177);
             this.tabControl1.Name = "tabControl1";
@@ -174,9 +191,11 @@
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 675);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 674);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1428, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1428, 23);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -188,8 +207,68 @@
             // 
             // rPCompanys
             // 
+            this.rPCompanys.Items.Add(this.companyList);
             this.rPCompanys.Name = "rPCompanys";
             this.rPCompanys.Text = "Company Details";
+            // 
+            // sqlsList
+            // 
+            this.sqlsList.Image = ((System.Drawing.Image)(resources.GetObject("sqlsList.Image")));
+            this.sqlsList.LargeImage = ((System.Drawing.Image)(resources.GetObject("sqlsList.LargeImage")));
+            this.sqlsList.Name = "sqlsList";
+            this.sqlsList.SmallImage = ((System.Drawing.Image)(resources.GetObject("sqlsList.SmallImage")));
+            this.sqlsList.Text = "SqlList";
+            this.sqlsList.Click += new System.EventHandler(this.sqlsList_Click);
+            // 
+            // vpnList
+            // 
+            this.vpnList.Image = ((System.Drawing.Image)(resources.GetObject("vpnList.Image")));
+            this.vpnList.LargeImage = ((System.Drawing.Image)(resources.GetObject("vpnList.LargeImage")));
+            this.vpnList.Name = "vpnList";
+            this.vpnList.SmallImage = ((System.Drawing.Image)(resources.GetObject("vpnList.SmallImage")));
+            this.vpnList.Text = "VpnList";
+            this.vpnList.Click += new System.EventHandler(this.vpnList_Click);
+            // 
+            // jumpList
+            // 
+            this.jumpList.Image = ((System.Drawing.Image)(resources.GetObject("jumpList.Image")));
+            this.jumpList.LargeImage = ((System.Drawing.Image)(resources.GetObject("jumpList.LargeImage")));
+            this.jumpList.Name = "jumpList";
+            this.jumpList.SmallImage = ((System.Drawing.Image)(resources.GetObject("jumpList.SmallImage")));
+            this.jumpList.Text = "JumpList";
+            this.jumpList.Click += new System.EventHandler(this.jumpList_Click);
+            // 
+            // uıList
+            // 
+            this.uıList.Image = ((System.Drawing.Image)(resources.GetObject("uıList.Image")));
+            this.uıList.LargeImage = ((System.Drawing.Image)(resources.GetObject("uıList.LargeImage")));
+            this.uıList.Name = "uıList";
+            this.uıList.SmallImage = ((System.Drawing.Image)(resources.GetObject("uıList.SmallImage")));
+            this.uıList.Text = "UIList";
+            this.uıList.Click += new System.EventHandler(this.uıList_Click);
+            // 
+            // communicationList
+            // 
+            this.communicationList.Image = ((System.Drawing.Image)(resources.GetObject("communicationList.Image")));
+            this.communicationList.LargeImage = ((System.Drawing.Image)(resources.GetObject("communicationList.LargeImage")));
+            this.communicationList.Name = "communicationList";
+            this.communicationList.SmallImage = ((System.Drawing.Image)(resources.GetObject("communicationList.SmallImage")));
+            this.communicationList.Text = "CommunicationList";
+            this.communicationList.Click += new System.EventHandler(this.communicationList_Click);
+            // 
+            // companyList
+            // 
+            this.companyList.Image = ((System.Drawing.Image)(resources.GetObject("companyList.Image")));
+            this.companyList.LargeImage = ((System.Drawing.Image)(resources.GetObject("companyList.LargeImage")));
+            this.companyList.Name = "companyList";
+            this.companyList.SmallImage = ((System.Drawing.Image)(resources.GetObject("companyList.SmallImage")));
+            this.companyList.Text = "CompanyList";
+            this.companyList.Click += new System.EventHandler(this.companyList_Click);
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // MainFrm
             // 
@@ -202,7 +281,11 @@
             this.KeyPreview = true;
             this.Name = "MainFrm";
             this.Text = "PassWare";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
+            this.Load += new System.EventHandler(this.MainFrm_Load);
             this.tabControl1.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -229,5 +312,12 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.RibbonButton sqlsList;
+        private System.Windows.Forms.RibbonButton vpnList;
+        private System.Windows.Forms.RibbonButton jumpList;
+        private System.Windows.Forms.RibbonButton uıList;
+        private System.Windows.Forms.RibbonButton communicationList;
+        private System.Windows.Forms.RibbonButton companyList;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

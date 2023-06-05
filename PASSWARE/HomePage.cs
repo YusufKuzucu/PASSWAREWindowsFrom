@@ -192,8 +192,7 @@ namespace PASSWARE
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MainFrm mainfrm = new MainFrm();
-            mainfrm.ShowDialog();
+           
         }
 
         private void HomePage_FormClosing(object sender, FormClosingEventArgs e)

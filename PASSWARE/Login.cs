@@ -103,20 +103,18 @@ namespace PASSWARE
                         if (user.Any(x => x.Name.ToLower() == "Admin".ToLower()))
                         {
                             // Admin yetkilerine sahip işlemler
-                            HomePage homePage = new HomePage();
-                            homePage.btnCompany.Visible = true;
-                            homePage.Show();
+                            MainFrm mainFrm=new MainFrm();
+                            mainFrm.Show();
                             this.Hide();
                             
                         }
                         else
                         {
                             // Processes with other user roles
-                            HomePage homePage = new HomePage();
-                            homePage.btnCompany.Visible = false;
-                            homePage.Show();
+                            MainFrm mainFrm = new MainFrm();
+                            mainFrm.Show();
                             this.Hide();
-                        
+
                         }
                     }
                     else
