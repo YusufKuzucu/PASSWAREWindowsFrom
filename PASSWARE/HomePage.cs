@@ -8,12 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PASSWARE
 {
@@ -50,6 +52,8 @@ namespace PASSWARE
         {
             tabControl1.MouseDown += tabControl1_MouseDown;
             tabControl1.DrawItem += tabControl1_DrawItem;
+            this.KeyPreview = true;
+            this.KeyDown += HomePage_KeyDown;
             //tabControl1.MouseClick += tabControl1_MouseClick;
 
         }
@@ -93,6 +97,10 @@ namespace PASSWARE
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
+
+      
+
+
         //private void tabControl1_MouseDown(object sender, MouseEventArgs e)
         //{
         //    if (e.Button == MouseButtons.Left) // Orta fare düğmesine basıldığında
@@ -190,14 +198,53 @@ namespace PASSWARE
 
         private void HomePage_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Confirm
+            e.Cancel = true;
+            DialogResult result = MessageBox.Show("Are you sure you want to close the application?", "Confirm Close", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                e.Cancel = false;
+            }
         }
 
         private void HomePage_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.Dispose();
         }
+        private void HomePage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                this.Refresh();
+                StartProgressBar();
+            }
+        }
+        private async void StartProgressBar()
+        {
+            // ProgressBar'ı sıfırla ve görünür yap
+            toolStripProgressBar1.Value = 0;
+            toolStripProgressBar1.Visible = true;
 
+            
+            int totalSteps = 100; // İşlemin toplam adım sayısı
+            for (int step = 0; step <= totalSteps; step++)
+            {
+                toolStripProgressBar1.Value = (int)((double)step / totalSteps * 100);
+
+                
+                await Task.Delay(10); 
+
+                if (step == totalSteps)
+                {
+                    toolStripProgressBar1.Value = 0;
+                    toolStripProgressBar1.Visible = false;
+                }
+            }
+        }
+
+        private void toolStripProgressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
 
 
 

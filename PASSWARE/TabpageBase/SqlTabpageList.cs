@@ -52,7 +52,7 @@ namespace PASSWARE.TabpageBase
 
             comboBoxDataGridViewPairs.Add(comboBox, dataGridView);
             await LoadDataIntoComboBox(comboBox);
-            await LoadDataIntoDataGridView(dataGridView);
+            await LoadDataIntoDataGridView(dataGridView); 
             return tabPage;
         }
         private DataGridView CreateDataGridView()
@@ -64,6 +64,8 @@ namespace PASSWARE.TabpageBase
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.Location = new Point(0, 192);
+            dataGridView.ReadOnly = true;
+            dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);
             dataGridView.Dock = DockStyle.None;

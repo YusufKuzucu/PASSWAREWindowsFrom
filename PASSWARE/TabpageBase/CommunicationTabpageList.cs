@@ -62,6 +62,8 @@ namespace PASSWARE.TabpageBase
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
+            dataGridView.ReadOnly = true;
+            dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.Location = new Point(0, 192);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);

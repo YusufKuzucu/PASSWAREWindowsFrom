@@ -62,6 +62,8 @@ namespace PASSWARE.TabpageBase
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.RowHeadersWidth = 51;
+            dataGridView.ReadOnly = true;
+            dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.Location = new Point(0, 192);
             dataGridView.RowHeadersWidth = 51;
