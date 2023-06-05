@@ -65,29 +65,25 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox5);
 
 
-            Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            Button button1 = CreateButton("Add", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 40), 7);
             button1.Image = Properties.Resources.save;
             button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Click += AddJump_Click;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            Button button2 = CreateButton("Update", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 8);
             button2.Image = Properties.Resources.update;
             button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateJump_Click;
             panel.Controls.Add(button2);
 
-            Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 250), 9);
             button3.Image = Properties.Resources.trash;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteJump_Click;
             panel.Controls.Add(button3);
 
-            Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
-            button4.Image = Properties.Resources.pdf;
-            button4.ImageAlign = ContentAlignment.MiddleLeft;
-            button4.Click += PdfJump_Click;
-            panel.Controls.Add(button4);
+     
             return tabPage;
         }
         private Panel CreatePanel()
@@ -207,35 +203,40 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                string jumpServerIP = textBox3.Text;
-                string jumpServerUserName = textBox4.Text;
-                string jumpServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-
-
-                JumpController jumpController = new JumpController();
-                bool result = await jumpController.AddJumpData(jumpServerIP, jumpServerUserName, jumpServerPassword, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to added this Jump?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Jump Added Succesfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    string jumpServerIP = textBox3.Text;
+                    string jumpServerUserName = textBox4.Text;
+                    string jumpServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+
+
+                    JumpController jumpController = new JumpController();
+                    bool result = await jumpController.AddJumpData(jumpServerIP, jumpServerUserName, jumpServerPassword, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("Jump Added Succesfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Jump Failed to Added");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Jump Failed to Added");
-                }
+                
             }
             catch (Exception ex)
             {
@@ -247,34 +248,39 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int VpnId = Convert.ToInt32(textBox1.Text);
-                string jumpServerIP = textBox3.Text;
-                string jumpServerUserName = textBox4.Text;
-                string jumpServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-
-                JumpController jumpController = new JumpController();
-                bool result = await jumpController.UpdateJumpData(VpnId, jumpServerIP, jumpServerUserName, jumpServerPassword, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to update this Jump?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Jump Updated Succesfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int VpnId = Convert.ToInt32(textBox1.Text);
+                    string jumpServerIP = textBox3.Text;
+                    string jumpServerUserName = textBox4.Text;
+                    string jumpServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+
+                    JumpController jumpController = new JumpController();
+                    bool result = await jumpController.UpdateJumpData(VpnId, jumpServerIP, jumpServerUserName, jumpServerPassword, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("Jump Updated Succesfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Jump Failed to Update");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Jump Failed to Update");
-                }
+               
             }
             catch (Exception ex)
             {
@@ -286,32 +292,36 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
+                DialogResult results = MessageBox.Show("Are you sure you want to delete this Jump?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
+                {
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtjmp5");
 
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int vpnId = Convert.ToInt32(textBox1.Text);
-                string jumpServerIP = textBox3.Text;
-                string jumpServerUserName = textBox4.Text;
-                string jumpServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-                JumpController jumpController = new JumpController();
-                bool result = await jumpController.DeleteJumpData(vpnId);
-                if (result)
-                {
-                    MessageBox.Show("Jump Deleted Succesfully");
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                    textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("Jump Failed to Delete");
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int vpnId = Convert.ToInt32(textBox1.Text);
+                    string jumpServerIP = textBox3.Text;
+                    string jumpServerUserName = textBox4.Text;
+                    string jumpServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+                    JumpController jumpController = new JumpController();
+                    bool result = await jumpController.DeleteJumpData(vpnId);
+                    if (result)
+                    {
+                        MessageBox.Show("Jump Deleted Succesfully");
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                        textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Jump Failed to Delete");
+                    }
                 }
             }
             catch (Exception ex)
@@ -319,10 +329,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-        private void PdfJump_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("buton 4");
-        }
+
 
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
         {

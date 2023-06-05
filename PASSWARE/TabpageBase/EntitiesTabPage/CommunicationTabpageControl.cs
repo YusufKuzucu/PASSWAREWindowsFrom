@@ -71,29 +71,24 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox6);
 
 
-            Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            Button button1 = CreateButton("Add", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 40), 7);
             button1.Image = Properties.Resources.save;
             button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Click += AddCommunication_Click;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            Button button2 = CreateButton("Update", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 8);
             button2.Image = Properties.Resources.update;
             button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateCommunication_Click;
             panel.Controls.Add(button2);
 
-            Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 250), 9);
             button3.Image = Properties.Resources.trash;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteCommunication_Click;
             panel.Controls.Add(button3);
 
-            Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
-            button4.Image = Properties.Resources.pdf;
-            button4.ImageAlign = ContentAlignment.MiddleLeft;
-            button4.Click += PdfCommunication_Click;
-            panel.Controls.Add(button4);
             return tabPage;
         }
         private Panel CreatePanel()
@@ -220,37 +215,41 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
-                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                string ınternalEmail = textBox3.Text;
-                string ınternalNumber = textBox4.Text;
-                string externalEmail = textBox5.Text;
-                string externalNumber = textBox6.Text;
-
-                string projectId = label1.Text;
-
-
-                CommunicationController commController = new CommunicationController();
-                bool result = await commController.AddCommunicationData(ınternalEmail, ınternalNumber, externalEmail, externalNumber, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to added this Communication?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Communication Added Succesfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
+                    TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                }
-                else
-                {
-                    MessageBox.Show("Communication Failed to Added");
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    string ınternalEmail = textBox3.Text;
+                    string ınternalNumber = textBox4.Text;
+                    string externalEmail = textBox5.Text;
+                    string externalNumber = textBox6.Text;
+
+                    string projectId = label1.Text;
+
+
+                    CommunicationController commController = new CommunicationController();
+                    bool result = await commController.AddCommunicationData(ınternalEmail, ınternalNumber, externalEmail, externalNumber, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("Communication Added Succesfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Communication Failed to Added");
+                    }
                 }
             }
             catch (Exception ex)
@@ -263,37 +262,40 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
-                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int commId = Convert.ToInt32(textBox1.Text);
-                string ınternalEmail = textBox3.Text;
-                string ınternalNumber = textBox4.Text;
-                string externalEmail = textBox5.Text;
-                string externalNumber = textBox6.Text;
-                string projectId = label1.Text;
-
-                CommunicationController commController = new CommunicationController();
-                bool result = await commController.UpdateCommunicationData(commId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to update this Communication?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Communication Updated Succesfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
+                    TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                }
-                else
-                {
-                    MessageBox.Show("Communication Failed to Update");
-                }
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int commId = Convert.ToInt32(textBox1.Text);
+                    string ınternalEmail = textBox3.Text;
+                    string ınternalNumber = textBox4.Text;
+                    string externalEmail = textBox5.Text;
+                    string externalNumber = textBox6.Text;
+                    string projectId = label1.Text;
 
+                    CommunicationController commController = new CommunicationController();
+                    bool result = await commController.UpdateCommunicationData(commId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("Communication Updated Succesfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("Communication Failed to Update");
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -305,45 +307,46 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
-                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int commId = Convert.ToInt32(textBox1.Text);
-                string ınternalEmail = textBox3.Text;
-                string ınternalNumber = textBox4.Text;
-                string externalEmail = textBox5.Text;
-                string externalNumber = textBox6.Text;
-                 string projectId = label1.Text;
-                 CommunicationController commController = new CommunicationController();
-
-                bool result = await commController.DeleteCommunicaitonData(commId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to delete this Communication?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Communication Deleted Succesfully");
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                    textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();textBox6.Clear();
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
+                    TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
+
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int commId = Convert.ToInt32(textBox1.Text);
+                    string ınternalEmail = textBox3.Text;
+                    string ınternalNumber = textBox4.Text;
+                    string externalEmail = textBox5.Text;
+                    string externalNumber = textBox6.Text;
+                    string projectId = label1.Text;
+                    CommunicationController commController = new CommunicationController();
+
+                    bool result = await commController.DeleteCommunicaitonData(commId);
+                    if (result)
+                    {
+                        MessageBox.Show("Communication Deleted Succesfully");
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                        textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear(); textBox6.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Communication Failed to Delete");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Communication Failed to Delete");
-                }
+               
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
-        }
-        private void PdfCommunication_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("buton 4");
         }
 
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)

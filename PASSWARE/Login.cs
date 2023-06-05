@@ -26,6 +26,13 @@ namespace PASSWARE
             InitializeComponent();
             client = new HttpClient();
         }
+        private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnLogin_Click(sender, e);
+            }
+        }
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
@@ -100,6 +107,7 @@ namespace PASSWARE
                             homePage.btnCompany.Visible = true;
                             homePage.Show();
                             this.Hide();
+                            
                         }
                         else
                         {
@@ -108,6 +116,7 @@ namespace PASSWARE
                             homePage.btnCompany.Visible = false;
                             homePage.Show();
                             this.Hide();
+                        
                         }
                     }
                     else
@@ -126,7 +135,6 @@ namespace PASSWARE
             }
 
         }
-
         private void btnRegister_Click(object sender, EventArgs e)
         {
             RegisterPage registerPage = new RegisterPage();
@@ -228,6 +236,9 @@ namespace PASSWARE
         private void Login_Load(object sender, EventArgs e)
         {
             LoadRememberMeData();
+            txtPassword.KeyPress += txtPassword_KeyPress;
         }
+
+       
     }
 }

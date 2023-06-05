@@ -65,29 +65,23 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox5);
 
 
-            Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            Button button1 = CreateButton("Add", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 40), 7);
             button1.Click += AddSql_Click;
             button1.Image = Properties.Resources.save;
             button1.ImageAlign = ContentAlignment.MiddleLeft;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            Button button2 = CreateButton("Update", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 8);
             button2.Image = Properties.Resources.update;
             button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateSql_Click;
             panel.Controls.Add(button2);
 
-            Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 250), 9);
             button3.Image = Properties.Resources.trash;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteSql_Click;
             panel.Controls.Add(button3);
-
-            Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
-            button4.Image = Properties.Resources.pdf;
-            button4.ImageAlign = ContentAlignment.MiddleLeft;
-            button4.Click += PdfSql_Click;
-            panel.Controls.Add(button4);
             return tabPage;
         }
         private Panel CreatePanel()
@@ -207,35 +201,40 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-
-
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to Added this SQL?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("SQl Added successfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    string sqlServerIP = textBox3.Text;
+                    string sqlServerUserName = textBox4.Text;
+                    string sqlServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+
+
+                    SqlController sqlController = new SqlController();
+                    bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("SQl Added successfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("SQL Failed to Added");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("SQL Failed to Added");
-                }
+              
             }
             catch (Exception ex)
             {
@@ -247,33 +246,38 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int sqlId = Convert.ToInt32(textBox1.Text);
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to update this SQL?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("SQL Updated Successfully");
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int sqlId = Convert.ToInt32(textBox1.Text);
+                    string sqlServerIP = textBox3.Text;
+                    string sqlServerUserName = textBox4.Text;
+                    string sqlServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+                    SqlController sqlController = new SqlController();
+                    bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("SQL Updated Successfully");
+
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                    }
+                    else
+                    {
+                        MessageBox.Show("SQl Failed to Update");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("SQl Failed to Update");
-                }
+              
             }
             catch (Exception ex)
             {
@@ -285,43 +289,46 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
 
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int sqlId = Convert.ToInt32(textBox1.Text);
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.DeleteSqlData(sqlId);
-                if (result)
+                DialogResult results = MessageBox.Show("Are you sure you want to delete this SQL?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results==DialogResult.Yes)
                 {
-                    MessageBox.Show("Sql Deleted Successfully");
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                    textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int sqlId = Convert.ToInt32(textBox1.Text);
+                    string sqlServerIP = textBox3.Text;
+                    string sqlServerUserName = textBox4.Text;
+                    string sqlServerPassword = textBox5.Text;
+                    string projectId = label1.Text;
+                    SqlController sqlController = new SqlController();
+                    bool result = await sqlController.DeleteSqlData(sqlId);
+                    if (result)
+                    {
+                        MessageBox.Show("Sql Deleted Successfully");
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+                        textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("SQL Failed to Update");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("SQL Failed to Update");
-                }
+              
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-        private void PdfSql_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("buton 4");
-        }
+      
 
 
 

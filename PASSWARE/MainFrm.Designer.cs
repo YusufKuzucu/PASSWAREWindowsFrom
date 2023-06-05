@@ -32,8 +32,9 @@
             this.ribbon1 = new System.Windows.Forms.Ribbon();
             this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
             this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
-            this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
             this.projectList = new System.Windows.Forms.RibbonButton();
+            this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
+            this.ribbonPanel2 = new System.Windows.Forms.RibbonPanel();
             this.SuspendLayout();
             // 
             // ribbon1
@@ -69,18 +70,23 @@
             this.ribbonPanel1.Name = "ribbonPanel1";
             this.ribbonPanel1.Text = "Project Details";
             // 
-            // ribbonTab2
-            // 
-            this.ribbonTab2.Name = "ribbonTab2";
-            this.ribbonTab2.Text = "Others";
-            // 
             // projectList
             // 
             this.projectList.Image = ((System.Drawing.Image)(resources.GetObject("projectList.Image")));
             this.projectList.LargeImage = ((System.Drawing.Image)(resources.GetObject("projectList.LargeImage")));
             this.projectList.Name = "projectList";
-            this.projectList.SmallImage = global::PASSWARE.Properties.Resources.indir1;
             this.projectList.Text = "ProjectList";
+            // 
+            // ribbonTab2
+            // 
+            this.ribbonTab2.Name = "ribbonTab2";
+            this.ribbonTab2.Panels.Add(this.ribbonPanel2);
+            this.ribbonTab2.Text = "Others";
+            // 
+            // ribbonPanel2
+            // 
+            this.ribbonPanel2.Name = "ribbonPanel2";
+            this.ribbonPanel2.Text = "ribbonPanel2";
             // 
             // MainFrm
             // 
@@ -102,5 +108,6 @@
         private System.Windows.Forms.RibbonPanel ribbonPanel1;
         private System.Windows.Forms.RibbonButton projectList;
         private System.Windows.Forms.RibbonTab ribbonTab2;
+        private System.Windows.Forms.RibbonPanel ribbonPanel2;
     }
 }

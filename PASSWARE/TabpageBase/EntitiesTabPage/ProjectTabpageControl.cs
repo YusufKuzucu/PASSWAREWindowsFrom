@@ -72,28 +72,28 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox6);
 
 
-            Button button1 = CreateButton("Add", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 55), 7);
+            Button button1 = CreateButton("Add", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 40), 7);
             button1.Image = Properties.Resources.save;
             button1.ImageAlign = ContentAlignment.MiddleLeft;
             button1.Click += AddProject_Click;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Update", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 171), 8);
+            Button button2 = CreateButton("Update", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 8);
             button2.Image = Properties.Resources.update;
             button2.ImageAlign = ContentAlignment.MiddleLeft;
             button2.Click += UpdateProject_Click;
             panel.Controls.Add(button2);
 
-            Button button3 = CreateButton("Delete ", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 290), 9);
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 250), 9);
             button3.Image = Properties.Resources.trash;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteProject_Click;
             panel.Controls.Add(button3);
 
-            Button button4 = CreateButton("Pdf", new System.Drawing.Size(192, 62), new System.Drawing.Point(3, 410), 10);
-            button4.Image = Properties.Resources.pdf;
+            Button button4 = CreateButton("Files", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 360), 10);
+            button4.Image = Properties.Resources._1_090;
             button4.ImageAlign = ContentAlignment.MiddleLeft;
-            button4.Click += PdfProject_Click;
+            button4.Click += FilesProject_Click;
             panel.Controls.Add(button4);
             return tabPage;
         }
@@ -305,34 +305,39 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
-                TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
+                DialogResult results = MessageBox.Show("Are you sure you want to delete this project?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (results == DialogResult.Yes)
+                {
+                    // Silme işlemine devam etmek
+                    Button button = (Button)sender;
+                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
+                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct2");
+                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct3");
+                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
+                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
+                    TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
 
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int projectId = Convert.ToInt32(textBox1.Text);
-                string projectName = textBox3.Text;
-                string projectServerIP = textBox4.Text;
-                string projectServerUserName = textBox5.Text;
-                string projectServerPassword = textBox6.Text;
-                string companyId = label1.Text;
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.DeleteSqlData(projectId);
-                if (result)
-                {
-                    MessageBox.Show("Project Deleted Successfully");
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
-                    textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();textBox6.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("Project Failed to Update");
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                    int projectId = Convert.ToInt32(textBox1.Text);
+                    string projectName = textBox3.Text;
+                    string projectServerIP = textBox4.Text;
+                    string projectServerUserName = textBox5.Text;
+                    string projectServerPassword = textBox6.Text;
+                    string companyId = label1.Text;
+                    SqlController sqlController = new SqlController();
+                    bool result = await sqlController.DeleteSqlData(projectId);
+                    if (result)
+                    {
+                        MessageBox.Show("Project Deleted Successfully");
+                        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(companyId));
+                        textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear(); textBox6.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Project Failed to Update");
+                    }
                 }
             }
             catch (Exception ex)
@@ -340,7 +345,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-        private void PdfProject_Click(object sender, EventArgs e)
+        private void FilesProject_Click(object sender, EventArgs e)
         {
             MessageBox.Show("buton 4");
         }

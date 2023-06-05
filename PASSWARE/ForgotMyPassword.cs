@@ -50,9 +50,6 @@ namespace PASSWARE
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Your Password Has Been Regenerated", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Login login = new Login();
-                    login.Show();
-                    this.Hide();
                 }
                 else
                 {
@@ -128,6 +125,13 @@ namespace PASSWARE
             {
                 Application.Exit();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            this.Hide();
         }
     }
 }
