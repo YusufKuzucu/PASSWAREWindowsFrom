@@ -3,6 +3,7 @@ using PASSWARE.Models.Entities;
 using PASSWARE.Properties;
 using PASSWARE.Request;
 using PASSWARE.TabpageBase;
+using PASSWARE.TabpageBase.EntitiesTabPage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,8 +19,6 @@ namespace PASSWARE
 {
     public partial class HomePage : Form
     {
-
-       
         public HomePage()
         {
             InitializeComponent();
@@ -30,7 +29,8 @@ namespace PASSWARE
         {
             ProjectTabpageList projectTabpageList = new ProjectTabpageList(tabControl1);
             TabPage tabPage = await projectTabpageList.CreateTabPage(tabControl1);
-            tabPage.Text = "PROJECT";
+            tabPage.Text = "Project";
+            tabPage.BackColor= Color.White;
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
 
@@ -41,6 +41,7 @@ namespace PASSWARE
             SqlTabpageList sqlTabpageList = new SqlTabpageList(tabControl1);
             TabPage tabPage = await sqlTabpageList.CreateTabPage(tabControl1);
             tabPage.Text = "SQl";
+            tabPage.BackColor = Color.White;
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
@@ -48,8 +49,7 @@ namespace PASSWARE
         private void HomePage_Load(object sender, EventArgs e)
         {
             tabControl1.MouseDown += tabControl1_MouseDown;
-
-            //tabControl1.DrawItem += tabControl1_DrawItem;
+            tabControl1.DrawItem += tabControl1_DrawItem;
             //tabControl1.MouseClick += tabControl1_MouseClick;
 
         }
@@ -59,6 +59,7 @@ namespace PASSWARE
             VpnTabpageList vpnTabpageList = new VpnTabpageList(tabControl1);
             TabPage tabPage = await vpnTabpageList.CreateTabPage(tabControl1);
             tabPage.Text = "VPN";
+            tabPage.BackColor = Color.White;
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
@@ -68,6 +69,7 @@ namespace PASSWARE
             UITabpageList uıTabpageList = new UITabpageList(tabControl1);
             TabPage tabPage = await uıTabpageList.CreateTabPage(tabControl1);
             tabPage.Text = "UI";
+            tabPage.BackColor = Color.White;
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
@@ -76,7 +78,8 @@ namespace PASSWARE
         {
             JumpTabpageList jumpTabpageList = new JumpTabpageList(tabControl1);
             TabPage tabPage = await jumpTabpageList.CreateTabPage(tabControl1);
-            tabPage.Text = "JUMP";
+            tabPage.BackColor = Color.White;
+            tabPage.Text = "Jump";
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
@@ -85,10 +88,61 @@ namespace PASSWARE
         {
             CommunicationTabpageList commTabpageList = new CommunicationTabpageList(tabControl1);
             TabPage tabPage = await commTabpageList.CreateTabPage(tabControl1);
-            tabPage.Text = "COMMUNİCATİON";
+            tabPage.BackColor = Color.White;
+            tabPage.Text = "Communication";
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }
+        //private void tabControl1_MouseDown(object sender, MouseEventArgs e)
+        //{
+        //    if (e.Button == MouseButtons.Left) // Orta fare düğmesine basıldığında
+        //    {
+        //        TabControl tabControl = (TabControl)sender;
+        //        int tabIndex = -1;
+        //        for (int i = 0; i < tabControl.TabCount; i++)
+        //        {
+        //            Rectangle tabRect = tabControl.GetTabRect(i);
+        //            Rectangle closeButtonRect = new Rectangle(tabRect.Right - 15, tabRect.Top + 4, 10, 10); // Kapatma düğmesinin alanı
+
+        //            if (closeButtonRect.Contains(e.Location))
+        //            {
+        //                tabIndex = i;
+        //                break;
+        //            }
+        //        }
+
+        //        if (tabIndex != -1)
+        //        {
+        //            TabPage tabPage = tabControl.TabPages[tabIndex];
+        //            tabControl.TabPages.Remove(tabPage);
+        //            tabPage.Dispose();
+        //        }
+        //    }
+        //}
+
+
+        private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabControl = (TabControl)sender;
+            Graphics g = e.Graphics;
+            Rectangle tabRect = tabControl.GetTabRect(e.Index);
+
+            // Sekme metnini çizme
+            string tabText = tabControl.TabPages[e.Index].Text;
+
+            StringFormat stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            stringFormat.LineAlignment = StringAlignment.Center;
+
+            g.DrawString(tabText, e.Font, Brushes.Black, tabRect, stringFormat);
+
+            // Kapatma düğmesini çizme
+            Rectangle closeButtonRect = new Rectangle(tabRect.Right - 15, tabRect.Top + 4, 10, 10);
+            g.FillRectangle(Brushes.White, closeButtonRect);
+            g.DrawRectangle(Pens.Black, closeButtonRect);
+            g.DrawString("x", e.Font, Brushes.Black, closeButtonRect, stringFormat);
+        }
+
         private void tabControl1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left) // Orta fare düğmesine basıldığında
@@ -116,31 +170,17 @@ namespace PASSWARE
             }
         }
 
+        private async void btnCompany_Click(object sender, EventArgs e)
+        {
+            CompanyTabpageControl companyTabpageControl = new CompanyTabpageControl(tabControl1);
+            TabPage tabPage = await companyTabpageControl.CreateTabPage(tabControl1);
+            tabPage.BackColor = Color.White;
+            tabPage.Text = "Company";
+            tabControl1.TabPages.Add(tabPage);
+            tabControl1.SelectedTab = tabPage;
 
-        //private void TabControl1_DrawItem(object sender, DrawItemEventArgs e)
-        //{
-        //    TabControl tabControl = (TabControl)sender;
-        //    Graphics g = e.Graphics;
-        //    Rectangle tabRect = tabControl.GetTabRect(e.Index);
 
-        //    // TabPage başlığını çizin
-        //    string tabPageText = tabControl.TabPages[e.Index].Text;
-        //    g.DrawString(tabPageText, tabControl.Font, Brushes.Black, tabRect.X + 5, tabRect.Y + 5);
-
-        //    // Kapatma düğmesini çizin
-        //    using (Pen pen = new Pen(Color.Black))
-        //    {
-        //        int closeButtonWidth = 10;
-        //        int closeButtonHeight = 10;
-        //        int closeButtonX = tabRect.Right - closeButtonWidth - 5;
-        //        int closeButtonY = tabRect.Top + (tabRect.Height - closeButtonHeight) / 2;
-
-        //        g.DrawRectangle(pen, closeButtonX, closeButtonY, closeButtonWidth, closeButtonHeight);
-        //        g.DrawLine(pen, closeButtonX + 2, closeButtonY + 2, closeButtonX + closeButtonWidth - 2, closeButtonY + closeButtonHeight - 2);
-        //        g.DrawLine(pen, closeButtonX + closeButtonWidth - 2, closeButtonY + 2, closeButtonX + 2, closeButtonY + closeButtonHeight - 2);
-        //    }
-        //}
-
+        }
 
 
 
@@ -193,7 +233,7 @@ namespace PASSWARE
         //    }
         //}
 
-        
+
 
 
 

@@ -35,6 +35,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.btnVpn = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox5 = new System.Windows.Forms.TextBox();
@@ -52,13 +53,13 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnCompany = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel2.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -66,6 +67,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel1.Controls.Add(this.btnCompany);
             this.panel1.Controls.Add(this.btnUı);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.btnCommunication);
@@ -82,9 +84,9 @@
             // 
             this.btnUı.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.btnUı.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnUı.Location = new System.Drawing.Point(1153, 0);
+            this.btnUı.Location = new System.Drawing.Point(1257, 0);
             this.btnUı.Name = "btnUı";
-            this.btnUı.Size = new System.Drawing.Size(130, 97);
+            this.btnUı.Size = new System.Drawing.Size(130, 101);
             this.btnUı.TabIndex = 7;
             this.btnUı.Text = "UI";
             this.btnUı.UseVisualStyleBackColor = false;
@@ -94,9 +96,9 @@
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button1.Location = new System.Drawing.Point(258, 6);
+            this.button1.Location = new System.Drawing.Point(424, -3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 94);
+            this.button1.Size = new System.Drawing.Size(130, 100);
             this.button1.TabIndex = 1;
             this.button1.Text = "Projects";
             this.button1.UseVisualStyleBackColor = false;
@@ -106,9 +108,9 @@
             // 
             this.btnCommunication.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.btnCommunication.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnCommunication.Location = new System.Drawing.Point(1392, 0);
+            this.btnCommunication.Location = new System.Drawing.Point(1439, 0);
             this.btnCommunication.Name = "btnCommunication";
-            this.btnCommunication.Size = new System.Drawing.Size(150, 97);
+            this.btnCommunication.Size = new System.Drawing.Size(150, 100);
             this.btnCommunication.TabIndex = 6;
             this.btnCommunication.Text = "Communication";
             this.btnCommunication.UseVisualStyleBackColor = false;
@@ -118,9 +120,9 @@
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button2.Location = new System.Drawing.Point(484, 2);
+            this.button2.Location = new System.Drawing.Point(611, 0);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 95);
+            this.button2.Size = new System.Drawing.Size(130, 100);
             this.button2.TabIndex = 2;
             this.button2.Text = "SQL";
             this.button2.UseVisualStyleBackColor = false;
@@ -130,9 +132,9 @@
             // 
             this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.button4.Location = new System.Drawing.Point(942, 2);
+            this.button4.Location = new System.Drawing.Point(1058, 0);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(130, 96);
+            this.button4.Size = new System.Drawing.Size(130, 101);
             this.button4.TabIndex = 4;
             this.button4.Text = "Jump";
             this.button4.UseVisualStyleBackColor = false;
@@ -142,13 +144,24 @@
             // 
             this.btnVpn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
             this.btnVpn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.btnVpn.Location = new System.Drawing.Point(715, 2);
+            this.btnVpn.Location = new System.Drawing.Point(845, 0);
             this.btnVpn.Name = "btnVpn";
-            this.btnVpn.Size = new System.Drawing.Size(130, 97);
+            this.btnVpn.Size = new System.Drawing.Size(130, 101);
             this.btnVpn.TabIndex = 3;
             this.btnVpn.Text = "Vpn";
             this.btnVpn.UseVisualStyleBackColor = false;
             this.btnVpn.Click += new System.EventHandler(this.btnVpn_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.SteelBlue;
+            this.pictureBox1.Image = global::PASSWARE.Properties.Resources.indir;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(132, 94);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // statusStrip1
             // 
@@ -320,16 +333,17 @@
             this.tabControl1.Size = new System.Drawing.Size(1542, 509);
             this.tabControl1.TabIndex = 3;
             // 
-            // pictureBox1
+            // btnCompany
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.SteelBlue;
-            this.pictureBox1.Image = global::PASSWARE.Properties.Resources.indir;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(132, 94);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.btnCompany.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
+            this.btnCompany.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnCompany.Location = new System.Drawing.Point(211, 0);
+            this.btnCompany.Name = "btnCompany";
+            this.btnCompany.Size = new System.Drawing.Size(130, 100);
+            this.btnCompany.TabIndex = 8;
+            this.btnCompany.Text = "Company";
+            this.btnCompany.UseVisualStyleBackColor = false;
+            this.btnCompany.Click += new System.EventHandler(this.btnCompany_Click);
             // 
             // HomePage
             // 
@@ -344,12 +358,12 @@
             this.Text = "HomePage";
             this.Load += new System.EventHandler(this.HomePage_Load);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,5 +395,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnUı;
         private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button btnCompany;
     }
 }

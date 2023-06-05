@@ -89,6 +89,7 @@ namespace PASSWARE
                         // Admin yetkilerine sahip işlemler
                         MessageBox.Show("Admin olarak giriş yapıldı!");
                         HomePage homePage = new HomePage();
+                        homePage.btnCompany.Visible = true;
                         homePage.Show();
                         this.Hide();
 
@@ -98,10 +99,9 @@ namespace PASSWARE
                         // Diğer kullanıcı rollerine sahip işlemler
                         MessageBox.Show("Kullanıcı olarak giriş yapıldı!");
                         HomePage homePage = new HomePage();
+                        homePage.btnCompany.Visible = false;
                         homePage.Show();
                         this.Hide();
-
-                        //toolStripStatusLabel1.Text = accessToken;
                     }
                 }
                 else

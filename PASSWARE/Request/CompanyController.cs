@@ -56,7 +56,7 @@ namespace PASSWARE.Request
 
         }
 
-        public async Task<bool> AddCompaniesData(string companyName)
+        public async Task<bool> AddCompaniesData(string companyname)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace PASSWARE.Request
                 HttpClient client = new HttpClient();
                 var companies = new
                 {
-                    companyName = companyName,
+                    companyName = companyname,
                 };
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
                 var json = JsonConvert.SerializeObject(companies);
@@ -84,7 +84,7 @@ namespace PASSWARE.Request
 
         }
 
-        public async Task<bool> UpdateCompaniesData(string companyName)
+        public async Task<bool> UpdateCompaniesData(string companyName,int companyId)
         {
             try
             {
@@ -92,6 +92,7 @@ namespace PASSWARE.Request
                 HttpClient client = new HttpClient();
                 var companies = new
                 {
+                    id= companyId,
                     companyName = companyName,
                 };
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
