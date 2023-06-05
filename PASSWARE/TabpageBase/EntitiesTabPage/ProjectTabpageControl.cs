@@ -101,21 +101,23 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             Panel panel = new Panel();
             panel.Dock = DockStyle.Right;
-            panel.BackColor = System.Drawing.Color.Gray;
+            panel.BackColor = Color.FromKnownColor(KnownColor.Control);
             panel.Location = new System.Drawing.Point(1331, 3);
             panel.Size = new System.Drawing.Size(200, 477);
             panel.TabIndex = 0;
+            panel.BorderStyle = BorderStyle.FixedSingle;
             return panel;
         }
         private Button CreateButton(string text, Size size, Point location, int tabındex)
         {
             Button button = new Button();
             button.Text = text;
-            button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
+            button.BackColor = Color.FromKnownColor(KnownColor.Silver);
             button.Size = size;
             button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            button.ForeColor = Color.White;
-            button.UseVisualStyleBackColor = false;
+            button.ForeColor = Color.Black;
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
             button.Location = location;
             button.TabIndex = tabındex;
             button.FlatStyle = FlatStyle.Flat;

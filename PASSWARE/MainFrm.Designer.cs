@@ -32,7 +32,6 @@
             this.ribbon1 = new System.Windows.Forms.Ribbon();
             this.ribbonTab1 = new System.Windows.Forms.RibbonTab();
             this.rPProjetcs = new System.Windows.Forms.RibbonPanel();
-            this.projectList = new System.Windows.Forms.RibbonButton();
             this.ribbonTab2 = new System.Windows.Forms.RibbonTab();
             this.rPSqls = new System.Windows.Forms.RibbonPanel();
             this.ribbonTab3 = new System.Windows.Forms.RibbonTab();
@@ -43,18 +42,19 @@
             this.rPUIs = new System.Windows.Forms.RibbonPanel();
             this.ribbonTab6 = new System.Windows.Forms.RibbonTab();
             this.rPCommunications = new System.Windows.Forms.RibbonPanel();
+            this.ribbonTab7 = new System.Windows.Forms.RibbonTab();
+            this.rPCompanys = new System.Windows.Forms.RibbonPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.ribbonTab7 = new System.Windows.Forms.RibbonTab();
-            this.rPCompanys = new System.Windows.Forms.RibbonPanel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.projectList = new System.Windows.Forms.RibbonButton();
             this.sqlsList = new System.Windows.Forms.RibbonButton();
             this.vpnList = new System.Windows.Forms.RibbonButton();
             this.jumpList = new System.Windows.Forms.RibbonButton();
             this.uıList = new System.Windows.Forms.RibbonButton();
             this.communicationList = new System.Windows.Forms.RibbonButton();
             this.companyList = new System.Windows.Forms.RibbonButton();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -96,15 +96,6 @@
             this.rPProjetcs.Items.Add(this.projectList);
             this.rPProjetcs.Name = "rPProjetcs";
             this.rPProjetcs.Text = "Project Details";
-            // 
-            // projectList
-            // 
-            this.projectList.Image = ((System.Drawing.Image)(resources.GetObject("projectList.Image")));
-            this.projectList.LargeImage = ((System.Drawing.Image)(resources.GetObject("projectList.LargeImage")));
-            this.projectList.Name = "projectList";
-            this.projectList.SmallImage = ((System.Drawing.Image)(resources.GetObject("projectList.SmallImage")));
-            this.projectList.Text = "ProjectList";
-            this.projectList.Click += new System.EventHandler(this.projectList_Click);
             // 
             // ribbonTab2
             // 
@@ -166,16 +157,28 @@
             this.rPCommunications.Name = "rPCommunications";
             this.rPCommunications.Text = "Communication Details";
             // 
+            // ribbonTab7
+            // 
+            this.ribbonTab7.Name = "ribbonTab7";
+            this.ribbonTab7.Panels.Add(this.rPCompanys);
+            this.ribbonTab7.Text = "Companys";
+            // 
+            // rPCompanys
+            // 
+            this.rPCompanys.Items.Add(this.companyList);
+            this.rPCompanys.Name = "rPCompanys";
+            this.rPCompanys.Text = "Company Details";
+            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(0, 177);
+            this.tabControl1.Location = new System.Drawing.Point(0, 167);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1428, 495);
+            this.tabControl1.Size = new System.Drawing.Size(1428, 505);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -183,7 +186,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1420, 466);
+            this.tabPage1.Size = new System.Drawing.Size(1420, 476);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -199,22 +202,24 @@
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // ribbonTab7
+            // toolStripProgressBar1
             // 
-            this.ribbonTab7.Name = "ribbonTab7";
-            this.ribbonTab7.Panels.Add(this.rPCompanys);
-            this.ribbonTab7.Text = "Companys";
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 15);
             // 
-            // rPCompanys
+            // projectList
             // 
-            this.rPCompanys.Items.Add(this.companyList);
-            this.rPCompanys.Name = "rPCompanys";
-            this.rPCompanys.Text = "Company Details";
+            this.projectList.Image = global::PASSWARE.Properties.Resources.project;
+            this.projectList.LargeImage = global::PASSWARE.Properties.Resources.project;
+            this.projectList.Name = "projectList";
+            this.projectList.SmallImage = ((System.Drawing.Image)(resources.GetObject("projectList.SmallImage")));
+            this.projectList.Text = "ProjectList";
+            this.projectList.Click += new System.EventHandler(this.projectList_Click);
             // 
             // sqlsList
             // 
-            this.sqlsList.Image = ((System.Drawing.Image)(resources.GetObject("sqlsList.Image")));
-            this.sqlsList.LargeImage = ((System.Drawing.Image)(resources.GetObject("sqlsList.LargeImage")));
+            this.sqlsList.Image = global::PASSWARE.Properties.Resources.Sql_runner;
+            this.sqlsList.LargeImage = global::PASSWARE.Properties.Resources.Sql_runner;
             this.sqlsList.Name = "sqlsList";
             this.sqlsList.SmallImage = ((System.Drawing.Image)(resources.GetObject("sqlsList.SmallImage")));
             this.sqlsList.Text = "SqlList";
@@ -222,8 +227,8 @@
             // 
             // vpnList
             // 
-            this.vpnList.Image = ((System.Drawing.Image)(resources.GetObject("vpnList.Image")));
-            this.vpnList.LargeImage = ((System.Drawing.Image)(resources.GetObject("vpnList.LargeImage")));
+            this.vpnList.Image = global::PASSWARE.Properties.Resources.vpn;
+            this.vpnList.LargeImage = global::PASSWARE.Properties.Resources.vpn;
             this.vpnList.Name = "vpnList";
             this.vpnList.SmallImage = ((System.Drawing.Image)(resources.GetObject("vpnList.SmallImage")));
             this.vpnList.Text = "VpnList";
@@ -231,8 +236,8 @@
             // 
             // jumpList
             // 
-            this.jumpList.Image = ((System.Drawing.Image)(resources.GetObject("jumpList.Image")));
-            this.jumpList.LargeImage = ((System.Drawing.Image)(resources.GetObject("jumpList.LargeImage")));
+            this.jumpList.Image = global::PASSWARE.Properties.Resources.jamembo_jumpto;
+            this.jumpList.LargeImage = global::PASSWARE.Properties.Resources.jamembo_jumpto;
             this.jumpList.Name = "jumpList";
             this.jumpList.SmallImage = ((System.Drawing.Image)(resources.GetObject("jumpList.SmallImage")));
             this.jumpList.Text = "JumpList";
@@ -249,8 +254,8 @@
             // 
             // communicationList
             // 
-            this.communicationList.Image = ((System.Drawing.Image)(resources.GetObject("communicationList.Image")));
-            this.communicationList.LargeImage = ((System.Drawing.Image)(resources.GetObject("communicationList.LargeImage")));
+            this.communicationList.Image = global::PASSWARE.Properties.Resources.communication;
+            this.communicationList.LargeImage = global::PASSWARE.Properties.Resources.communication;
             this.communicationList.Name = "communicationList";
             this.communicationList.SmallImage = ((System.Drawing.Image)(resources.GetObject("communicationList.SmallImage")));
             this.communicationList.Text = "CommunicationList";
@@ -258,17 +263,12 @@
             // 
             // companyList
             // 
-            this.companyList.Image = ((System.Drawing.Image)(resources.GetObject("companyList.Image")));
-            this.companyList.LargeImage = ((System.Drawing.Image)(resources.GetObject("companyList.LargeImage")));
+            this.companyList.Image = global::PASSWARE.Properties.Resources.company;
+            this.companyList.LargeImage = global::PASSWARE.Properties.Resources.company;
             this.companyList.Name = "companyList";
             this.companyList.SmallImage = ((System.Drawing.Image)(resources.GetObject("companyList.SmallImage")));
             this.companyList.Text = "CompanyList";
             this.companyList.Click += new System.EventHandler(this.companyList_Click);
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
             // 
             // MainFrm
             // 

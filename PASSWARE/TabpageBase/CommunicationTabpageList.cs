@@ -71,7 +71,7 @@ namespace PASSWARE.TabpageBase
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Size = new Size(1527, 460);
             dataGridView.TabIndex = 1;
-            dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
+            dataGridView.CellMouseDoubleClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
             return dataGridView;
         }

@@ -178,5 +178,26 @@
   <ItemGroup>
     <None Include="Resources\1_090.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\project.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sql-runner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vpn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jamembo-jumpto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\company.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\communication.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\favicon-32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

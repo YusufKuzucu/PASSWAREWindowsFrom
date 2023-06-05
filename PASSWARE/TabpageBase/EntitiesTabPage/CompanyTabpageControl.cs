@@ -76,10 +76,11 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             Panel panel = new Panel();
             panel.Dock = DockStyle.Right;
-            panel.BackColor = System.Drawing.Color.Gray;
+            panel.BackColor = Color.FromKnownColor(KnownColor.Control);
             panel.Location = new System.Drawing.Point(1331, 3);
             panel.Size = new System.Drawing.Size(200, 477);
             panel.TabIndex = 0;
+            panel.BorderStyle = BorderStyle.FixedSingle;
             return panel;
         }
 
@@ -87,11 +88,12 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             Button button = new Button();
             button.Text = text;
-            button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(157)))), ((int)(((byte)(88)))));
+            button.BackColor = Color.FromKnownColor(KnownColor.Silver);
             button.Size = size;
             button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            button.ForeColor = Color.White;
-            button.UseVisualStyleBackColor = false;
+            button.ForeColor = Color.Black;
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
             button.Location = location;
             button.TabIndex = tabındex;
             button.FlatStyle = FlatStyle.Flat;
@@ -203,29 +205,25 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                DialogResult results = MessageBox.Show("Are you sure you want to added this Company?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (results==DialogResult.Yes)
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                string compayId = textBox1.Text;
+                string companyName = textBox2.Text;
+
+                CompanyController companyController = new CompanyController();
+                bool result = await companyController.AddCompaniesData(companyName);
+                if (result)
                 {
-                    Button button = (Button)sender;
-                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
-                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");
-                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                    string compayId = textBox1.Text;
-                    string companyName = textBox2.Text;
+                    MessageBox.Show("Company Added successfully");
 
-                    CompanyController companyController = new CompanyController();
-                    bool result = await companyController.AddCompaniesData(companyName);
-                    if (result)
-                    {
-                        MessageBox.Show("Company Added successfully");
-
-                        await LoadDataIntoDataGridView(dataGridView);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Company Failed to Added");
-                    }
+                    await LoadDataIntoDataGridView(dataGridView);
+                }
+                else
+                {
+                    MessageBox.Show("Company Failed to Added");
                 }
             }
             catch (Exception ex)
@@ -238,36 +236,32 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             try
             {
-                DialogResult results = MessageBox.Show("Are you sure you want to update this Company?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (results==DialogResult.Yes)
+                Button button = (Button)sender;
+                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
+                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");
+
+
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+                int companyId = Convert.ToInt32(textBox1.Text);
+                string compayName = textBox2.Text;
+
+                string projectId = textBox1.Text;
+                CompanyController companyController = new CompanyController();
+
+                bool result = await companyController.UpdateCompaniesData(compayName, companyId);
+                if (result)
                 {
-                    Button button = (Button)sender;
-                    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
-                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");
+                    MessageBox.Show("Company Updated Successfully");
 
-
-                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                    int companyId = Convert.ToInt32(textBox1.Text);
-                    string compayName = textBox2.Text;
-
-                    string projectId = textBox1.Text;
-                    CompanyController companyController = new CompanyController();
-
-                    bool result = await companyController.UpdateCompaniesData(compayName, companyId);
-                    if (result)
-                    {
-                        MessageBox.Show("Company Updated Successfully");
-
-                        await LoadDataIntoDataGridView(dataGridView);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Company Failed to Update");
-                    }
+                    await LoadDataIntoDataGridView(dataGridView);
                 }
-             
+                else
+                {
+                    MessageBox.Show("Company Failed to Update");
+                }
+
             }
             catch (Exception ex)
             {
