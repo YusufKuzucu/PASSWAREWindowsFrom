@@ -64,12 +64,12 @@ namespace PASSWARE.TabpageBase
             dataGridView.ReadOnly = true;
             dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.ScrollBars = ScrollBars.Both;
-            dataGridView.Location = new Point(0, 192);
+            dataGridView.Location = new Point(0, 180);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);
             dataGridView.Dock = DockStyle.None;
             dataGridView.RowTemplate.Height = 24;
-            dataGridView.Size = new Size(1527, 460);
+            dataGridView.Size = new Size(1527, 430);
             dataGridView.TabIndex = 1;
             dataGridView.CellMouseDoubleClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;

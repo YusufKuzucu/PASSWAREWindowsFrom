@@ -1,4 +1,5 @@
-﻿using PASSWARE.TabpageBase;
+﻿using PASSWARE.Models;
+using PASSWARE.TabpageBase;
 using PASSWARE.TabpageBase.EntitiesTabPage;
 using System;
 using System.Collections.Generic;
@@ -95,6 +96,7 @@ namespace PASSWARE
             tabControl1.DrawItem += tabControl1_DrawItem;
             this.KeyPreview = true;
             this.KeyDown += MainFrm_KeyDown;
+            toolStripStatusLabel1.Text=ActiveUser.FirstName +" "+ActiveUser.LastName;
         }
         private void MainFrm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -176,11 +178,18 @@ namespace PASSWARE
         }
         private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            DialogResult result = MessageBox.Show("Are you sure you want to close the application?", "Confirm Close", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
+            if (e.CloseReason == CloseReason.UserClosing)
             {
-                e.Cancel = false;
+                DialogResult result = MessageBox.Show("Are you sure you want to close the application?", "Application Shutdown", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true; 
+                }
+                else
+                {
+                    Application.Exit(); 
+                }
             }
         }
 

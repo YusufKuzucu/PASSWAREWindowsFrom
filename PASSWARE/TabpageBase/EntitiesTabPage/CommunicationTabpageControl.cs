@@ -147,13 +147,13 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView.Location = new System.Drawing.Point(0, 300);
+            dataGridView.Location = new System.Drawing.Point(0, 280);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
-            dataGridView.Size = new System.Drawing.Size(1325, 370);
+            dataGridView.Size = new System.Drawing.Size(1325, 330);
             dataGridView.TabIndex = 1;
             LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;

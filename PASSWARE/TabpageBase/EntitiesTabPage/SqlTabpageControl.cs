@@ -147,7 +147,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
-            dataGridView.Size = new System.Drawing.Size(1325, 300);
+            dataGridView.Size = new System.Drawing.Size(1325, 330);
             dataGridView.TabIndex = 1;
             LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;

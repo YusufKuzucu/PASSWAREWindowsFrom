@@ -236,7 +236,8 @@ namespace PASSWARE
             LoadRememberMeData();
             txtPassword.KeyPress += txtPassword_KeyPress;
         }
+      
 
-       
+
     }
 }
