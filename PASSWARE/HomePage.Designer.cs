@@ -221,7 +221,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::PASSWARE.Properties.Resources.favicon_32x321;
+            this.pictureBox2.Image = global::PASSWARE.Properties.Resources.interface_preferences;
             this.pictureBox2.Location = new System.Drawing.Point(636, 93);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(100, 50);

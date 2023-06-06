@@ -48,8 +48,6 @@ namespace PASSWARE.Request
             catch (Exception ex)
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
-                // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-                throw; // Hatanın takipçisine iletilmesi.
             }
             return data;
 
@@ -127,7 +125,7 @@ namespace PASSWARE.Request
                 HttpClient client = new HttpClient();
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
-                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Links/Delete?id={id}");
+                HttpResponseMessage responseMessage = await client.DeleteAsync($"{apiUrl}Files/Delete?id={id}");
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     return true;

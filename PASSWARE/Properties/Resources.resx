@@ -136,6 +136,9 @@
   <data name="pdf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pdf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="favicon-32x321" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\favicon-32x321.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -160,7 +163,7 @@
   <data name="favicon-32x32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\favicon-32x32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="favicon-32x321" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\favicon-32x321.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="interface_preferences" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\interface_preferences.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

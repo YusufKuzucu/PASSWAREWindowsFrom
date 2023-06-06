@@ -49,8 +49,7 @@ namespace PASSWARE.Request
             catch (Exception ex)
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
-                // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-                throw; // Hatanın takipçisine iletilmesi.
+              
             }
             return data;
 
@@ -140,8 +139,8 @@ namespace PASSWARE.Request
                     externalNumber = externalNumber,
                     externalEmail = externalEmail,
                     projectId = projectId,
-                    createdBy = ActiveUser.FirstName,
-                    createdDate = DateTime.Now,
+                    updatedBy = ActiveUser.FirstName,
+                    updatedDate = DateTime.Now,
                 };
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
                 var json = JsonConvert.SerializeObject(communication);

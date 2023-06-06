@@ -48,12 +48,8 @@ namespace PASSWARE.Request
             catch (Exception ex)
             {
                 MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
-                // Hata kaydını loglama veya diğer gerekli işlemleri burada gerçekleştirebilirsiniz.
-                throw; // Hatanın takipçisine iletilmesi.
             }
             return data;
-
-
         }
         public async Task<Vpn[]> GetVpn(int id)
         {
