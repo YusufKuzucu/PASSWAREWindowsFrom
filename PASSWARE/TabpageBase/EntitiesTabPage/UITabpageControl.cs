@@ -163,7 +163,15 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
-                string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
+                string selectedUIId = string.Empty;
+                if (selectedRow.Cells["ID"].Value !=null)
+                {
+                    selectedUIId = selectedRow.Cells["ID"].Value.ToString();    
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                 string uIServerIP = selectedRow.Cells["UIServerIP"].Value.ToString();
                 string uIServerUserName = selectedRow.Cells["UIServerUserName"].Value.ToString();
@@ -174,7 +182,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
-                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
+                textBox1.Text = selectedUIId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
             }
         }
 
@@ -185,8 +193,16 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             {
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                //string selectedId = selectedCell.Value.ToString();,
-                string selectedVpnId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+
+                string selectedUIId = string.Empty;
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                {
+                    selectedUIId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString(); 
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                 string uIServerIP = dataGridView.Rows[e.RowIndex].Cells["UIServerIP"].Value.ToString();
                 string uIServerUserName = dataGridView.Rows[e.RowIndex].Cells["UIServerUserName"].Value.ToString();
@@ -197,7 +213,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı3");
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtUı5");
-                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
+                textBox1.Text = selectedUIId; textBox2.Text = projectName; textBox3.Text = uIServerIP; textBox4.Text = uIServerUserName; textBox5.Text = uIServerPassword;
             }
         }
 

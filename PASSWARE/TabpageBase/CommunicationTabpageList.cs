@@ -216,7 +216,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedCommId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value !=null)
+                    {
+                        selectedCommId = selectedRow.Cells["ID"].Value.ToString();  
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string ınternalEmail = selectedRow.Cells["InternalEmail"].Value.ToString();
                     string ınternalNumber = selectedRow.Cells["InternalNumber"].Value.ToString();
@@ -235,7 +243,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
-                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedVpnId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
+                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
                     tabPage.Text = "Communication";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
@@ -252,7 +260,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedVpnId = selectedCell.Value.ToString();
+                    string selectedCommId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                    {
+                        selectedCommId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string ınternalEmail = dataGridView.Rows[e.RowIndex].Cells["InternalEmail"].Value.ToString();
                     string ınternalNumber = dataGridView.Rows[e.RowIndex].Cells["InternalNumber"].Value.ToString();
@@ -271,7 +287,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
-                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedVpnId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
+                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
                     tabPage.Text = "Communication";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;

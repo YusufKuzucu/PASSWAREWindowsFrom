@@ -217,7 +217,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedVpnId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value !=null)
+                    {
+                        selectedVpnId = selectedRow.Cells["ID"].Value.ToString();   
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string jumpServerIP = selectedRow.Cells["JumpServerIP"].Value.ToString();
                     string jumpServerUserName = selectedRow.Cells["JumpServerUserName"].Value.ToString();
@@ -249,7 +257,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedVpnId = selectedCell.Value.ToString();
+                    string selectedVpnId =string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value != null)
+                    {
+                        selectedVpnId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string jumpServerIP = dataGridView.Rows[e.RowIndex].Cells["JumpServerIP"].Value.ToString();
                     string jumpServerUserName = dataGridView.Rows[e.RowIndex].Cells["JumpServerUserName"].Value.ToString();

@@ -104,6 +104,7 @@ namespace PASSWARE
                         {
                             // Admin yetkilerine sahip işlemler
                             MainFrm mainFrm=new MainFrm();
+                            mainFrm.ribbonTab7.Visible = true;
                             mainFrm.Show();
                             this.Hide();
                             
@@ -112,6 +113,7 @@ namespace PASSWARE
                         {
                             // Processes with other user roles
                             MainFrm mainFrm = new MainFrm();
+                            mainFrm.ribbonTab7.Visible = false;
                             mainFrm.Show();
                             this.Hide();
 

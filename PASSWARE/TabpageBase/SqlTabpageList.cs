@@ -37,7 +37,7 @@ namespace PASSWARE.TabpageBase
         }
         public async Task<TabPage> CreateTabPage(TabControl tabControl)
         {
-            TabPage tabPage = new TabPage("TabPage");
+            TabPage tabPage = new TabPage("SQl List");
             DataGridView dataGridView = CreateDataGridView();
             tabPage.Controls.Add(dataGridView);
 
@@ -216,7 +216,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedSqlId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedSqlId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value!=null)
+                    {
+                        selectedSqlId = selectedRow.Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
                     string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
@@ -249,7 +257,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedSqlId = selectedCell.Value.ToString();
+                    string selectedSqlId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value!=null)
+                    {
+                        selectedSqlId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
                     string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();

@@ -174,7 +174,15 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
-                string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                string selectedId = string.Empty;
+                if (selectedRow.Cells["ID"].Value !=null)
+                {
+                    selectedId = selectedRow.Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string companyName = selectedRow.Cells["CompanyName"].Value.ToString();
                 string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                 string projectServerIP = selectedRow.Cells["ProjectServerIP"].Value.ToString();
@@ -199,8 +207,15 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             {
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                //string selectedId = selectedCell.Value.ToString();,
-                string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string selectedId = string.Empty;
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                {
+                    selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string companyName = dataGridView.Rows[e.RowIndex].Cells["CompanyName"].Value.ToString();
                 string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                 string projectServerIP = dataGridView.Rows[e.RowIndex].Cells["ProjectServerIP"].Value.ToString();

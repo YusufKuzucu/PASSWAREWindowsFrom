@@ -28,23 +28,23 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
 
-            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
+            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 37), 2);
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
-            Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 80), 3);
+            Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 83), 3);
             tabPage.Controls.Add(label2);
 
-            Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 138), 4);
+            Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 141), 4);
             tabPage.Controls.Add(label3);
 
-            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 190), 8);
+            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 193), 8);
             tabPage.Controls.Add(label4);
 
-            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 240), 8);
+            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 243), 8);
             tabPage.Controls.Add(label5);
 
-            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
+            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 15), 8); ;
             label6.Enabled = false;
             tabPage.Controls.Add(label6);
 
@@ -152,6 +152,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
+
             return dataGridView;
         }
         private void DataGridView_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -159,10 +160,17 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             DataGridView dataGridView = (DataGridView)sender;
             if (dataGridView.SelectedRows.Count > 0)
             {
-                // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
+                string selectedId = string.Empty;
+                if (selectedRow.Cells["ID"].Value != null)
+                {
+                    selectedId = selectedRow.Cells["ID"].Value.ToString();
 
-                string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                 string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
                 string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
@@ -176,16 +184,22 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 textBox1.Text = selectedId; textBox2.Text = projectName; textBox3.Text = selectSqlServerIp; textBox4.Text = selectSqlServerUserName; textBox5.Text = selectSqlServerPassword;
             }
         }
-
+    
         private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridView dataGridView = (DataGridView)sender;
             if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
             {
-                // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                //string selectedId = selectedCell.Value.ToString();,
-                string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string selectedId = string.Empty;
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value!=null)
+                {
+                    selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                 string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
                 string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
@@ -325,9 +339,6 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             }
         }
       
-
-
-
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
         {
             try

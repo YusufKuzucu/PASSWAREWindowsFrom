@@ -216,7 +216,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedUIId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedUIId=string.Empty;
+                    if (selectedRow.Cells["ID"].Value !=null)
+                    {
+                        selectedUIId = selectedRow.Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string uIServerIP = selectedRow.Cells["UIServerIP"].Value.ToString();
                     string uIServerUserName = selectedRow.Cells["UIServerUserName"].Value.ToString();
@@ -248,7 +256,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedUIId = selectedCell.Value.ToString();
+                    string selectedUIId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value!=null)
+                    {
+                        selectedUIId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string UIServerIP = dataGridView.Rows[e.RowIndex].Cells["UIServerIP"].Value.ToString();
                     string UIServerUserName = dataGridView.Rows[e.RowIndex].Cells["UIServerUserName"].Value.ToString();

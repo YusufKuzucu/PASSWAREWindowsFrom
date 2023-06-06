@@ -216,7 +216,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedVpnId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value !=null)
+                    {
+                        selectedVpnId = selectedRow.Cells["ID"].Value.ToString();  
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string vpnProgramName = selectedRow.Cells["VpnProgramName"].Value.ToString();
                     string vpnConnectionAddress = selectedRow.Cells["VpnConnectionAddress"].Value.ToString();
@@ -248,7 +256,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedVpnId = selectedCell.Value.ToString();
+                    string selectedVpnId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                    {
+                        selectedVpnId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string vpnProgramName = dataGridView.Rows[e.RowIndex].Cells["VpnProgramName"].Value.ToString();
                     string vpnConnectionAddress = dataGridView.Rows[e.RowIndex].Cells["VpnConnectionAddress"].Value.ToString();

@@ -168,7 +168,15 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
-                string selectedVpnId = selectedRow.Cells["ID"].Value.ToString();
+                string selectedCommId = string.Empty;
+                if (selectedRow.Cells["ID"].Value !=null)
+                {
+                    selectedCommId = selectedRow.Cells["ID"].Value.ToString();  
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
                 string ınternalEmail = selectedRow.Cells["InternalEmail"].Value.ToString();
                 string ınternalNumber = selectedRow.Cells["InternalNumber"].Value.ToString();
@@ -183,7 +191,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
                 TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
 
-                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = ınternalEmail; textBox4.Text = ınternalNumber; textBox5.Text = externalEmail;textBox6.Text = externalNumber;
+                textBox1.Text = selectedCommId; textBox2.Text = projectName; textBox3.Text = ınternalEmail; textBox4.Text = ınternalNumber; textBox5.Text = externalEmail;textBox6.Text = externalNumber;
             }
         }
 
@@ -194,8 +202,15 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             {
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                //string selectedId = selectedCell.Value.ToString();,
-                string selectedVpnId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string selectedCommId = string.Empty;
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                {
+                    selectedCommId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                 string ınternalEmail = dataGridView.Rows[e.RowIndex].Cells["InternalEmail"].Value.ToString();
                 string ınternalNumber = dataGridView.Rows[e.RowIndex].Cells["InternalNumber"].Value.ToString();
@@ -209,7 +224,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm5");
                 TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcomm6");
-                textBox1.Text = selectedVpnId; textBox2.Text = projectName; textBox3.Text = ınternalEmail; textBox4.Text = ınternalNumber; textBox5.Text = externalEmail; textBox6.Text = externalNumber;
+                textBox1.Text = selectedCommId; textBox2.Text = projectName; textBox3.Text = ınternalEmail; textBox4.Text = ınternalNumber; textBox5.Text = externalEmail; textBox6.Text = externalNumber;
             }
         }
 

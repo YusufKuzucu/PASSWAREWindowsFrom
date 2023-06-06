@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 
 namespace PASSWARE.TabpageBase
 {
@@ -231,7 +232,15 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedProjectId = selectedRow.Cells["ID"].Value.ToString();
+                    string selectedProjectId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value!=null)
+                    {
+                        selectedProjectId = selectedRow.Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string CompanyName = selectedRow.Cells["CompanyName"].Value.ToString();
                     string ProjectName = selectedRow.Cells["ProjectName"].Value.ToString();
                     string ProjectServerIP = selectedRow.Cells["ProjectServerIP"].Value.ToString();
@@ -266,7 +275,15 @@ namespace PASSWARE.TabpageBase
                 {
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedProjectId = selectedCell.Value.ToString();
+                    string selectedProjectId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                    {
+                        selectedProjectId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString(); 
+                    }
+                    else
+                    {
+                        return;
+                    }
                     string CompanyName = dataGridView.Rows[e.RowIndex].Cells["CompanyName"].Value.ToString();
                     string ProjectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
                     string ProjectServerIP = dataGridView.Rows[e.RowIndex].Cells["ProjectServerIP"].Value.ToString();

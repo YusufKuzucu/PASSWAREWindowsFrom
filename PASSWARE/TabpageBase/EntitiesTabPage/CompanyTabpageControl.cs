@@ -38,7 +38,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
-            Label label2 = CreateLabel( "CompanyName", "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 80), 3);
+            Label label2 = CreateLabel("Company Name", "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 82), 3);
             tabPage.Controls.Add(label2);
 
 
@@ -103,6 +103,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             Label label = new Label();
             label.Text = text;
+            label.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F);
             label.Name = name;
             label.Size = size;
             label.ForeColor = Color.Black;
@@ -129,13 +130,13 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView.Location = new System.Drawing.Point(0, 200);
+            dataGridView.Location = new System.Drawing.Point(0, 175);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
-            dataGridView.Size = new System.Drawing.Size(1325, 550);
+            dataGridView.Size = new System.Drawing.Size(1325, 433);
             dataGridView.TabIndex = 1;
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
@@ -146,30 +147,39 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             DataGridView dataGridView = (DataGridView)sender;
             if (dataGridView.SelectedRows.Count > 0)
             {
-                // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-
-                string selectedId = selectedRow.Cells["ID"].Value.ToString();
+                string selectedId = string.Empty;
+                if (selectedRow.Cells["ID"].Value !=null)
+                {
+                    selectedId = selectedRow.Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string companyName = selectedRow.Cells["CompanyName"].Value.ToString();
-             
                 TabPage tabPage = (TabPage)dataGridView.Parent;
                 TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
                 TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");
-          
                 textBox1.Text = selectedId; textBox2.Text = companyName;
             }
         }
-
         private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridView dataGridView = (DataGridView)sender;
             if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
             {
-                // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                string selectedId = string.Empty;
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                {
+                    selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                }
+                else
+                {
+                    return;
+                }
                 string companyName = dataGridView.Rows[e.RowIndex].Cells["CompanyName"].Value.ToString();
-
                 TabPage tabPage = (TabPage)dataGridView.Parent;
                 TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany1");
                 TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtcompany2");

@@ -18,8 +18,24 @@ namespace PASSWARE
         public MainFrm()
         {
             InitializeComponent();
+
+
+            timer1.Tick += timer1_Tick;
+            timer1.Start();
+            UpdateDateTime();
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            UpdateDateTime(); // Tarih ve saat değerlerini güncelleyin
+        }
+
+        private void UpdateDateTime()
+        {
+            toolStripStatusLabel3.Text = DateTime.Now.ToLongTimeString(); // Saat değerini güncelleyin
+            toolStripStatusLabel2.Text = "History: " + DateTime.Now.ToShortDateString(); // Tarih değerini güncelleyin
+            toolStripStatusLabel1.Text= ActiveUser.FirstName + "  " +ActiveUser.LastName;
+        }
         private async void projectList_Click(object sender, EventArgs e)
         {
             ProjectTabpageList projectTabpageList = new ProjectTabpageList(tabControl1);
@@ -30,11 +46,12 @@ namespace PASSWARE
             tabControl1.SelectedTab = tabPage;
         }
 
+
         private async void sqlsList_Click(object sender, EventArgs e)
         {
             SqlTabpageList sqlTabpageList = new SqlTabpageList(tabControl1);
             TabPage tabPage = await sqlTabpageList.CreateTabPage(tabControl1);
-            tabPage.Text = "SQl";
+            tabPage.Text = "Sql List";
             tabPage.BackColor = Color.White;
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
