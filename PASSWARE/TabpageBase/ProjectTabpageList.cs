@@ -11,8 +11,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.ComponentModel.Design;
-using System.Diagnostics;
 
 namespace PASSWARE.TabpageBase
 {
@@ -27,7 +25,7 @@ namespace PASSWARE.TabpageBase
         private string SqlprojeName;
 
 
-        private Dictionary<int, string> projectNames;
+        private Dictionary<int, string> companyNames;
         public ProjectTabpageList(TabControl tabControl)
         {
             comboBoxDataGridViewPairs = new Dictionary<ComboBox, DataGridView>();
@@ -66,12 +64,12 @@ namespace PASSWARE.TabpageBase
             dataGridView.ReadOnly = true;
             dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.ScrollBars = ScrollBars.Both;
-            dataGridView.Location = new Point(0, 192);
+            dataGridView.Location = new Point(0, 180);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);
             dataGridView.Dock = DockStyle.None;
             dataGridView.RowTemplate.Height = 24;
-            dataGridView.Size = new Size(1527, 460);
+            dataGridView.Size = new Size(1527, 430);
             dataGridView.TabIndex = 1;
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
@@ -130,23 +128,26 @@ namespace PASSWARE.TabpageBase
         {
             try
             {
-                string apiUrl = "https://localhost:44343/api/Projects/GetAll";
+                string apiUrlProjects = "https://localhost:44343/api/Projects/GetAll";
+                string apiUrlCompanies = "https://localhost:44343/api/Companies/GetAll";
+
                 ProjectController projectController = new ProjectController();
-                var projects = await projectController.GetProjectData(apiUrl);
-                Project[] projectArray = projects;
+                CompanyController companyController = new CompanyController();
+
+                var projects = await projectController.GetProjectData(apiUrlProjects);
+                var companies = await companyController.GetCompanyData(apiUrlCompanies);
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID"); 
-                dataTable.Columns.Add("CompanyName"); 
-                dataTable.Columns.Add("ProjectName"); 
+                dataTable.Columns.Add("ID");
+                dataTable.Columns.Add("CompanyName");
+                dataTable.Columns.Add("ProjectName");
                 dataTable.Columns.Add("ProjectServerIP");
-                dataTable.Columns.Add("ProjectServerUserName"); 
+                dataTable.Columns.Add("ProjectServerUserName");
                 dataTable.Columns.Add("ProjectServerPassword");
 
-                Dictionary<int, string> companyNames = await GetCompanyNames();
+                Dictionary<int, string> companyNames = companies.ToDictionary(c => c.Id, c => c.CompanyName);
 
-
-                foreach (Project project in projectArray)
+                foreach (Project project in projects)
                 {
                     try
                     {
@@ -156,38 +157,19 @@ namespace PASSWARE.TabpageBase
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error adding project to table. Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Tabloya proje eklenirken hata oluştu. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+
                 originalData = dataTable;
                 dataGridView.DataSource = dataTable;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Failed to retrieve data from API.  Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("API'den veri alınırken hata oluştu. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public async Task<Dictionary<int, string>> GetCompanyNames()
-        {
-            Dictionary<int, string> companyNames = new Dictionary<int, string>();
-            try
-            {
-                string apiUrl = "https://localhost:44343/api/Companies/GetAll";
-                CompanyController companyController = new CompanyController();
-                var company = await companyController.GetCompanyData(apiUrl);
 
-                foreach (Company companies in company)
-                {
-                    companyNames.Add(companies.Id, companies.CompanyName);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("The names of the projects could not be retrieved. Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            return companyNames;
-        }
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;
@@ -209,7 +191,7 @@ namespace PASSWARE.TabpageBase
 
             if (!string.IsNullOrEmpty(selectedText))
             {
-                DataRow[] filteredRows = originalData.Select("ProjectName  = '" + selectedText + "'");
+                DataRow[] filteredRows = originalData.Select("CompanyName  = '" + selectedText + "'");
 
                 foreach (DataRow row in filteredRows)
                 {
@@ -233,7 +215,7 @@ namespace PASSWARE.TabpageBase
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
                     string selectedProjectId = string.Empty;
-                    if (selectedRow.Cells["ID"].Value!=null)
+                    if (selectedRow.Cells["ID"].Value != null)
                     {
                         selectedProjectId = selectedRow.Cells["ID"].Value.ToString();
                     }
@@ -258,7 +240,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
-                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP,ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
                     tabPage.Text = "Project";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
@@ -276,9 +258,9 @@ namespace PASSWARE.TabpageBase
                     // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                     string selectedProjectId = string.Empty;
-                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value != null)
                     {
-                        selectedProjectId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString(); 
+                        selectedProjectId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
                     }
                     else
                     {
@@ -300,7 +282,7 @@ namespace PASSWARE.TabpageBase
 
                     TabPage newTabPage = new TabPage();
                     ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
-                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword,colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
                     tabPage.Text = "Project";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
@@ -310,17 +292,15 @@ namespace PASSWARE.TabpageBase
         private bool isAdminUser()
         {
             var control = ActiveUser.Role;
-            if (control.Contains("admin") && control.Contains("moderator"))
+            if (control.Contains("Admin") && control.Contains("Moderator"))
             {
                 return true;
             }
-            else if (control.Contains("admin"))
+            else if (control.Contains("Admin"))
             {
                 return true;
             }
             return false;
         }
     }
-
-    
 }

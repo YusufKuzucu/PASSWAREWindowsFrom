@@ -15,7 +15,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectID, string projectName, string selectedVpnId, string ınternalEmail, string ınternalNumber, string externalEmail, string externalNumber, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, string colum6name, DataTable filterData)
+        public TabPage CreateTabPage(string projectID, string projectName, string selectedCommId, string ınternalEmail, string ınternalNumber, string externalEmail, string externalNumber, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, string colum6name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
             Id = Convert.ToInt32(projectID);
@@ -37,21 +37,21 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 124), 4);
             tabPage.Controls.Add(label3);
 
-            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 176), 8);
+            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 170), 8);
             tabPage.Controls.Add(label4);
 
-            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 226), 8);
+            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 210), 8);
             tabPage.Controls.Add(label5);
 
             Label label7 = CreateLabel(colum6name, "label7", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 250), 8); ;
             tabPage.Controls.Add(label7);
 
             Label label6 = CreateLabel(projectID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 10), 8); ;
-            label6.Enabled = false;
+            label6.Visible = false;
             tabPage.Controls.Add(label6);
 
 
-            TextBox textBox1 = CreateTextBox("txtcomm1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 20), 5, selectedVpnId);
+            TextBox textBox1 = CreateTextBox("txtcomm1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 20), 5, selectedCommId);
             textBox1.Enabled = false;
             tabPage.Controls.Add(textBox1);
 
@@ -61,10 +61,10 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             TextBox textBox3 = CreateTextBox("txtcomm3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 7, ınternalEmail);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("txtcomm4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 176), 9, ınternalNumber);
+            TextBox textBox4 = CreateTextBox("txtcomm4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 170), 9, ınternalNumber);
             tabPage.Controls.Add(textBox4);
 
-            TextBox textBox5 = CreateTextBox("txtcomm5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 226), 9, externalEmail);
+            TextBox textBox5 = CreateTextBox("txtcomm5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 210), 9, externalEmail);
             tabPage.Controls.Add(textBox5);
 
             TextBox textBox6 = CreateTextBox("txtcomm6", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 250), 9, externalNumber);
@@ -294,7 +294,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 string projectId = label1.Text;
 
                 CommunicationController commController = new CommunicationController();
-                bool result = await commController.UpdateCommunicationData(commId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, projectId);
+                bool result = await commController.UpdateCommunicationData(commId, ınternalNumber, ınternalEmail, externalNumber, externalEmail, projectId);
                 if (result)
                 {
                     MessageBox.Show("Communication Updated Succesfully");

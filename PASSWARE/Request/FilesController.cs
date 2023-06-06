@@ -12,16 +12,16 @@ using System.Windows.Forms;
 
 namespace PASSWARE.Request
 {
-    public class LinksResponse
+    public class FilesResponse
     {
-        public Link[] Data { get; set; }
+        public Files[] Data { get; set; }
     }
-    public class LinkController
+    public class FilesController
     {
         HttpClient client = new HttpClient();
-        public async Task<Link[]> GetJumpData(string url)
+        public async Task<Files[]> GetFilesData(string url)
         {
-            Link[] data = null;
+            Files[] data = null;
             try
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
@@ -32,8 +32,8 @@ namespace PASSWARE.Request
                     string responseContent = await response.Content.ReadAsStringAsync();
                     try
                     {
-                        LinksResponse linksResponse = JsonConvert.DeserializeObject<LinksResponse>(responseContent);
-                        data = linksResponse.Data;
+                        FilesResponse filessResponse = JsonConvert.DeserializeObject<FilesResponse>(responseContent);
+                        data = filessResponse.Data;
                     }
                     catch (Exception ex)
                     {
@@ -56,7 +56,7 @@ namespace PASSWARE.Request
 
         }
 
-        public async Task<bool> AddLinkData(string connectExplanation, string connectionInfo)
+        public async Task<bool> AddFilesData(string connectExplanation, string connectionInfo)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace PASSWARE.Request
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
                 var json = JsonConvert.SerializeObject(link);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Links/Post", content);
+                HttpResponseMessage responseMessage = await client.PostAsync($"{apiUrl}Files/Post", content);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     return true;
@@ -88,7 +88,7 @@ namespace PASSWARE.Request
 
         }
 
-        public async Task<bool> UpdateLinkData(string connectExplanation, string connectionInfo)
+        public async Task<bool> UpdateFilesData(string connectExplanation, string connectionInfo)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace PASSWARE.Request
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
                 var json = JsonConvert.SerializeObject(link);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Links/Update", content);
+                HttpResponseMessage responseMessage = await client.PutAsync($"{apiUrl}Files/Update", content);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     return true;

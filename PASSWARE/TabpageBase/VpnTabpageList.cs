@@ -289,11 +289,11 @@ namespace PASSWARE.TabpageBase
         private bool isAdminUser()
         {
             var control = ActiveUser.Role;
-            if (control.Contains("admin") && control.Contains("moderator"))
+            if (control.Contains("Admin") && control.Contains("Moderator"))
             {
                 return true;
             }
-            else if (control.Contains("admin"))
+            else if (control.Contains("Admin"))
             {
                 return true;
             }

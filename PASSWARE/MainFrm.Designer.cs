@@ -60,6 +60,8 @@
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.ribbonPanel1 = new System.Windows.Forms.RibbonPanel();
+            this.projectFilesList = new System.Windows.Forms.RibbonButton();
             this.tabControl1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -94,6 +96,7 @@
             // 
             this.ribbonTab1.Name = "ribbonTab1";
             this.ribbonTab1.Panels.Add(this.rPProjetcs);
+            this.ribbonTab1.Panels.Add(this.ribbonPanel1);
             this.ribbonTab1.Text = "Projects";
             // 
             // rPProjetcs
@@ -296,6 +299,21 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(151, 20);
             this.toolStripStatusLabel3.Text = "toolStripStatusLabel3";
             // 
+            // ribbonPanel1
+            // 
+            this.ribbonPanel1.Items.Add(this.projectFilesList);
+            this.ribbonPanel1.Name = "ribbonPanel1";
+            this.ribbonPanel1.Text = "Project Files";
+            // 
+            // projectFilesList
+            // 
+            this.projectFilesList.Image = global::PASSWARE.Properties.Resources.project;
+            this.projectFilesList.LargeImage = global::PASSWARE.Properties.Resources.project;
+            this.projectFilesList.Name = "projectFilesList";
+            this.projectFilesList.SmallImage = ((System.Drawing.Image)(resources.GetObject("projectFilesList.SmallImage")));
+            this.projectFilesList.Text = "FilesList";
+            this.projectFilesList.Click += new System.EventHandler(this.projectFilesList_Click);
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -307,6 +325,7 @@
             this.KeyPreview = true;
             this.Name = "MainFrm";
             this.Text = "PassWare";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
             this.Load += new System.EventHandler(this.MainFrm_Load);
             this.tabControl1.ResumeLayout(false);
@@ -349,5 +368,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         public System.Windows.Forms.RibbonTab ribbonTab7;
+        private System.Windows.Forms.RibbonPanel ribbonPanel1;
+        private System.Windows.Forms.RibbonButton projectFilesList;
     }
 }

@@ -182,14 +182,12 @@ namespace PASSWARE.TabpageBase
                 int selectedValue = selectedProject.Id;
                 projectId = selectedValue.ToString() ;
             }
-
             string selectedText = comboBox.Text;
-            // DataGridView'i filtrele
             FilterDataGridView(dataGridView, selectedText);
         }
         private void FilterDataGridView(DataGridView dataGridView, string selectedText)
         {
-            DataTable dataTable = originalData.Clone(); // Yeni bir DataTable oluştur
+            DataTable dataTable = originalData.Clone();
 
             if (!string.IsNullOrEmpty(selectedText))
             {
@@ -202,7 +200,7 @@ namespace PASSWARE.TabpageBase
             }
             else
             {
-                dataTable = originalData.Copy(); // Tüm verileri göster
+                dataTable = originalData.Copy(); 
             }
             dataGridView.DataSource = dataTable;
 
@@ -290,11 +288,11 @@ namespace PASSWARE.TabpageBase
         private bool isAdminUser()
         {
             var control = ActiveUser.Role;
-            if (control.Contains("admin") && control.Contains("moderator"))
+            if (control.Contains("Admin") && control.Contains("Moderator"))
             {
                 return true;
             }
-            else if (control.Contains("admin"))
+            else if (control.Contains("Admin"))
             {
                 return true;
             }

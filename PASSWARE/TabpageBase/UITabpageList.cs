@@ -46,10 +46,7 @@ namespace PASSWARE.TabpageBase
 
             Label label1 = CreateLabel("Select Project", new System.Drawing.Size(44, 16), new System.Drawing.Point(33, 60));
             groupBox.Controls.Add(label1);
-
-            // ComboBox ve DataGridView çiftini eşleştir
             comboBoxDataGridViewPairs.Add(comboBox, dataGridView);
-            // API'den verileri ComboBox ve DataGridView'e yükle
             await LoadDataIntoComboBox(comboBox);
             await LoadDataIntoDataGridView(dataGridView);
             return tabPage;
@@ -289,11 +286,11 @@ namespace PASSWARE.TabpageBase
         private bool isAdminUser()
         {
             var control = ActiveUser.Role;
-            if (control.Contains("admin") && control.Contains("moderator"))
+            if (control.Contains("Admin") && control.Contains("Moderator"))
             {
                 return true;
             }
-            else if (control.Contains("admin"))
+            else if (control.Contains("Admin"))
             {
                 return true;
             }

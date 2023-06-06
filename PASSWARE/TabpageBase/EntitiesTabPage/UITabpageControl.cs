@@ -15,7 +15,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectID, string projectName, string selectedVpnId, string vpnProgramName, string vpnPassword, string vpnConnectionAddress, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
+        public TabPage CreateTabPage(string projectID, string projectName, string selectedUIId, string uIServerIP, string uIServerUserName, string uIServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
             Id = Convert.ToInt32(projectID);
@@ -44,24 +44,24 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(label5);
 
             Label label6 = CreateLabel(projectID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
-            label6.Enabled = false;
+            label6.Visible = false;
             tabPage.Controls.Add(label6);
 
 
-            TextBox textBox1 = CreateTextBox("txtUı1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedVpnId);
+            TextBox textBox1 = CreateTextBox("txtUı1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedUIId);
             textBox1.Enabled = false;
             tabPage.Controls.Add(textBox1);
 
             TextBox textBox2 = CreateTextBox("txtUı2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 80), 6, projectName);
             tabPage.Controls.Add(textBox2);
 
-            TextBox textBox3 = CreateTextBox("txtUı3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, vpnProgramName);
+            TextBox textBox3 = CreateTextBox("txtUı3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, uIServerIP);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("txtUı4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 190), 9, vpnConnectionAddress);
+            TextBox textBox4 = CreateTextBox("txtUı4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 190), 9, uIServerUserName);
             tabPage.Controls.Add(textBox4);
 
-            TextBox textBox5 = CreateTextBox("txtUı5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 240), 9, vpnPassword);
+            TextBox textBox5 = CreateTextBox("txtUı5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 240), 9, uIServerPassword);
             tabPage.Controls.Add(textBox5);
 
 
@@ -272,14 +272,14 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
                 Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
                 DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int UIId = Convert.ToInt32(textBox1.Text);
+                int uIId = Convert.ToInt32(textBox1.Text);
                 string uIServerIP = textBox3.Text;
                 string uIServerUserName = textBox4.Text;
                 string uIServerPassword = textBox5.Text;
                 string projectId = label1.Text;
 
                 UIController uıController = new UIController();
-                bool result = await uıController.UpdateUIData(UIId, uIServerIP, uIServerUserName, uIServerPassword, projectId);
+                bool result = await uıController.UpdateUIData(uIId, uIServerIP, uIServerUserName, uIServerPassword, projectId);
                 if (result)
                 {
                     MessageBox.Show("UI Updated Succesfully");

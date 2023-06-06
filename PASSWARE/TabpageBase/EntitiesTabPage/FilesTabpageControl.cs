@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -202,44 +203,63 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
         private async void AddSql_Click(object sender, EventArgs e)
         {
-            try
+            //try
+            //{
+            //    Button button = (Button)sender;
+            //    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+            //    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
+            //    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
+            //    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
+            //    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
+            //    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+
+            //    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
+
+            //    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+            //    string sqlServerIP = textBox3.Text;
+            //    string sqlServerUserName = textBox4.Text;
+            //    string sqlServerPassword = textBox5.Text;
+            //    string projectId = label1.Text;
+
+
+            //    SqlController sqlController = new SqlController();
+            //    bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
+            //    if (result)
+            //    {
+            //        MessageBox.Show("SQl Added successfully");
+
+            //        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("SQL Failed to Added");
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("An error occurred: " + ex.Message);
+            //}
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PDF Dosyaları|*.pdf";
+            openFileDialog.Title = "PDF Dosyası Seçin";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+                string secilenDosyaYolu = openFileDialog.FileName;
+                // Seçilen dosyayı kopyalama veya istenen klasöre taşıma işlemlerini gerçekleştirin.
+                string hedefKlasor = @"C:\Users\yusuf\source\repos\PassWare\PassWare\wwwroot\Uploads";
+                string dosyaAdi = Path.GetFileName(secilenDosyaYolu);
+                string hedefDosyaYolu = Path.Combine(hedefKlasor, dosyaAdi);
 
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-
-
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-                if (result)
-                {
-                    MessageBox.Show("SQl Added successfully");
-
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                }
-                else
-                {
-                    MessageBox.Show("SQL Failed to Added");
-                }
+                // Dosyayı taşıma işlemi
+                File.Move(secilenDosyaYolu, hedefDosyaYolu);
+                // Dosyayı kopyalama işlemi
+                File.Copy(secilenDosyaYolu, hedefDosyaYolu);
 
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message);
-            }
-
+           
         }
         private async void UpdateSql_Click(object sender, EventArgs e)
         {

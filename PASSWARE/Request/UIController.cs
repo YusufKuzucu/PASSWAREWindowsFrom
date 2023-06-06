@@ -123,7 +123,7 @@ namespace PASSWARE.Request
 
         }
 
-        public async Task<bool> UpdateUIData(int Uıid,string uiServerIP, string uiServerUserName, string uiServerPassword,string projectId)
+        public async Task<bool> UpdateUIData(int uıID, string uiServerIP, string uiServerUserName, string uiServerPassword, string projectId)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace PASSWARE.Request
                 HttpClient client = new HttpClient();
                 var ui = new
                 {
-                    id = Uıid,
+                    id = uıID,
                     uiServerIP = uiServerIP,
                     uiServerUserName = uiServerUserName,
                     uiServerPassword = uiServerPassword,

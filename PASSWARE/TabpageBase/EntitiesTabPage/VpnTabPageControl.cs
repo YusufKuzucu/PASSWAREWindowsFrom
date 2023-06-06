@@ -44,7 +44,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(label5);
 
             Label label6 = CreateLabel(projectID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
-            label6.Enabled = false;
+            label6.Visible = false;
             tabPage.Controls.Add(label6);
 
 

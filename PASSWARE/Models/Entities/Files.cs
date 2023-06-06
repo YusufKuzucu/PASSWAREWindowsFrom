@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PASSWARE.Models.Entities
 {
-    public class Link
+    public class Files
     {
         public int Id { get; set; }
         public string ConnectExplanation { get; set; }

@@ -11,6 +11,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 namespace PASSWARE.TabpageBase
 {
@@ -123,29 +125,97 @@ namespace PASSWARE.TabpageBase
         {
             try
             {
-                string apiUrl = "https://localhost:44343/api/Sqls/GetAll";
-                SqlController sqlController = new SqlController();
-                var sqls = await sqlController.GetSqlData(apiUrl);
-                Sql[] sqlArray = sqls;
+                string apiUrl = "https://localhost:44343/api/Files/GetAll";
+                FilesController filesController = new FilesController();
+                var files = await filesController.GetFilesData(apiUrl);
+                Files[] filesArray = files;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("SqlServerIp"); dataTable.Columns.Add("SqlServerUserName"); dataTable.Columns.Add("SqlServerPassword");
+                dataTable.Columns.Add("ID");
+                dataTable.Columns.Add("ProjectName");
+                dataTable.Columns.Add("ConnectExplanation");
+                dataTable.Columns.Add("ConnectionInfo");
 
                 Dictionary<int, string> projectNames = await GetProjectNames();
 
-                foreach (Sql sql in sqlArray)
+                foreach (Files file in filesArray)
                 {
-                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
-                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                    string projectName = projectNames.ContainsKey(file.ProjectId) ? projectNames[file.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(file.Id, projectName, file.ConnectExplanation, file.ConnectionInfo);
                 }
                 originalData = dataTable;
                 dataGridView.DataSource = dataTable;
+
+                // Çift tıklama olayını DataGridView'e ekleyin
+                dataGridView.CellClick += DataGridView_CellClick;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Failed to retrieve data from API.  Hata: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridView dataGridView = (DataGridView)sender;
+
+            if (e.ColumnIndex == dataGridView.Columns["ConnectionInfo"].Index && e.RowIndex >= 0)
+            {
+                var selectedFile = dataGridView.Rows[e.RowIndex].DataBoundItem as Files;
+                if (selectedFile != null)
+                {
+                    string fileExtension = Path.GetExtension(selectedFile.ConnectExplanation);
+                    OpenFile(selectedFile.ConnectionInfo, fileExtension);
+                }
+            }
+        }
+
+        private void OpenFile(byte[] fileData, string fileExtension)
+        {
+            // Dosya türüne göre işlem yapın
+            if (fileExtension == ".pdf")
+            {
+                // PDF dosyasını açmak için uygun işlemi gerçekleştirin
+                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+
+                // PDF dosyasını varsayılan PDF okuyucuyla açın
+                Process.Start(tempFilePath);
+            }
+            else if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg")
+            {
+                // Resmi açmak için uygun işlemi gerçekleştirin
+                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+
+                // Resmi varsayılan görüntüleyiciyle açın
+                Process.Start(tempFilePath);
+            }
+            else if (fileExtension == ".doc" || fileExtension == ".docx")
+            {
+                // Word belgesini açmak için uygun işlemi gerçekleştirin
+                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+
+                // Word belgesini varsayılan Word uygulamasıyla açın
+                Process.Start(tempFilePath);
+            }
+            else if (fileExtension == ".xls" || fileExtension == ".xlsx")
+            {
+                // Excel dosyasını açmak için uygun işlemi gerçekleştirin
+                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+
+                // Excel dosyasını varsayılan Excel uygulamasıyla açın
+                Process.Start(tempFilePath);
+            }
+            else
+            {
+                MessageBox.Show("Unsupported file type.");
+            }
+        }
+
+
         public async Task<Dictionary<int, string>> GetProjectNames()
         {
             Dictionary<int, string> projectNames = new Dictionary<int, string>();
@@ -228,7 +298,7 @@ namespace PASSWARE.TabpageBase
                     TabPage newTabPage = new TabPage();
                     SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
                     TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
+                    tabPage.Text = "Files";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
                 }
@@ -260,7 +330,7 @@ namespace PASSWARE.TabpageBase
                     TabPage newTabPage = new TabPage();
                     SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
                     TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
+                    tabPage.Text = "Files";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
                 }
@@ -269,11 +339,11 @@ namespace PASSWARE.TabpageBase
         private bool isAdminUser()
         {
             var control = ActiveUser.Role;
-            if (control.Contains("admin") && control.Contains("moderator"))
+            if (control.Contains("Admin") && control.Contains("Moderator"))
             {
                 return true;
             }
-            else if (control.Contains("admin"))
+            else if (control.Contains("Admin"))
             {
                 return true;
             }

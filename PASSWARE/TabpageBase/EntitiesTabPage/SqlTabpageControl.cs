@@ -15,7 +15,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectId, string projectName, string selectedId, string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
+        public TabPage CreateTabPage(string projectId,string projectName, string selectedId, string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
             tabPage.BackColor = Color.White;
@@ -45,7 +45,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(label5);
 
             Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(48, 15), 8); ;
-            label6.Enabled = false;
+            label6.Visible = false;
             tabPage.Controls.Add(label6);
 
 
@@ -239,7 +239,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
                 if (result)
                 {
-                    MessageBox.Show("SQl Added successfully");
+                    MessageBox.Show("SQl Added Successfully");
 
                     LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
                 }
@@ -328,7 +328,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                     }
                     else
                     {
-                        MessageBox.Show("SQL Failed to Update");
+                        MessageBox.Show("SQL Failed to Delete");
                     }
                 }
               

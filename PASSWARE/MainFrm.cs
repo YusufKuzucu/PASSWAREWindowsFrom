@@ -214,5 +214,15 @@ namespace PASSWARE
         {
             this.Dispose();
         }
+
+        private async void projectFilesList_Click(object sender, EventArgs e)
+        {
+            FilesTabpageList fileTabpageList = new FilesTabpageList(tabControl1);
+            TabPage tabPage = await fileTabpageList.CreateTabPage(tabControl1);
+            tabPage.BackColor = Color.White;
+            tabPage.Text = "Company";
+            tabControl1.TabPages.Add(tabPage);
+            tabControl1.SelectedTab = tabPage;
+        }
     }
 }

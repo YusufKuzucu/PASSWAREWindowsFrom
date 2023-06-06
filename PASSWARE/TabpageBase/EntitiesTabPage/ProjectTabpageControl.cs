@@ -2,7 +2,6 @@
 using PASSWARE.Request;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -16,7 +15,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string companyID, string CompanyName, string selectedProjectId, string ProjectName, string ProjectServerIP, string ProjectServerUserName, string ProjectServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, string colum6name,DataTable filterData)
+        public TabPage CreateTabPage(string companyID, string CompanyName, string selectedProjectId, string ProjectName, string ProjectServerIP, string ProjectServerUserName, string ProjectServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, string colum6name, DataTable filterData)
         {
             TabPage tabPage = new TabPage("TabPage");
             Id = Convert.ToInt32(companyID);
@@ -48,7 +47,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
 
             Label label6 = CreateLabel(companyID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
-            label6.Enabled = false;
+            label6.Visible = false;
             tabPage.Controls.Add(label6);
 
 
@@ -175,7 +174,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
 
                 string selectedId = string.Empty;
-                if (selectedRow.Cells["ID"].Value !=null)
+                if (selectedRow.Cells["ID"].Value != null)
                 {
                     selectedId = selectedRow.Cells["ID"].Value.ToString();
                 }
@@ -208,7 +207,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
                 string selectedId = string.Empty;
-                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value != null)
                 {
                     selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
                 }
@@ -228,14 +227,32 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct4");
                 TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct5");
                 TextBox textBox6 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct6");
-                textBox1.Text = selectedId; textBox2.Text = companyName; textBox3.Text = projectName; textBox4.Text = projectServerUserName; textBox5.Text = projectServerPassword; textBox6.Text = projectServerPassword;
+                textBox1.Text = selectedId; textBox2.Text = companyName; textBox3.Text = projectName; textBox4.Text = projectServerIP; textBox5.Text = projectServerUserName; textBox6.Text = projectServerPassword;
             }
+        }
+        private async Task<List<string>> GetExistingProjects(string name)
+        {
+            List<string> existingProjects = new List<string>();
+
+            // Proje adına göre istek yaparak projeleri alın
+            ProjectController projectController = new ProjectController();
+            Project[] projects = await projectController.GetProjectName(name);
+
+            // Projelerin adlarını existingProjects listesine ekleyin
+            foreach (Project project in projects)
+            {
+                existingProjects.Add(project.ProjectName);
+            }
+
+            return existingProjects;
         }
 
         private async void AddProject_Click(object sender, EventArgs e)
         {
             try
             {
+                ProjectController projectController = new ProjectController();
+
                 Button button = (Button)sender;
                 TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
                 TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtProjct1");
@@ -249,6 +266,18 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
 
                 DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
                 string projectName = textBox3.Text;
+                if (string.IsNullOrEmpty(projectName))
+                {
+                    MessageBox.Show("Project name cannot be empty.");
+                    return;
+                }
+
+                List<string> existingProjects = await GetExistingProjects(projectName);
+                if (existingProjects.Contains(projectName))
+                {
+                    MessageBox.Show("A project with the same name already exists. Please enter a different project name.");
+                    return;
+                }
                 string projectServerIP = textBox4.Text;
                 string projectServerUserName = textBox5.Text;
                 string projectServerPassword = textBox6.Text;
@@ -256,7 +285,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 string companyId = label1.Text;
 
 
-                ProjectController projectController = new ProjectController();
+                
                 bool result = await projectController.AddProjectData(projectName, projectServerIP, projectServerUserName, projectServerPassword, companyId);
                 if (result)
                 {
@@ -275,6 +304,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             }
 
         }
+
         private async void UpdateProject_Click(object sender, EventArgs e)
         {
             try
@@ -343,8 +373,8 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                     string projectServerUserName = textBox5.Text;
                     string projectServerPassword = textBox6.Text;
                     string companyId = label1.Text;
-                    SqlController sqlController = new SqlController();
-                    bool result = await sqlController.DeleteSqlData(projectId);
+                    ProjectController projectController = new ProjectController();
+                    bool result = await projectController.DeleteProjectData(projectId);
                     if (result)
                     {
                         MessageBox.Show("Project Deleted Successfully");
@@ -416,6 +446,5 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             return companyNames;
         }
     }
-
 
 }
