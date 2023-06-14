@@ -33,7 +33,7 @@ namespace PASSWARE
         private void UpdateDateTime()
         {
             toolStripStatusLabel3.Text = DateTime.Now.ToLongTimeString(); // Saat değerini güncelleyin
-            toolStripStatusLabel2.Text = "History: " + DateTime.Now.ToShortDateString(); // Tarih değerini güncelleyin
+            toolStripStatusLabel2.Text = "Date: " + DateTime.Now.ToShortDateString(); // Tarih değerini güncelleyin
             toolStripStatusLabel1.Text= ActiveUser.FirstName + "  " +ActiveUser.LastName;
         }
         private async void projectList_Click(object sender, EventArgs e)
@@ -220,7 +220,7 @@ namespace PASSWARE
             FilesTabpageList fileTabpageList = new FilesTabpageList(tabControl1);
             TabPage tabPage = await fileTabpageList.CreateTabPage(tabControl1);
             tabPage.BackColor = Color.White;
-            tabPage.Text = "Company";
+            tabPage.Text = "Files";
             tabControl1.TabPages.Add(tabPage);
             tabControl1.SelectedTab = tabPage;
         }

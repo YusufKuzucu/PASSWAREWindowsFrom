@@ -32,6 +32,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(label1);
 
             Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 80), 3);
+            label2.Enabled = false;
             tabPage.Controls.Add(label2);
 
             Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 138), 4);
@@ -53,6 +54,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox1);
 
             TextBox textBox2 = CreateTextBox("txtjmp2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 80), 6, projectName);
+            textBox2.Enabled = false;
             tabPage.Controls.Add(textBox2);
 
             TextBox textBox3 = CreateTextBox("txtjmp3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, jumpServerIP);

@@ -27,26 +27,27 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
 
-            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 20), 2);
+            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 20), 2);
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
-            Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 66), 3);
+            Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 66), 3);
+            label2.Enabled = false;
             tabPage.Controls.Add(label2);
 
-            Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 124), 4);
+            Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 118), 4);
             tabPage.Controls.Add(label3);
 
-            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 176), 8);
+            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 170), 8);
             tabPage.Controls.Add(label4);
 
-            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 226), 8);
+            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 212), 8);
             tabPage.Controls.Add(label5);
-            Label label7 = CreateLabel(colum6name, "label7", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 260), 8); ;
+            Label label7 = CreateLabel(colum6name, "label7", new System.Drawing.Size(44, 16), new System.Drawing.Point(45, 260), 8); ;
             tabPage.Controls.Add(label7);
 
 
-            Label label6 = CreateLabel(companyID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
+            Label label6 = CreateLabel(companyID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(47, 15), 8); ;
             label6.Visible = false;
             tabPage.Controls.Add(label6);
 
@@ -56,15 +57,16 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             tabPage.Controls.Add(textBox1);
 
             TextBox textBox2 = CreateTextBox("txtProjct2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 66), 6, CompanyName);
+            textBox2.Enabled = false;
             tabPage.Controls.Add(textBox2);
 
-            TextBox textBox3 = CreateTextBox("txtProjct3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 124), 7, ProjectName);
+            TextBox textBox3 = CreateTextBox("txtProjct3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 118), 7, ProjectName);
             tabPage.Controls.Add(textBox3);
 
-            TextBox textBox4 = CreateTextBox("txtProjct4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 176), 9, ProjectServerIP);
+            TextBox textBox4 = CreateTextBox("txtProjct4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 170), 9, ProjectServerIP);
             tabPage.Controls.Add(textBox4);
 
-            TextBox textBox5 = CreateTextBox("txtProjct5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 226), 9, ProjectServerUserName);
+            TextBox textBox5 = CreateTextBox("txtProjct5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 212), 9, ProjectServerUserName);
             tabPage.Controls.Add(textBox5);
 
             TextBox textBox6 = CreateTextBox("txtProjct6", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 260), 9, ProjectServerPassword);
@@ -234,11 +236,9 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
         {
             List<string> existingProjects = new List<string>();
 
-            // Proje adına göre istek yaparak projeleri alın
             ProjectController projectController = new ProjectController();
             Project[] projects = await projectController.GetProjectName(name);
 
-            // Projelerin adlarını existingProjects listesine ekleyin
             foreach (Project project in projects)
             {
                 existingProjects.Add(project.ProjectName);

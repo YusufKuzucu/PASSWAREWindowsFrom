@@ -74,7 +74,33 @@ namespace PASSWARE.TabpageBase
             dataGridView.TabIndex = 1;
             dataGridView.CellMouseDoubleClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
+            dataGridView.CellEnter += (sender, e) =>
+            {
+                if (e.RowIndex == dataGridView.NewRowIndex)
+                {
+                    ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+                    if (comboBox != null && comboBox.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please select a Project.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // Yeni satırın eklenmesini iptal etmek için:
+                        dataGridView.CancelEdit();
+                        // DataGridView'e tekrar odaklanmak için:
+                        dataGridView.Focus();
+                    }
+                }
+            };
             return dataGridView;
+        }
+        private ComboBox GetComboBoxFromDataGridView(DataGridView dataGridView)
+        {
+            foreach (KeyValuePair<ComboBox, DataGridView> pair in comboBoxDataGridViewPairs)
+            {
+                if (pair.Value == dataGridView)
+                {
+                    return pair.Key;
+                }
+            }
+            return null;
         }
         private ComboBox CreateComboBox(Size size, Point location)
         {
@@ -236,12 +262,20 @@ namespace PASSWARE.TabpageBase
                     string colum4name = dataGridView.Columns[3].HeaderText;
                     string colum5name = dataGridView.Columns[4].HeaderText;
 
-                    TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID,projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
+                        TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                        tabPage.Text = "Sql";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
@@ -275,15 +309,32 @@ namespace PASSWARE.TabpageBase
                     string colum3name = dataGridView.Columns[2].HeaderText;
                     string colum4name = dataGridView.Columns[3].HeaderText;
                     string colum5name = dataGridView.Columns[4].HeaderText;
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
+                        TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                        tabPage.Text = "Sql";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
 
-                    TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl= new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID,projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
-                    tabPage.Text = "Sql";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                     
                 }
             }
+        }
+        private bool IsComboBoxSelected(DataGridView dataGridView)
+        {
+            ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+            if (comboBox != null && comboBox.SelectedItem != null)
+            {
+                return true;
+            }
+            return false;
         }
         private bool isAdminUser()
         {

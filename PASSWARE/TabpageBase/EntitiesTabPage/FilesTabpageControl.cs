@@ -1,4 +1,5 @@
-﻿using PASSWARE.Models.Entities;
+﻿using PASSWARE.Models;
+using PASSWARE.Models.Entities;
 using PASSWARE.Request;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,56 +19,26 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
     {
         private int Id;
         private DataGridView dataGridView;
-        public TabPage CreateTabPage(string projectId, string projectName, string selectedId, string selectSqlServerIp, string selectSqlServerUserName, string selectSqlServerPassword, string colum1name, string colum2name, string colum3name, string colum4name, string colum5name, DataTable filterData)
+        public TabPage CreateTabPage(string projectID,string selectedfilesId,DataTable filterdata)
         {
             TabPage tabPage = new TabPage("TabPage");
             tabPage.BackColor = Color.White;
-            Id = Convert.ToInt32(projectId);
+            Id = Convert.ToInt32(projectID);
             Panel panel = CreatePanel();
             tabPage.Controls.Add(panel);
 
             DataGridView dataGridView = CreateDataGridView();
-            dataGridView.DataSource = filterData;
+            dataGridView.DataSource = filterdata;
             dataGridView.Name = "dataGridView";
             tabPage.Controls.Add(dataGridView);
 
-            Label label1 = CreateLabel(colum1name, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
+            Label label1 = CreateLabel(selectedfilesId, "label1", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 34), 2);
             label1.Enabled = false;
             tabPage.Controls.Add(label1);
 
-            Label label2 = CreateLabel(colum2name, "label2", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 80), 3);
-            tabPage.Controls.Add(label2);
-
-            Label label3 = CreateLabel(colum3name, "label3", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 138), 4);
-            tabPage.Controls.Add(label3);
-
-            Label label4 = CreateLabel(colum4name, "label4", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 190), 8);
-            tabPage.Controls.Add(label4);
-
-            Label label5 = CreateLabel(colum5name, "label5", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 240), 8);
-            tabPage.Controls.Add(label5);
-
-            Label label6 = CreateLabel(projectId, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
+            Label label6 = CreateLabel(projectID, "label6", new System.Drawing.Size(44, 16), new System.Drawing.Point(50, 15), 8); ;
             label6.Enabled = false;
             tabPage.Controls.Add(label6);
-
-
-            TextBox textBox1 = CreateTextBox("txtSql1", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 34), 5, selectedId);
-            textBox1.Enabled = false;
-            tabPage.Controls.Add(textBox1);
-
-            TextBox textBox2 = CreateTextBox("txtSql2", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 80), 6, projectName);
-            tabPage.Controls.Add(textBox2);
-
-            TextBox textBox3 = CreateTextBox("txtSql3", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 138), 7, selectSqlServerIp);
-            tabPage.Controls.Add(textBox3);
-
-            TextBox textBox4 = CreateTextBox("txtSql4", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 190), 9, selectSqlServerUserName);
-            tabPage.Controls.Add(textBox4);
-
-            TextBox textBox5 = CreateTextBox("txtSql5", new System.Drawing.Size(318, 22), new System.Drawing.Point(174, 240), 9, selectSqlServerPassword);
-            tabPage.Controls.Add(textBox5);
-
 
             Button button1 = CreateButton("Add", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 40), 7);
             button1.Click += AddSql_Click;
@@ -73,13 +46,7 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             button1.ImageAlign = ContentAlignment.MiddleLeft;
             panel.Controls.Add(button1);
 
-            Button button2 = CreateButton("Update", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 8);
-            button2.Image = Properties.Resources.update;
-            button2.ImageAlign = ContentAlignment.MiddleLeft;
-            button2.Click += UpdateSql_Click;
-            panel.Controls.Add(button2);
-
-            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 250), 9);
+            Button button3 = CreateButton("Delete ", new System.Drawing.Size(199, 50), new System.Drawing.Point(1, 150), 9);
             button3.Image = Properties.Resources.trash;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Click += DeleteSql_Click;
@@ -142,13 +109,13 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView.Location = new System.Drawing.Point(0, 280);
+            dataGridView.Location = new System.Drawing.Point(0, 5);
             dataGridView.RowHeadersWidth = 51;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.ScrollBars = ScrollBars.Vertical;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Dock = DockStyle.None;
-            dataGridView.Size = new System.Drawing.Size(1325, 300);
+            dataGridView.Size = new System.Drawing.Size(1325, 600);
             dataGridView.TabIndex = 1;
             LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
             dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
@@ -160,144 +127,75 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
             DataGridView dataGridView = (DataGridView)sender;
             if (dataGridView.SelectedRows.Count > 0)
             {
-                // Seçili satırı al
                 DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-
                 string selectedId = selectedRow.Cells["ID"].Value.ToString();
-                string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
-                string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
-                string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
-                string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
                 TabPage tabPage = (TabPage)dataGridView.Parent;
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId; textBox2.Text = projectName; textBox3.Text = selectSqlServerIp; textBox4.Text = selectSqlServerUserName; textBox5.Text = selectSqlServerPassword;
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label1");
+                label1.Text=selectedId;
             }
         }
-
         private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridView dataGridView = (DataGridView)sender;
             if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
             {
-                // Seçili hücrenin değerini al
                 DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                //string selectedId = selectedCell.Value.ToString();,
                 string selectedId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
-                string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
-                string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
-                string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
-                string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
+
                 TabPage tabPage = (TabPage)dataGridView.Parent;
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-                textBox1.Text = selectedId; textBox2.Text = projectName; textBox3.Text = selectSqlServerIp; textBox4.Text = selectSqlServerUserName; textBox5.Text = selectSqlServerPassword;
+                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label1");
+                label1.Text=selectedId;
             }
         }
-
         private async void AddSql_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    Button button = (Button)sender;
-            //    TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-            //    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-            //    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-            //    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-            //    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-            //    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-            //    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-
-            //    DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-            //    string sqlServerIP = textBox3.Text;
-            //    string sqlServerUserName = textBox4.Text;
-            //    string sqlServerPassword = textBox5.Text;
-            //    string projectId = label1.Text;
-
-
-            //    SqlController sqlController = new SqlController();
-            //    bool result = await sqlController.AddSqlData(sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-            //    if (result)
-            //    {
-            //        MessageBox.Show("SQl Added successfully");
-
-            //        LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("SQL Failed to Added");
-            //    }
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("An error occurred: " + ex.Message);
-            //}
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "PDF Dosyaları|*.pdf";
-            openFileDialog.Title = "PDF Dosyası Seçin";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            Button button = (Button)sender;
+            TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
+            DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                string secilenDosyaYolu = openFileDialog.FileName;
-                // Seçilen dosyayı kopyalama veya istenen klasöre taşıma işlemlerini gerçekleştirin.
-                string hedefKlasor = @"C:\Users\yusuf\source\repos\PassWare\PassWare\wwwroot\Uploads";
-                string dosyaAdi = Path.GetFileName(secilenDosyaYolu);
-                string hedefDosyaYolu = Path.Combine(hedefKlasor, dosyaAdi);
+                openFileDialog.Multiselect = false;
+                openFileDialog.Filter = "ALL Files (*.*)|*.*";
 
-                // Dosyayı taşıma işlemi
-                File.Move(secilenDosyaYolu, hedefDosyaYolu);
-                // Dosyayı kopyalama işlemi
-                File.Copy(secilenDosyaYolu, hedefDosyaYolu);
-
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string dosyaYolu = openFileDialog.FileName;
+                    Yükle(dosyaYolu);
+                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(Id));
+                }
             }
-           
         }
-        private async void UpdateSql_Click(object sender, EventArgs e)
+        private async void Yükle(string dosyaYolu)
         {
-            try
+
+            using (HttpClient client = new HttpClient())
             {
-
-                Button button = (Button)sender;
-                TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
-
-                Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
-                DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                int sqlId = Convert.ToInt32(textBox1.Text);
-                string sqlServerIP = textBox3.Text;
-                string sqlServerUserName = textBox4.Text;
-                string sqlServerPassword = textBox5.Text;
-                string projectId = label1.Text;
-                SqlController sqlController = new SqlController();
-                bool result = await sqlController.UpdateSqlData(sqlId, sqlServerIP, sqlServerUserName, sqlServerPassword, projectId);
-                if (result)
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+                using (var formContent = new MultipartFormDataContent())
                 {
-                    MessageBox.Show("SQL Updated Successfully");
+                    byte[] dosyaVerisi = File.ReadAllBytes(dosyaYolu);
+                    Files files = new Files()
+                    {
+                        ConnectionInfo = dosyaVerisi,
+                        ConnectExplanation = dosyaYolu,
+                        ProjectId = Id   //TODO : projectId eklenicek
+                    };
 
-                    LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                }
-                else
-                {
-                    MessageBox.Show("SQl Failed to Update");
-                }
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:44343/api/Files/Post");
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred: " + ex.Message);
+                    request.Content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(files));
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    HttpResponseMessage response = await client.SendAsync(request);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Dosya başarıyla yüklendi.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dosya yükleme hatası: " + response.StatusCode);
+                    }
+                }
             }
 
         }
@@ -311,60 +209,46 @@ namespace PASSWARE.TabpageBase.EntitiesTabPage
                 {
                     Button button = (Button)sender;
                     TabPage tabPage = (TabPage)button.Parent.Parent; // Butonun ebeveyninin ebeveyni olan TabPage'i alır
-                    TextBox textBox1 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql1");
-                    TextBox textBox2 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql2");
-                    TextBox textBox3 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql3");
-                    TextBox textBox4 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql4");
-                    TextBox textBox5 = tabPage.Controls.OfType<TextBox>().FirstOrDefault(c => c.Name == "txtSql5");
+                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label1");
+                    Label label6 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
 
-                    Label label1 = tabPage.Controls.OfType<Label>().FirstOrDefault(x => x.Name == "label6");
                     DataGridView dataGridView = tabPage.Controls.OfType<DataGridView>().FirstOrDefault(x => x.Name == "dataGridView");
-                    int sqlId = Convert.ToInt32(textBox1.Text);
-                    string sqlServerIP = textBox3.Text;
-                    string sqlServerUserName = textBox4.Text;
-                    string sqlServerPassword = textBox5.Text;
-                    string projectId = label1.Text;
-                    SqlController sqlController = new SqlController();
-                    bool result = await sqlController.DeleteSqlData(sqlId);
+                    int filesId = Convert.ToInt32(label1.Text);
+                    
+                    string projectId = label6.Text;
+                    FilesController filesController = new FilesController();
+                    bool result = await filesController.DeleteFilesData(filesId);
                     if (result)
                     {
-                        MessageBox.Show("Sql Deleted Successfully");
+                        MessageBox.Show("Files Deleted Successfully");
                         LoadDataIntoDataGridView(dataGridView, Convert.ToInt32(projectId));
-                        textBox1.Clear(); textBox2.Clear(); textBox3.Clear(); textBox4.Clear(); textBox5.Clear();
                     }
                     else
                     {
-                        MessageBox.Show("SQL Failed to Update");
+                        MessageBox.Show("Files Failed to Update");
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
         }
-
-
-
-
         private async void LoadDataIntoDataGridView(DataGridView dataGridView, int id)
         {
             try
             {
-                SqlController sqlController = new SqlController();
-                var sqls = await sqlController.GetSql(id);
-                Sql[] sqlArray = sqls;
+                FilesController filesController = new FilesController();
+                var Files = await filesController.GetFile(id);
+                Files[] filesArray = Files;
 
                 DataTable dataTable = new DataTable();
-                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("SqlServerIp"); dataTable.Columns.Add("SqlServerUserName"); dataTable.Columns.Add("SqlServerPassword");
-
+                dataTable.Columns.Add("ID"); dataTable.Columns.Add("ProjectName"); dataTable.Columns.Add("ConnectExplanation"); dataTable.Columns.Add("ConnectionInfo");
                 Dictionary<int, string> projectNames = await GetProjectNames();
-
-                foreach (Sql sql in sqlArray)
+                foreach (Files files in filesArray)
                 {
-                    string projectName = projectNames.ContainsKey(sql.ProjectId) ? projectNames[sql.ProjectId] : string.Empty;
-                    dataTable.Rows.Add(sql.Id, projectName, sql.SqlServerIp, sql.SqlServerUserName, sql.SqlServerPassword);
+                    string projectName = projectNames.ContainsKey(files.ProjectId) ? projectNames[files.ProjectId] : string.Empty;
+                    dataTable.Rows.Add(files.Id, projectName, files.ConnectExplanation, files.ConnectionInfo);
                 }
                 dataGridView.DataSource = dataTable;
             }

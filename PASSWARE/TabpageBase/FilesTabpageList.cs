@@ -147,7 +147,7 @@ namespace PASSWARE.TabpageBase
                 dataGridView.DataSource = dataTable;
 
                 // Çift tıklama olayını DataGridView'e ekleyin
-                dataGridView.CellClick += DataGridView_CellClick;
+                //dataGridView.CellClick += DataGridView_CellClick;
             }
             catch (Exception ex)
             {
@@ -155,65 +155,67 @@ namespace PASSWARE.TabpageBase
             }
         }
 
-        private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridView dataGridView = (DataGridView)sender;
+      
 
-            if (e.ColumnIndex == dataGridView.Columns["ConnectionInfo"].Index && e.RowIndex >= 0)
-            {
-                var selectedFile = dataGridView.Rows[e.RowIndex].DataBoundItem as Files;
-                if (selectedFile != null)
-                {
-                    string fileExtension = Path.GetExtension(selectedFile.ConnectExplanation);
-                    OpenFile(selectedFile.ConnectionInfo, fileExtension);
-                }
-            }
-        }
+        //private void DataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    DataGridView dataGridView = (DataGridView)sender;
 
-        private void OpenFile(byte[] fileData, string fileExtension)
-        {
-            // Dosya türüne göre işlem yapın
-            if (fileExtension == ".pdf")
-            {
-                // PDF dosyasını açmak için uygun işlemi gerçekleştirin
-                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
-                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+        //    if (e.ColumnIndex == dataGridView.Columns["ConnectionInfo"].Index && e.RowIndex >= 0)
+        //    {
+        //        var selectedFile = dataGridView.Rows[e.RowIndex].DataBoundItem as Files;
+        //        if (selectedFile != null)
+        //        {
+        //            string fileExtension = Path.GetExtension(selectedFile.ConnectExplanation);
+        //            OpenFile(selectedFile.ConnectionInfo, fileExtension);
+        //        }
+        //    }
+        //}
 
-                // PDF dosyasını varsayılan PDF okuyucuyla açın
-                Process.Start(tempFilePath);
-            }
-            else if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg")
-            {
-                // Resmi açmak için uygun işlemi gerçekleştirin
-                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
-                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+        //private void OpenFile(byte[] fileData, string fileExtension)
+        //{
+        //    // Dosya türüne göre işlem yapın
+        //    if (fileExtension == ".pdf")
+        //    {
+        //        // PDF dosyasını açmak için uygun işlemi gerçekleştirin
+        //        string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+        //        File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
 
-                // Resmi varsayılan görüntüleyiciyle açın
-                Process.Start(tempFilePath);
-            }
-            else if (fileExtension == ".doc" || fileExtension == ".docx")
-            {
-                // Word belgesini açmak için uygun işlemi gerçekleştirin
-                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
-                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+        //        // PDF dosyasını varsayılan PDF okuyucuyla açın
+        //        Process.Start(tempFilePath);
+        //    }
+        //    else if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg")
+        //    {
+        //        // Resmi açmak için uygun işlemi gerçekleştirin
+        //        string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+        //        File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
 
-                // Word belgesini varsayılan Word uygulamasıyla açın
-                Process.Start(tempFilePath);
-            }
-            else if (fileExtension == ".xls" || fileExtension == ".xlsx")
-            {
-                // Excel dosyasını açmak için uygun işlemi gerçekleştirin
-                string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
-                File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+        //        // Resmi varsayılan görüntüleyiciyle açın
+        //        Process.Start(tempFilePath);
+        //    }
+        //    else if (fileExtension == ".doc" || fileExtension == ".docx")
+        //    {
+        //        // Word belgesini açmak için uygun işlemi gerçekleştirin
+        //        string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+        //        File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
 
-                // Excel dosyasını varsayılan Excel uygulamasıyla açın
-                Process.Start(tempFilePath);
-            }
-            else
-            {
-                MessageBox.Show("Unsupported file type.");
-            }
-        }
+        //        // Word belgesini varsayılan Word uygulamasıyla açın
+        //        Process.Start(tempFilePath);
+        //    }
+        //    else if (fileExtension == ".xls" || fileExtension == ".xlsx")
+        //    {
+        //        // Excel dosyasını açmak için uygun işlemi gerçekleştirin
+        //        string tempFilePath = Path.GetTempFileName(); // Geçici bir dosya oluşturun
+        //        File.WriteAllBytes(tempFilePath, fileData); // Veriyi geçici dosyaya yazın
+
+        //        // Excel dosyasını varsayılan Excel uygulamasıyla açın
+        //        Process.Start(tempFilePath);
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Unsupported file type.");
+        //    }
+        //}
 
 
         public async Task<Dictionary<int, string>> GetProjectNames()
@@ -281,23 +283,23 @@ namespace PASSWARE.TabpageBase
                 if (dataGridView.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                    string selectedSqlId = selectedRow.Cells["ID"].Value.ToString();
-                    string projectName = selectedRow.Cells["ProjectName"].Value.ToString();
-                    string selectSqlServerIp = selectedRow.Cells["SqlServerIp"].Value.ToString();
-                    string selectSqlServerUserName = selectedRow.Cells["SqlServerUserName"].Value.ToString();
-                    string selectSqlServerPassword = selectedRow.Cells["SqlServerPassword"].Value.ToString();
-
+                    string selectedfilesId = string.Empty;
+                    if (selectedRow.Cells["ID"].Value !=null)
+                    {
+                        selectedfilesId = selectedRow.Cells["ID"].Value.ToString(); 
+                    }
+                    else
+                    {
+                        return;
+                    }
                     var filterdata = filterData;
                     string projectID = projectId;
                     string colum1name = dataGridView.Columns[0].HeaderText; //column name
-                    string colum2name = dataGridView.Columns[1].HeaderText;
-                    string colum3name = dataGridView.Columns[2].HeaderText;
-                    string colum4name = dataGridView.Columns[3].HeaderText;
-                    string colum5name = dataGridView.Columns[4].HeaderText;
+                    
 
                     TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    FilesTabpageControl filesTabpageControl = new FilesTabpageControl();
+                    TabPage tabPage = filesTabpageControl.CreateTabPage(projectID, selectedfilesId, filterdata);
                     tabPage.Text = "Files";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;
@@ -312,24 +314,24 @@ namespace PASSWARE.TabpageBase
                 DataGridView dataGridView = (DataGridView)sender;
                 if (e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count && e.ColumnIndex >= 0 && e.ColumnIndex < dataGridView.Columns.Count)
                 {
-                    // Seçili hücrenin değerini al
                     DataGridViewCell selectedCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-                    string selectedSqlId = selectedCell.Value.ToString();
+                    string selectedFileId = string.Empty;
+                    if (dataGridView.Rows[e.RowIndex].Cells["ID"].Value !=null)
+                    {
+                        selectedFileId = dataGridView.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+                    }
+                    else
+                    {
+
+                        return;
+                    }
                     string projectName = dataGridView.Rows[e.RowIndex].Cells["ProjectName"].Value.ToString();
-                    string selectSqlServerIp = dataGridView.Rows[e.RowIndex].Cells["SqlServerIp"].Value.ToString();
-                    string selectSqlServerUserName = dataGridView.Rows[e.RowIndex].Cells["SqlServerUserName"].Value.ToString();
-                    string selectSqlServerPassword = dataGridView.Rows[e.RowIndex].Cells["SqlServerPassword"].Value.ToString();
                     var filterdata = filterData;
                     string projectID = projectId;
-                    string colum1name = dataGridView.Columns[0].HeaderText;
-                    string colum2name = dataGridView.Columns[1].HeaderText;
-                    string colum3name = dataGridView.Columns[2].HeaderText;
-                    string colum4name = dataGridView.Columns[3].HeaderText;
-                    string colum5name = dataGridView.Columns[4].HeaderText;
-
+                    string colum1name = dataGridView.Columns[0].HeaderText; //column name
                     TabPage newTabPage = new TabPage();
-                    SqlTabpageControl sqlTabpageControl = new SqlTabpageControl();
-                    TabPage tabPage = sqlTabpageControl.CreateTabPage(projectID, projectName, selectedSqlId, selectSqlServerIp, selectSqlServerUserName, selectSqlServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, filterdata);
+                    FilesTabpageControl filesTabpageControl = new FilesTabpageControl();
+                    TabPage tabPage = filesTabpageControl.CreateTabPage(projectID,selectedFileId, filterdata);
                     tabPage.Text = "Files";
                     tabControl.TabPages.Add(tabPage);
                     tabControl.SelectedTab = tabPage;

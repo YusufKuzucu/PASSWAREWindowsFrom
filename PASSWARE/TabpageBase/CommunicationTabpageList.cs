@@ -73,7 +73,33 @@ namespace PASSWARE.TabpageBase
             dataGridView.TabIndex = 1;
             dataGridView.CellMouseDoubleClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
+            dataGridView.CellEnter += (sender, e) =>
+            {
+                if (e.RowIndex == dataGridView.NewRowIndex)
+                {
+                    ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+                    if (comboBox != null && comboBox.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please select a Project.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // Yeni satırın eklenmesini iptal etmek için:
+                        dataGridView.CancelEdit();
+                        // DataGridView'e tekrar odaklanmak için:
+                        dataGridView.Focus();
+                    }
+                }
+            };
             return dataGridView;
+        }
+        private ComboBox GetComboBoxFromDataGridView(DataGridView dataGridView)
+        {
+            foreach (KeyValuePair<ComboBox, DataGridView> pair in comboBoxDataGridViewPairs)
+            {
+                if (pair.Value == dataGridView)
+                {
+                    return pair.Key;
+                }
+            }
+            return null;
         }
         private ComboBox CreateComboBox(Size size, Point location)
         {
@@ -240,13 +266,21 @@ namespace PASSWARE.TabpageBase
                     string colum5name = dataGridView.Columns[4].HeaderText;
                     string colum6name = dataGridView.Columns[5].HeaderText;
 
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
+                        TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                        tabPage.Text = "Communication";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    TabPage newTabPage = new TabPage();
-                    CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
-                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
-                    tabPage.Text = "Communication";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    }
+
                 }
             }
         }
@@ -284,15 +318,32 @@ namespace PASSWARE.TabpageBase
                     string colum5name = dataGridView.Columns[4].HeaderText;
                     string colum6name = dataGridView.Columns[5].HeaderText;
 
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
+                        TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                        tabPage.Text = "Communication";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    TabPage newTabPage = new TabPage();
-                    CommunicationTabpageControl commTabpageControl = new CommunicationTabpageControl();
-                    TabPage tabPage = commTabpageControl.CreateTabPage(projectID, projectName, selectedCommId, ınternalEmail, ınternalNumber, externalEmail, externalNumber, colum1name, colum2name, colum3name, colum4name, colum5name,colum6name, filterdata);
-                    tabPage.Text = "Communication";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    }
+
                 }
             }
+        }
+        private bool IsComboBoxSelected(DataGridView dataGridView)
+        {
+            ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+            if (comboBox != null && comboBox.SelectedItem != null)
+            {
+                return true;
+            }
+            return false;
         }
         private bool isAdminUser()
         {

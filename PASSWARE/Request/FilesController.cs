@@ -53,6 +53,40 @@ namespace PASSWARE.Request
 
 
         }
+        public async Task<Files[]> GetFile(int id)
+        {
+            string apiUrl = "https://localhost:44343/api/";
+            Files[] data = null;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ActiveUser.Token);
+
+                HttpResponseMessage response = await client.GetAsync($"{apiUrl}Files/GetByFile?id={id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        FilesResponse filesResponse = JsonConvert.DeserializeObject<FilesResponse>(responseContent);
+                        data = filesResponse.Data;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: JSON yanıtı geçerli bir dizi (array) yapısını içermiyor.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hata kodu: " + response.StatusCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Beklenmeyen bir hata oluştu: " + ex.Message);
+            }
+            return data;
+
+        }
 
         public async Task<bool> AddFilesData(string connectExplanation, string connectionInfo)
         {
@@ -117,7 +151,7 @@ namespace PASSWARE.Request
             }
 
         }
-        public async Task<bool> DeleteLinkData(int id)
+        public async Task<bool> DeleteFilesData(int id)
         {
             try
             {

@@ -11,6 +11,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace PASSWARE.TabpageBase
 {
@@ -23,7 +27,6 @@ namespace PASSWARE.TabpageBase
         private DataTable filterData;
         private string projectId;
         private string SqlprojeName;
-
 
         private Dictionary<int, string> companyNames;
         public ProjectTabpageList(TabControl tabControl)
@@ -44,12 +47,13 @@ namespace PASSWARE.TabpageBase
             ComboBox comboBox = CreateComboBox(new Size(300, 24), new Point(35, 80));
             groupBox.Controls.Add(comboBox);
 
-            Label label1 = CreateLabel("Select Project", new System.Drawing.Size(44, 16), new System.Drawing.Point(33, 60));
+            Label label1 = CreateLabel("Select Company Name", new System.Drawing.Size(44, 16), new System.Drawing.Point(33, 60));
             groupBox.Controls.Add(label1);
 
-            // ComboBox ve DataGridView çiftini eşleştir
+            Button button1 = CreateButton("Open File", new System.Drawing.Size(100,50),new System.Drawing.Point(1400,10),1);
+            button1.Click += OpenFile_Click;
+            groupBox.Controls.Add(button1);
             comboBoxDataGridViewPairs.Add(comboBox, dataGridView);
-            // API'den verileri ComboBox ve DataGridView'e yükle
             await LoadDataIntoComboBox(comboBox);
             await LoadDataIntoDataGridView(dataGridView);
             return tabPage;
@@ -65,15 +69,58 @@ namespace PASSWARE.TabpageBase
             dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.ScrollBars = ScrollBars.Both;
             dataGridView.Location = new Point(0, 180);
-            dataGridView.RowHeadersWidth = 51;
+            dataGridView.RowHeadersWidth = 51; 
+            dataGridView.ReadOnly = true;
+            dataGridView.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView.DefaultCellStyle.Font = new Font("Arial", 9);
             dataGridView.Dock = DockStyle.None;
             dataGridView.RowTemplate.Height = 24;
             dataGridView.Size = new Size(1527, 430);
             dataGridView.TabIndex = 1;
-            dataGridView.CellMouseClick += DataGridView_CellMouseDoubleClick;
+            dataGridView.CellMouseDoubleClick += DataGridView_CellMouseDoubleClick;
             dataGridView.MouseDoubleClick += DataGridView_MouseDoubleClick;
+
+            dataGridView.CellEnter += (sender, e) =>
+            {
+                if (e.RowIndex == dataGridView.NewRowIndex)
+                {
+                    ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+                    if (comboBox != null && comboBox.SelectedItem == null)
+                    {
+                        MessageBox.Show("Please select a company.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        dataGridView.CancelEdit();
+                        dataGridView.Focus();
+                    }
+                }
+            };
+
             return dataGridView;
+        }
+        private ComboBox GetComboBoxFromDataGridView(DataGridView dataGridView)
+        {
+            foreach (KeyValuePair<ComboBox, DataGridView> pair in comboBoxDataGridViewPairs)
+            {
+                if (pair.Value == dataGridView)
+                {
+                    return pair.Key;
+                }
+            }
+            return null;
+        }
+        private Button CreateButton(string text, Size size, Point location, int tabındex)
+        {
+            Button button = new Button();
+            button.Text = text;
+            button.BackColor = Color.FromKnownColor(KnownColor.Silver);
+            button.Size = size;
+            button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            button.ForeColor = Color.Black;
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.Location = location;
+            button.TabIndex = tabındex;
+            button.FlatStyle = FlatStyle.Flat;
+            return button;
         }
         private ComboBox CreateComboBox(Size size, Point location)
         {
@@ -187,7 +234,7 @@ namespace PASSWARE.TabpageBase
         }
         private void FilterDataGridView(DataGridView dataGridView, string selectedText)
         {
-            DataTable dataTable = originalData.Clone(); // Yeni bir DataTable oluştur
+            DataTable dataTable = originalData.Clone(); 
 
             if (!string.IsNullOrEmpty(selectedText))
             {
@@ -200,7 +247,7 @@ namespace PASSWARE.TabpageBase
             }
             else
             {
-                dataTable = originalData.Copy(); // Tüm verileri göster
+                dataTable = originalData.Copy(); 
             }
             dataGridView.DataSource = dataTable;
 
@@ -237,17 +284,28 @@ namespace PASSWARE.TabpageBase
                     string colum4name = dataGridView.Columns[3].HeaderText;
                     string colum5name = dataGridView.Columns[4].HeaderText;
                     string colum6name = dataGridView.Columns[5].HeaderText;
-
-                    TabPage newTabPage = new TabPage();
-                    ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
-                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
-                    tabPage.Text = "Project";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
+                        TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                        tabPage.Text = "Project";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
+      
+        
+        private void OpenFile_Click(object sender, EventArgs e)
+        {
 
+        }
         private void DataGridView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (isAdminUser())
@@ -280,14 +338,30 @@ namespace PASSWARE.TabpageBase
                     string colum5name = dataGridView.Columns[4].HeaderText;
                     string colum6name = dataGridView.Columns[5].HeaderText;
 
-                    TabPage newTabPage = new TabPage();
-                    ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
-                    TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
-                    tabPage.Text = "Project";
-                    tabControl.TabPages.Add(tabPage);
-                    tabControl.SelectedTab = tabPage;
+                    if (IsComboBoxSelected(dataGridView))
+                    {
+                        TabPage newTabPage = new TabPage();
+                        ProjectTabpageControl projectTabpageControl = new ProjectTabpageControl();
+                        TabPage tabPage = projectTabpageControl.CreateTabPage(companyID, CompanyName, selectedProjectId, ProjectName, ProjectServerIP, ProjectServerUserName, ProjectServerPassword, colum1name, colum2name, colum3name, colum4name, colum5name, colum6name, filterdata);
+                        tabPage.Text = "Project";
+                        tabControl.TabPages.Add(tabPage);
+                        tabControl.SelectedTab = tabPage;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a value from the ComboBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
+        }
+        private bool IsComboBoxSelected(DataGridView dataGridView)
+        {
+            ComboBox comboBox = GetComboBoxFromDataGridView(dataGridView);
+            if (comboBox != null && comboBox.SelectedItem != null)
+            {
+                return true;
+            }
+            return false;
         }
         private bool isAdminUser()
         {
